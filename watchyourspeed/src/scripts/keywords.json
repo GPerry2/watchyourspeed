@@ -1,0 +1,42 @@
+[
+    {
+        "items":
+        [
+            {
+                "summary":"<p>The personal information you are asked to provide is collected under the authority of the City of Toronto Act, 2006, s. 136©. The information is used by District Traffic Operations and Watch Your Speed Program staff of the Transportation Services Division to contact you to advise you of the eligibility of your requested location for the Watch Your Speed Program. Questions about this collection can be directed to the Senior Engineer, Traffic Safety Unit, Transportation Services at 5th Floor – 703 Don Mills Road, Toronto, M3C 3N3 or at 416-392-6491.</p>",
+                "title":"Disclaimer"
+            },{
+                "summary":"<p>Thank you. Your request has been received.<\/p><p>Locations requested are first subject to inspection to ensure conformance to effectiveness and safety criteria. Staff will contact you to advise you of the eligibility of your request.<\/p><p>If you have any questions, please contact <a mailto='Diana.Dang@toronto.ca'>Diana.Dang@toronto.ca</a> or call 416-397-0104.<\/p>",
+                "title":"Success Message"
+            },{
+                "summary":"<p>The submission was not successful. Please contact the administrator.<\/p>",
+                "title":"Failure Message"
+            },{
+                "summary":"Please Note:",
+                "title": "pleaseNotePanelHeading"
+            },{
+                "summary":"<p>Before requesting WYSP, check to ensure that the location meets the following criteria. Then, complete the fields below and click on the Submit button.<\/p><p>Please note: A location may also be ineligible for WYSP due to site specific considerations other than those listed below. Staff will follow-up with requesters if a requested location cannot be scheduled. Staff will attempt to install WYSP at the suggested location/address, but an alternative location/address may be placed if the suggested location/address is not favourable. <\/p><p><ol><li>The device can only be placed on public property, such as a boulevard<\/li><li>The device cannot occupy any portion of a sidewalk or walkway, or impede pedestrian movement in any way</li><li>The boulevard must be level with no slope<\/li><li>There must be no obstruction blocking the radar signal or visibility to the display, such as tree foliage or parked cars</li><li>There must be a permanent fixture, such as a pole, suitable for securing the trailer to (fire hydrants are not suitable)<\/li><li>The location cannot be close to a traffic signal or stop sign facing oncoming traffic<\/li><li>The location cannot be close to a curve in the road<\/li><\/ol><\/p>",
+                "title":"Please Note"
+            },{
+                "summary": "Contact Information",
+                "title": "ContactInformation"
+            },{
+                 "summary": "First Name",
+                "title": "FirstName"
+            },{
+                "summary": "Last Name",
+                "title": "LastName"
+            },{
+                "summary":"Daytime Phone",
+                "title": "phone"
+            }, {
+                 "summary":"Address and Description",
+                "title": "description"
+            },
+            {
+                 "summary":"District",
+                "title": "district"
+            }
+        ]
+    }
+]

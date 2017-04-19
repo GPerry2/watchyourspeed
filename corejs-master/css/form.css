@@ -1,0 +1,47 @@
+#maincontent .vertical, #maincontent label.vertical {display: block;}
+#maincontent .horizontal, #maincontent .horizontal {display: inline-block;}
+#maincontent .instructions img {max-width:150px;}
+#maincontent ul {margin: 10px;}
+#maincontent .paymentduedate, #maincontent .ticketdetail .statusdisclaimer  {text-align: center; font-weight: bold; margin-top: 15px;}
+#maincontent .buttons {text-align: center;}
+#maincontent .buttons button {margin: 15px 5px 15px 5px;}
+#maincontent .componentTitle {margin-top: 0px;}
+#maincontent .form-group {margin:0px;}
+#maincontent label {font-size: 1em;}
+#maincontent fieldset section {margin-top: 10px;}
+#maincontent .form-group>div {position: relative;}
+#maincontent .viacheckbox {white-space: nowrap;}
+#maincontent li.dropdown.active {z-index: 1019 !important;}
+#maincontent li.dropdown {z-index: 1018 !important;}
+#maincontent #parkingticketForm .btn-group {width: 100%;}
+#maincontent #parkingticketForm button {width: 100%;}
+#maincontent .instructions {text-align: center;}
+#maincontent .instructions p {margin-top: 10px; margin-bottom: 10px;}
+#maincontent .ticketdetail {display: table;}
+#maincontent .ticketdetail .label {color: black; padding: 0px; font-size: 1em; display:  table;}
+#maincontent .ticketdetail .disclaimer {padding: 8px; border-radius: 5px; background-color: whitesmoke; border: 1px solid #ddd;}
+#maincontent .ticketdetail .disclaimer {font-size: .9em; }
+#maincontent .ticketdetail .row {padding-top: 5px; padding-bottom: 5px;}
+#maincontent .ticketdetail .row.cost {border-top:2px solid #000;}
+#maincontent .ticketdetail .row.additionalcost {border-top:1px solid #999;;}
+#maincontent .ticketdetail .row.totalcost {border-top:3px double #999;;}
+#maincontent .ticketdetail .row.amountdue {background-color: darkred; border: 1px solid #999;;}
+#maincontent .ticketdetail .row.amountdue div.label {color:white;}
+#maincontent .ticketdetail .row.amountdue div {color:white;}
+#maincontent .modal-header {background-color: #346488; color: white; font-size: 2em; padding: 5px 5px 5px 15px;}
+#maincontent .modal-footer {background-color: #566974; padding: 10px; margin-top: 0px;}
+#maincontent .ticketamount, .additionalcost, .totalcharge, .amountdue {text-align: right;}
+#maincontent .duedate {text-align: center; font-style: italic;}
+.modal-header button.close {color: white; font-size: 2em; opacity: 1; }
+.tcheader {font-weight: bold; margin-top: 10px;}
+#maincontent ol li p+p {margin-top: 0px;}
+#maincontent ol ol  {list-style-type: lower-alpha;}
+#maincontent section.pagination {margin:0px;}
+#maincontent a.paginate {width: 30px; display: inline-block; border: 1px solid #888; margin: 5px; text-align: center; border-radius: 5px; background-color: #fff;}
+#maincontent span.paginate {width: 30px; display: inline-block; border: 1px solid #888; margin: 5px; text-align: center; border-radius: 5px; background-color: #346488; color: white;}
+#maincontent .paginationintro {float:left;padding: 10px 0px 10px 0px;line-height:30px;}
+#maincontent .pagination ul {padding: 10px;}
+@media (min-width: 850px) {#maincontent .modal-dialog {width: 800px;}}
+#maincontent div.instructions img {width:65%;}
+#maincontent input[type=checkbox]:focus{outline: #9ecaed solid 2px !important;}  
+#maincontent input[type=radio]:focus{outline: #9ecaed solid 2px !important;}  

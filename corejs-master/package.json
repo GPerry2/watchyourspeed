@@ -1,0 +1,42 @@
+{
+  "name": "core",
+  "version": "2.0.1",
+  "description": "WRP core web app library. Use for creating SPA-style apps with forms, that match the www.toronto.ca look and feel.",
+  "repository": {
+    "type": "git",
+    "url": "hamlet-3:/secure/docs/webapps/source/corev1.1.git"
+  },
+  "author": {
+    "name": "Rob Williams",
+    "email": "rob.williams@toronto.ca"
+  },
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-cache": "^0.4.5",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-eslint": "^3.0.1",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-size": "^2.1.0",
+    "gulp-uglify": "^2.0.1",
+    "husky": "^0.13.1",
+    "run-sequence": "^1.2.2"
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": false,
+      "node": false,
+      "browser": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {}
+  },
+  "scripts": {
+    "precommit": "gulp && git add -A dist"
+  }
+}

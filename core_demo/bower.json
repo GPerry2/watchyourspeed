@@ -1,0 +1,11 @@
+{
+  "name": "app_name",
+  "description": "Describe this app",
+  "authors": [
+    "Your name here"
+  ],
+  "private": true,
+  "dependencies": {
+    "core": "https://github.com/CityofToronto/corejs.git#develop"
+  }
+}

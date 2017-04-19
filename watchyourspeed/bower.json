@@ -1,0 +1,13 @@
+{
+  "name": "watchyourspeed",
+  "description": "Watch Your Speed",
+  "authors": [
+    "Kevin Changulp
+    "
+  ],
+  "private": true,
+  "dependencies": {
+    "core": "https://github.com/CityofToronto/corejs.git#master",
+    "mustache.js": "mustache#^2.3.0"
+  }
+}

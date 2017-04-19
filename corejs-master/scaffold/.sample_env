@@ -1,0 +1,12 @@
+#this ENV file should NOT be committed to the git repo!!
+#it could be different for each developer
+
+#uncomment and use these deploy path variables if the path on your local machine is different
+#for example, on Jason's mac, the path below looks like /Volumes/inet-1/secure/docs/webapps/app_name
+#DEV_DEPLOY_PATH=x:\secure\docs\webapps\app_name\
+#QA_DEPLOY_PATH=x:\webas\lib\webapps\secure\app_name\
+
+
+#sometimes you need the username and password in the proxy for some reason
+#uncomment and use this setting if you are troubleshooting proxy issues related to the `gulp deploy:aws` task
+#PROXY=http://proxy.toronto.ca:8080

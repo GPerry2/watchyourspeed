@@ -1,0 +1,13 @@
+{
+  "name": "app_name",
+  "description": "Describe this app",
+  "authors": [
+    "Your name here"
+  ],
+  "private": true,
+  "dependencies": {
+    "core": "https://github.com/CityofToronto/corejs.git#master",
+    "jquery.serializejson.js":"jquery.serializeJSON#^2.7.2",
+    "dropzone":"dropzone#^4.3.0"
+  }
+}

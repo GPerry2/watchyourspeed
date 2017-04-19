@@ -1,0 +1,32 @@
+{
+  "name": "app_name",
+  "description": "Describe this app",
+  "authors": [
+    "Your name here"
+  ],
+  "private": true,
+  "dependencies": {
+    //Remove these comments!! You can't have comments in a json file! bower install will fail!
+
+    //You should use a hashtag at the end to specify which version of the core you want to use
+
+    //example using the latest on the develop branch (considered non-production ready) of the core:
+    //"core": "https://github.com/CityofToronto/corejs.git#develop"
+    //use this to have access to the latest and greatest changes
+
+    //example using a feature branch:
+    //"core": "https://github.com/CityofToronto/corejs.git#feature/my_feature"
+    //use this to test out a feature branch
+
+    //example using the latest on the master branch (considered production ready) of the core:
+    //"core": "https://github.com/CityofToronto/corejs.git#master"
+    //use this to use the latest release-ready version of the core
+
+    //example using a specific version of the core:
+    //"core": "https://github.com/CityofToronto/corejs.git#1.3.0"
+    //always use a specific release version before deploying to production
+
+
+    "core": "https://github.com/CityofToronto/corejs.git#1.3.0"
+  }
+}
