@@ -1,0 +1,256 @@
+{
+  "choices": {
+  "yesNo": [
+    {
+      "text": "Yes",
+      "value": "Yes"
+    },
+    {
+      "text": "No",
+      "value": "No"
+    }
+  ],
+  "yesNoNA": [
+    {
+      "text": "Yes",
+      "value": "Yes"
+    },
+    {
+      "text": "No",
+      "value": "No"
+    },
+    {
+      "text": "N/A",
+      "value": "N/A"
+    }
+  ],
+  "AdminType": [
+    {
+      "text": "Application",
+      "value": "Application"
+    },
+    {
+      "text": "Site",
+      "value": "Site"
+    }
+  ],
+  "status": [
+    {
+      "text": "Draft",
+      "value": "100"
+    },
+    {
+      "text": "Submitted for Review",
+      "value": "200"
+    },
+    {
+      "text": "More Information Requested",
+      "value": "300"
+    },
+    {
+      "text": "More Information Provided",
+      "value": "400"
+    },
+    {
+      "text": "Approved",
+      "value": "500"
+    },
+    {
+      "text": "Denied",
+      "value": "600"
+    },
+    {
+      "text": "Cancelled",
+      "value": "700"
+    }
+  ],
+  "divisions":[
+    {"text":"311 Toronto", "value":"311 Toronto"},
+    {"text":"Accounting Services", "value":"Accounting Services"},
+    {"text":"Affordable Housing Office", "value":"Affordable Housing Office"},
+    {"text":"Auditor General", "value":"Auditor General"},
+    {"text":"Chief Financial Officer's Office", "value":"Chief Financial Officer's Office"},
+    {"text":"Children's Services", "value":"Children's Services"},
+    {"text":"City Clerk's", "value":"City Clerk's"},
+    {"text":"City Planning", "value":"City Planning"},
+    {"text":"Corporate Finance", "value":"Corporate Finance"},
+    {"text":"Deputy City Manager CPS Office", "value":"Deputy City Manager CPS Office"},
+    {"text":"Deputy City Manager CSS Office", "value":"Deputy City Manager CSS Office"},
+    {"text":"Deputy City Manager IDS Office", "value":"Deputy City Manager IDS Office"},
+    {"text":"Economic Development & Culture", "value":"Economic Development & Culture"},
+    {"text":"Employment & Social Services", "value":"Employment & Social Services"},
+    {"text":"Engineering & Construction Services", "value":"Engineering & Construction Services"},
+    {"text":"Environment & Energy", "value":"Environment & Energy"},
+    {"text":"Executive Management", "value":"Executive Management"},
+    {"text":"Facilities Management", "value":"Facilities Management"},
+    {"text":"Finance & Administration", "value":"Finance & Administration"},
+    {"text":"Financial Planning", "value":"Financial Planning"},
+    {"text":"Fire Services", "value":"Fire Services"},
+    {"text":"Fleet Services", "value":"Fleet Services"},
+    {"text":"Information & Technology", "value":"Information & Technology"},
+    {"text":"Internal Audit", "value":"Internal Audit"},
+    {"text":"Legal Services", "value":"Legal Services"},
+    {"text":"Lobbyist Registrar", "value":"Lobbyist Registrar"},
+    {"text":"Long-Term Care Homes & Services", "value":"Long-Term Care Homes & Services"},
+    {"text":"Municipal Licensing & Standards", "value":"Municipal Licensing & Standards"},
+    {"text":"Office of the Treasurer", "value":"Office of the Treasurer"},
+    {"text":"Ombudsman", "value":"Ombudsman"},
+    {"text":"Parks, Forestry & Recreation", "value":"Parks, Forestry & Recreation"},
+    {"text":"Pension, Payroll & Employee Benefits", "value":"Pension, Payroll & Employee Benefits"},
+    {"text":"People, Equity & Human Rights", "value":"People, Equity & Human Rights"},
+    {"text":"Policy, Planning, Finance & Admin", "value":"Policy, Planning, Finance & Admin"},
+    {"text":"Public Health", "value":"Public Health"},
+    {"text":"Purchasing & Materials Management", "value":"Purchasing & Materials Management"},
+    {"text":"Real Estate Services", "value":"Real Estate Services"},
+    {"text":"Revenue Services", "value":"Revenue Services"},
+    {"text":"Shelter, Support & Housing Admin", "value":"Shelter, Support & Housing Admin"},
+    {"text":"Social Development, Finance & Admin", "value":"Social Development, Finance & Admin"},
+    {"text":"Solid Waste Management Services", "value":"Solid Waste Management Services"},
+    {"text":"Strategic & Corporate Policy", "value":"Strategic & Corporate Policy"},
+    {"text":"Strategic Communications", "value":"Strategic Communications"},
+    {"text":"Toronto Building", "value":"Toronto Building"},
+    {"text":"Toronto Court Services", "value":"Toronto Court Services"},
+    {"text":"Toronto Office of Partnerships", "value":"Toronto Office of Partnerships"},
+    {"text":"Toronto Paramedic Services", "value":"Toronto Paramedic Services"},
+    {"text":"Toronto Water", "value":"Toronto Water"},
+    {"text":"Transformation Office", "value":"Transformation Office"},
+    {"text":"Transportation Services", "value":"Transportation Services"}
+  ],
+  "categories":[
+    {"text":"Business", "value":"Business"},
+    {"text":"City Government", "value":"City Government"},
+    {"text":"Community Services", "value":"Community Services"},
+    {"text":"Development", "value":"Development"},
+    {"text":"Transportation", "value":"Transportation"},
+    {"text":"Locations & Mapping", "value":"Locations & Mapping"},
+    {"text":"Culture & Tourism", "value":"Culture & Tourism"},
+    {"text":"Health", "value":"Health"},
+    {"text":"Permits and Licenses", "value":"Permits and Licenses"},
+    {"text":"Environment", "value":"Environment"},
+    {"text":"Parks and Recreation", "value":"Parks and Recreation"},
+    {"text":"Water", "value":"Water"},
+    {"text":"Garbage and Recycling", "value":"Garbage and Recycling"},
+    {"text":"Public SafetyFinance", "value":"Public SafetyFinance"}
+  ],
+  "civicIssueAlignment":[
+    {"text":"Poverty Reduction", "value":"Poverty Reduction"},
+    {"text":"Affordable Housing", "value":"Affordable Housing"},
+    {"text":"Climate Change", "value":"Climate Change"},
+    {"text":"Fiscal Responsibility", "value":"Fiscal Responsibility"},
+    {"text":"Mobility", "value":"Mobility"}
+  ],
+  "Frequency":[
+    {"text":"Daily", "value":"Daily"},
+    {"text":"Monthly", "value":"Monthly"},
+    {"text":"Quarterly", "value":"Quarterly"},
+    {"text":"Semi-annually", "value":"Semi-annually"},
+    {"text":"Annually", "value":"Annually"},
+    {"text":"Continuously", "value":"Continuously"},
+    {"text":"Other (please indicate)", "value":"Other"}
+  ],
+  "Format":[
+    {"text":"CSV", "value":"CSV"},
+    {"text":"JSON", "value":"JSON"},
+    {"text":"XML", "value":"xml"},
+    {"text":"TIF", "value":"TIF"},
+    {"text":"SHP", "value":"SHP"},
+    {"text":"GEOJSON", "value":"GEOJSON"},
+    {"text":"Access DB", "value":"Access DB"},
+    {"text":"Other (please indicate)", "value":"Other"}
+  ],
+  "refreshType":[
+    {"text":"Manual", "value":"Manual"},
+    {"text":"Automatic", "value":"Automatic"},
+    {"text":"One-time Refresh", "value":"One-time Refresh"}
+  ],
+  "dataStorage":[
+    {"text":"SAP", "value":"SAP"},
+    {"text":"Successfactors", "value":"Successfactors"},
+    {"text":"CLASS", "value":"CLASS"},
+    {"text":"Oracle DB", "value":"Oracle DB"},
+    {"text":"SQL Server", "value":"SQL Server"},
+    {"text":"Postgres DB", "value":"Postgres DB"},
+    {"text":"File in Shared Folder", "value":"File in Shared Folder"},
+    {"text":"GPA", "value":"GPA"},
+    {"text":"3RD Party Vendor", "value":"3RD Party Vendor"},
+    {"text":"Other Business System", "value":"Other"}
+  ],
+  "upload_type":[
+    {"text":"Metadata Description", "value":"Metadata Description"},
+    {"text":"Sample Data", "value":"Sample Data"},
+    {"text":"aaa", "value":"aaa"},
+    {"text":"bbb", "value":"bbb"},
+    {"text":"Other (provide detailes in description above", "value":"Other"}
+  ]
+},
+  "status":{
+    "100":"Draft",
+    "200":"Submitted for Review",
+    "300": "More Information Requested",
+    "400": "More Information Provided",
+    "500" : "Approved",
+    "600" : "Denied",
+    "700":"Cancelled"
+  },
+  "tabmap":{
+    "tab00":"Data Identificatio",
+    "tab01":"Upload Dataset",
+    "tab02":"Data Dictionary",
+    "tab03":"Contact Details",
+    "tab04":"Privacy Review",
+    "tab05":"Approvals"
+  },
+  "infohelp":{
+    "firstName": "",
+    "lastName": "",
+    "phone": "Ex: 416-555-5555",
+    "email": "Ex: you@me.com",
+    "datasetName": "",
+    "division": "",
+    "department": "",
+    "unit": "",
+    "website": "https://test.com/123",
+    "website_embedded":"",
+    "city_open_data":"",
+    "currentDataLocation": "",
+    "currentDataLocationOther":"",
+    "currentDataFormat": "",
+    "currentDataFormatOther":"",
+    "fullDescription": "",
+    "shortDescription": "",
+    "limitations": "",
+    "categoryOne": "",
+    "categoryTwo": "",
+    "categoryThree": "",
+    "civicAlignment": "",
+    "refreshFrequency": "",
+    "refreshFrequencyOther":"",
+    "collection_method":"",
+    "refreshStart": "",
+    "refreshEnd": "",
+    "refreshType": "",
+    "refreshNotes": "",
+    "tags":"",
+    "geospatialEnv": "",
+    "uploads": "Upload required documents here",
+    "approverUID":"",
+    "approverName":"",
+    "approverPhone":"",
+    "approverEmail":"",
+    "technicalContact":"",
+    "technicalContactUID":"",
+    "technicalContactPhone":"",
+    "technicalContactEmail":"",
+    "businessContactName":"",
+    "businessContactUID":"",
+    "businessContactPhone":"",
+    "businessContactEmail":"",
+    "publicContactName":"",
+    "publicContactPhone":"",
+    "publicContactEmail":""
+  },
+  "short_text_max": 200,
+  "limitation_text_max": 150,
+  "long_text_max": 600,
+  "notes_text_max": 600
+}

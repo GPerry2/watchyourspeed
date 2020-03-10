@@ -1,0 +1,48 @@
+<!-- cot-app:head -->
+<title>Open Data - Approval to Publish</title>
+<!--<meta property="og:title" content="UPDATE THIS FOR YOUR APP">-->
+<!--<meta name="DC.title" content="UPDATE THIS FOR YOUR APP">-->
+<!--<meta name="WT.sp" content="UPDATE THIS FOR YOUR APP">-->
+<!--<meta property="og:description" content="Page Description">-->
+<!--<meta name="DC.description" lang="en" content="Page Description">-->
+<!--<meta name="description" content="Page Description">-->
+<!--<meta name="keywords" content="Key Words">-->
+<!--<meta name="Author" content="City of Toronto">-->
+<!--<meta name="Owner" content="City of Toronto">-->
+<!--<meta name="DC.language" content="en-CA">-->
+<!--<meta name="DC.subject" content="UPDATE THIS FOR YOUR APP">-->
+<meta charset="UTF-8">
+<!--@exec startBuildTagWithCacheBuster('styles/main.css')-->
+<!-- core:css -->
+<!-- endinject -->
+<!-- endbuild -->
+<!--@exec startBuildTagWithCacheBuster('styles/core_print.css', 'media="print"')-->
+<!-- core_print:css -->
+<!-- endinject -->
+<!-- endbuild -->
+<link rel="stylesheet" type="text/css" href="<!--@echo ROOT_ENV-->/<!-- @echo COTSTAFF_ROOT --><!-- @echo COTSTAFF_VERSION -->/styles/cotstaff<!-- @echo COTSTAFF_VERSION -->.css">
+<link rel="stylesheet" type="text/css" href="<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('custom_staff.css')/$value">
+<link rel="stylesheet" type="text/css" href="/webapps/cdn/cotui/latest/cotui.css">
+<!-- cot-app:head end-->
+<!-- cot-app:body -->
+<!-- cot-app:body end-->
+<!-- cot-app:footer -->
+<!--@exec startBuildTagWithCacheBuster('scripts/main.js')-->
+<!-- core:js -->
+<script  src="/node_modules/cotui/dist/cotui.js"></script>
+<!-- endinject -->
+<!-- endbuild -->
+<script type="text/javascript" src="<!--@echo ROOT_ENV-->/<!-- @echo COTSTAFF_ROOT --><!-- @echo COTSTAFF_VERSION -->/scripts/cotstaff<!-- @echo COTSTAFF_VERSION -->.js"></script>
+<script type="text/javascript" src="/webapps/cdn/cotui/latest/cotui.js"></script>
+<script  src="<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('combined_staff.js')/$value"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ace.js"></script>
+<script>
+  const src_path = "<!--@echo SRC_PATH-->";
+  const httpHost = "<!--@echo ENV-->" ;
+  const CONFIG_APP_NAME = "<!--@echo CONFIG_APP_NAME-->";
+  const configURL= [
+    "<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('combined_staff.json')/$value",
+    "<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('site_variables.json')/$value"
+  ];
+</script>
+<!-- cot-app:footer end-->
