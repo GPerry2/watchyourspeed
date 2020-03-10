@@ -1,0 +1,382 @@
+{
+  "title": "Persons Under Investigations Rapid Entry System (CORES)",
+  "dashboard_title":"TPH Staff Dashboard",
+  "default_repo": "covid19",
+  "default_view": "dashboard",
+  "dateTimeFormat": "YYYY-MM-DD h:mm A",
+  "dateFormat": "YYYY-MM-DD",
+  "check_session_on_server": true,
+  "disableAjaxError":true,
+  "nav_bar_template": "/c3api_data/v2/DataAccess.svc/covid19/Media('main_admin.html')/$value",
+  "dashboard_template": "/c3api_data/v2/DataAccess.svc/covid19/Media('dashboard.html')/$value",
+  "formName": {
+    "submissions": "Submission",
+    "Media": "Media"
+  },
+  "formHeaderFieldMap": {
+    "submissions": "fullName",
+    "Media": "id"
+  },
+  "listName": {
+    "submissions": "Submissions",
+    "Media": "Media"
+  },
+  "httpHost": {
+    "root": {
+      "local": "localhost",
+      "dev": "https://was-intra-sit.toronto.ca",
+      "qa": "https://was-intra-qa.toronto.ca",
+      "prod": "https://was-intra-sit.toronto.ca"
+    },
+    "root_public": {
+      "local": "localhost",
+      "dev": "https://was-inter-sit.toronto.ca",
+      "qa": "https://was-inter-qa.toronto.ca",
+      "prod": "https://secure.toronto.ca"
+    },
+    "app": {
+      "local": "https://was-intra-sit.toronto.ca",
+      "dev": "https://was-intra-sit.toronto.ca",
+      "qa": "https://was-intra-qa.toronto.ca",
+      "prod": "https://was-intra-sit.toronto.ca"
+    },
+    "app_public": {
+      "local": "https://was-inter-sit.toronto.ca",
+      "dev": "https://was-inter-sit.toronto.ca",
+      "qa": "https://was-inter-qa.toronto.ca",
+      "prod": "https://was-intra-sit.toronto.ca"
+    },
+    "auth": {
+      "local": "https://was-intra-sit.toronto.ca",
+      "dev": "https://was-intra-sit.toronto.ca",
+      "qa": "https://was-intra-qa.toronto.ca",
+      "prod": "https://was-intra-sit.toronto.ca"
+    }
+  },
+  "api": {
+    "get": "/c3api_data/v2/DataAccess.svc/",
+    "post": "/c3api_data/v2/DataAccess.svc/",
+    "put": "/c3api_data/v2/DataAccess.svc/",
+    "config": "/c3api_config/v2/ConfigService.svc/",
+    "delete": "/c3api_data/v2/DataAccess.svc/",
+    "email": "/cc_sr_admin_v1/submit/csu_email",
+    "eventDispatcher": "/rest/COTEventDispatcher_V2/REST",
+    "vendor_login": "/cc_sr_v1/submit/",
+    "authPath_v1": "/cc_sr_admin_v1/",
+    "upload": "/cc_sr_admin_v1/upload/",
+    "authPath": "/c3api_auth/",
+    "authEndpoint": "v2/AuthService.svc/AuthSet",
+    "timeout": 30
+  },
+  "api_public": {
+    "get": "/c3api_data/v2/DataAccess.svc/",
+    "post": "/c3api_data/v2/DataAccess.svc/",
+    "put": "/c3api_data/v2/DataAccess.svc/",
+    "delete": "/c3api_data/v2/DataAccess.svc/",
+    "submit": "/cc_sr_v1/submit/",
+    "upload": "/cc_sr_v1/upload/"
+  },
+  "messages": {
+    "current": "",
+    "load": {
+      "fail": "<strong>Unable to load!</strong> Report could not be retrieved. Please try again."
+    },
+    "save": {
+      "done": "<strong>Saved!</strong> This report was successfully saved.",
+      "fail": "<strong>Unable to save!</strong> This report could not be saved. Please try again."
+    },
+    "notify": {
+      "done": "<strong>Notified!</strong> This broadcast was successfully sent.",
+      "fail": "<strong>Unable to notify!</strong> This broadcast could not be sent. Please try again."
+    },
+    "submit": {
+      "done": "<strong>Submitted!</strong> This report was successfully sent to the Administrator.",
+      "fail": "<strong>Unable to submit!</strong> This report could not be submitted to the Administrator. Please try again."
+    },
+    "approve": {
+      "done": "<strong>Approved!</strong> This report was successfully approved.</div>",
+      "fail": "<strong>Unable to approve!</strong> This report could not be approved. Please try again."
+    },
+    "reject": {
+      "done": "<strong>Rejected!</strong> This report was successfully rejected and assigned back to the incident manager.",
+      "fail": "<strong>Unable to reject!</strong> This report could not be rejected. Please try again."
+    },
+    "delete": {
+      "done": "<strong>Deleted!</strong> Report was successfully deleted.",
+      "fail": "<strong>Unable to delete!</strong> This report could not be deleted. Please try again."
+    },
+    "unauthorized": {
+      "title": "Authentication Error",
+      "body": "Please log in again to continue"
+    },
+    "NO_FORM_DEF": {
+      "title": "Opps, looks like we have an issue. ",
+      "body": "The form you are trying to reach is unavailable"
+    },
+    "NO_VIEW_DEF": {
+      "title": "Opps, looks like we have an issue. ",
+      "body": "The report you are trying to reach is unavailable"
+    },
+    "GENERAL_ERROR": {
+      "title": "Opps, looks like we have an issue. ",
+      "body": "GENERAL ERROR"
+    },
+    "CONFLICT": {
+      "title": "Opps, looks like we have an issue. ",
+      "body": "A document with that ID already exists."
+    },
+    "noSubmissionsFound": "No submissions found.",
+    "fadeOutTime": 8000
+  },
+  "button": {
+    "createNewEntry": "Create New Vendor",
+    "viewSubmissions": "Back to Work Orders",
+    "print": "Print",
+    "exportCsv": "Export to CSV",
+    "notifyReport": "Send Broadcast Email",
+    "viewEdit": "View / Edit",
+    "delete": "Delete",
+    "saveReport": "Save",
+    "save": "Save"
+  },
+  "choices": {
+    "yesNo": [
+      {
+        "text": "Yes",
+        "value": "Yes"
+      },
+      {
+        "text": "No",
+        "value": "No"
+      }
+    ],
+    "yesNoNA": [
+      {
+        "text": "Yes",
+        "value": "Yes"
+      },
+      {
+        "text": "No",
+        "value": "No"
+      },
+      {
+        "text": "N/A",
+        "value": "N/A"
+      }
+    ],
+    "AdminType": [
+      {
+        "text": "Application",
+        "value": "Application"
+      },
+      {
+        "text": "Site",
+        "value": "Site"
+      }
+    ],
+    "status": [
+      {
+        "text": "Pending",
+        "value": "Pending"
+      },
+      {
+        "text": "Approved",
+        "value": "Approved"
+      },
+      {
+        "text": "Denied",
+        "value": "Denied"
+      },
+      {
+        "text": "Cancelled",
+        "value": "Cancelled"
+      }
+    ]
+  },
+  "auth": {
+    "login": "<h2><strong>Session timeout!</strong> Please log in to access this application.</h2>",
+    "group": "<h2><strong>Unauthorized!</strong> You don\"t have sufficient group permissions to view this application.</h2>"
+  },
+  "breadcrumbtrail": [],
+  "top_menu": [
+    {
+      "title": "Back to view",
+      "dropdown": false,
+      "mi-icon-class": "glyphicon glyphicon-arrow-left",
+      "mi-class": "btn-back-to-view btn btn-default forForm",
+      "mi-click": "toggleView(\"view_pane\");",
+      "mi-id": "menu-back-to-view"
+    },
+    {
+      "dropdown": false,
+      "mi-class": "btn btn-default forForm",
+      "title": " Save",
+      "mi-icon-class": "glyphicon glyphicon-save",
+      "mi-id": "menu-save",
+      "mi-click": "$('#form_pane form:first').trigger('submit');"
+    },
+    {
+      "dropdown": true,
+      "tm-title": "Actions",
+      "tm-class": "dropdown forView",
+      "tm-id": "view-action-menu",
+      "tm-items": [
+        {
+          "submenu": "Create New",
+          "sm-id": "sm-create-new",
+          "sm-class": "glyphicon glyphicon-pencil forAdmin",
+          "menu-item": [
+            {
+              "title": "Submission",
+              "mi-icon-class": "",
+              "mi-id": "mi-new-submission",
+              "mi-class": "btn-createReport forAdmin",
+              "data-id": "submissions"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dropdown": true,
+      "tm-title": "Actions",
+      "tm-class": "dropdown forForm",
+      "tm-id": "form-action-menu",
+      "tm-items": [
+        {
+          "mi-class": "",
+          "title": " Save",
+          "mi-icon-class": "glyphicon glyphicon-save",
+          "mi-id": "mi-menu-save",
+          "mi-click": "$('#form_pane form:first').trigger('submit');"
+        }
+      ]
+    },
+    {
+      "dropdown": true,
+      "tm-title": "View",
+      "tm-class": "dropdown",
+      "tm-id": "view-menu",
+      "tm-items": [
+        {
+          "title": "Dashboard",
+          "mi-class": "tablink",
+          "mi-icon-class": "",
+          "mi-id": "mi-dashboard",
+          "data-id": "dashboard",
+          "data-status": "",
+          "data-filter": ""
+        },
+        {
+          "title": "All Submissions",
+          "mi-class": "tablink",
+          "mi-icon-class": "",
+          "mi-id": "mi-visit-all",
+          "data-id": "submissions",
+          "data-status": "",
+          "data-filter": ""
+        }
+      ]
+    },
+    {
+      "dropdown": true,
+      "tm-title": "Export",
+      "tm-class": "dropdown forView",
+      "tm-id": "export-menu",
+      "tm-items": [
+        {
+          "mi-class": "tabexport",
+          "title": " PDF",
+          "mi-icon-class": "fa fa-file-pdf-o",
+          "mi-id": "tabExportPDF"
+        },
+        {
+          "mi-class": "tabexport",
+          "title": " CSV",
+          "mi-icon-class": "fa fa-file-code-o",
+          "mi-id": "tabExportCSV"
+        },
+        {
+          "mi-class": "tabexport",
+          "title": " EXCEL",
+          "mi-icon-class": "fa fa-file-excel-o",
+          "mi-id": "tabExportEXCEL"
+        },
+        {
+          "mi-class": "tabexport",
+          "title": " Copy",
+          "mi-icon-class": "fa fa-clone",
+          "mi-id": "tabExportCopy"
+        }
+      ]
+    },
+    {
+      "dropdown": false,
+      "html": true,
+      "content": "<div class=\"forView\" id=\"custom-search-input\" ><div class=\"input-group\" ><div class=\"form-group has-feedback has-clear\" ><label for=\"admin_search\" class=\"sr-only\" >Site wide search input </label><input id=\"admin_search\" class=\"form-control\" type=\"search\"  placeholder=\"search...\" name=\"admin_search\"><span class=\"form-control-clear glyphicon glyphicon-remove form-control-feedback\"></span></div><div class=\"input-group-btn\"><button class=\"btn btn-default\" title=\"Full text search this view\" id=\"btn_global_search\"><i class=\"glyphicon glyphicon-search\"></i></button></div></div></div>"
+    },
+    {
+      "dropdown": true,
+      "tm-title": " ",
+      "tm-class": "dropdown",
+      "tm-icon-class": "glyphicon glyphicon-user",
+      "tm-id": "user_auth",
+      "tm-items": [
+        {
+          "title": "Full Width Mode",
+          "mi-id": "vendor_full_width",
+          "mi-icon-class": "glyphicon glyphicon-resize-horizontal",
+          "mi-click": "$('.container-fluid').animate({'max-width': $('#app-content').width() <= 1400 ? 3000 : 1400}, 400, function () {$('.dataTableRow').doubleScroll();});"
+        },
+        {
+          "title": "Logout",
+          "mi-id": "lo_username",
+          "mi-icon-class": "glyphicon glyphicon-log-out",
+          "mi-click": "oLogin.logout();"
+        }
+      ]
+    }
+  ],
+  "dashboard": [
+    {
+      "title": "Total Submissions",
+      "type": "header",
+      "id": "fst",
+      "li": [
+        {
+          "title": "Today",
+          "type": "list_item",
+          "id": "fst_today",
+          "filter":"__CreatedOn ge {{today_d}} and __CreatedOn lt {{today_end}}",
+          "href": "#/submissions?status=Today's&filter=__CreatedOn*__CreatedOn ge {{today_d}} and __CreatedOn lt {{today_end}}",
+          "entity": "submissions"
+        },
+        {
+          "title": "This Week",
+          "type": "list_item",
+          "id": "fst_week",
+          "filter":"__CreatedOn ge {{last_week}} and __CreatedOn lt {{today_end}}",
+          "href": "#/submissions?status=Last Week&filter=__CreatedOn*__CreatedOn ge {{last_week}} and __CreatedOn lt {{today_end}}",
+          "entity": "submissions"
+        },
+        {
+          "title": "This Month",
+          "type": "list_item",
+          "id": "fst_month",
+          "filter":"__CreatedOn ge {{last_month}} and __CreatedOn lt {{today_end}}",
+          "href": "#/submissions?status=Last Month&filter=__CreatedOn*__CreatedOn ge {{last_month}} and __CreatedOn lt {{today_end}}",
+          "entity": "submissions"
+        },
+        {
+          "title": "Older",
+          "type": "list_item",
+          "id": "fst_older",
+          "filter":"__CreatedOn le {{last_month}}",
+          "href": "#/submissions?status=Older&filter=__CreatedOn*__CreatedOn le {{last_month}}",
+          "entity": "submissions"
+        }
+
+      ]
+    }
+  ]
+}

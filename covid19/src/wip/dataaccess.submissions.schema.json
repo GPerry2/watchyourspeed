@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fullName"
+      ],
+      "properties": {
+        "id": {
+          "id": "#/properties/id",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 500,
+          "pattern": "^[^<>]*$"
+        },
+        "fullName": {
+          "id": "#/properties/fullName",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 500,
+          "pattern": "^[^<>]*$"
+        },
+        "phone": {
+          "id": "#/properties/phone",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 10,
+          "pattern": "^[0-9-]*$"
+        },
+        "email": {
+          "id": "#/properties/email",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 200,
+          "pattern": "^[^<>%]*$"
+        }
+      }
+    }
+  ]
+}
