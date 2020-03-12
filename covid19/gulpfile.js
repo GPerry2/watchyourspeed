@@ -5,7 +5,7 @@ const config_app_name = "covid19";
 const cotstaff_root = "webapps/cdn/cotstaff/";
 const cotstaff_version = "9.3.9";
 const c3api = require('./dev_c3api_helper');
-const deployTo = "SIT";
+const deployTo = "QA";
 const app = config_app_name;
 const script_app = config_app_name;
 let options = {
@@ -16,16 +16,23 @@ let options = {
     COTSTAFF_ROOT:cotstaff_root,
     COTSTAFF_VERSION:cotstaff_version,
     local: {
-      ROOT_ENV: 'https://was-intra-sit.toronto.ca'
+      ROOT_ENV: 'https://was-intra-sit.toronto.ca',
+      COT_UI_ROOT:'https://was-intra-sit.toronto.ca'
     },
     dev: {
-      ROOT_ENV: 'https://was-intra-sit.toronto.ca'
+      ROOT_ENV: 'https://was-intra-sit.toronto.ca',
+      COT_UI_ROOT:'https://was-intra-sit.toronto.ca',
+      ANALYTICS:'https://was-intra-sit.toronto.ca/web-analytics/dev-webtrends-infinity.load.js'
     },
     qa: {
-      ROOT_ENV: 'https://was-intra-qa.toronto.ca'
+      ROOT_ENV: 'https://was-intra-qa.toronto.ca',
+      COT_UI_ROOT:'https://was-intra-qa.toronto.ca',
+      ANALYTICS:'https://was-intra-qa.toronto.ca/web-analytics/qa-webtrends-infinity.load.js'
     },
     prod: {
-      ROOT_ENV: 'https://insideto-secure.toronto.ca'
+      ROOT_ENV: 'https://insideto-secure.toronto.ca',
+      COT_UI_ROOT:'https://was-intra-qa.toronto.ca',
+      ANALYTICS:'https://insideto-secure.toronto.ca/web-analytics/intra-webtrends-infinity.load.js'
     }
   },
   environmentOverride: null,
@@ -118,4 +125,3 @@ gulp.task('media', ['default'], () => {
       console.error('ERROR', error);
     });
 });
-

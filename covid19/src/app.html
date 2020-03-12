@@ -1,5 +1,6 @@
 <!-- cot-app:head -->
 <title>covid19</title>
+<meta name="WT.sp" content="Covid-19" />
 <!--<meta property="og:title" content="UPDATE THIS FOR YOUR APP">-->
 <!--<meta name="DC.title" content="UPDATE THIS FOR YOUR APP">-->
 <!--<meta name="WT.sp" content="UPDATE THIS FOR YOUR APP">-->
@@ -15,7 +16,7 @@
 <!--@exec startBuildTagWithCacheBuster('styles/main.css')-->
 <!-- core:css -->
 <!-- endinject -->
-<link rel="stylesheet" type="text/css" href="/node_modules/cotui/dist/cotui.css">
+<link rel="stylesheet" type="text/css" href="<!--@echo COT_UI_ROOT-->/webapps/cdn/cotui/latest/cotui.css">
 <!-- endbuild -->
 <!--@exec startBuildTagWithCacheBuster('styles/core_print.css', 'media="print"')-->
 <!-- core_print:css -->
@@ -29,12 +30,13 @@
 <!-- cot-app:footer -->
 <!--@exec startBuildTagWithCacheBuster('scripts/main.js')-->
 <!-- core:js -->
-<script  src="/node_modules/cotui/dist/cotui.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
 <script type="text/javascript" src="/<!-- @echo COTSTAFF_ROOT --><!-- @echo COTSTAFF_VERSION -->/scripts/cotstaff<!-- @echo COTSTAFF_VERSION -->.js"></script>
 <script  src="<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('combined.js')/$value"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ace.js"></script>
+<script  src="<!--@echo COT_UI_ROOT-->/webapps/cdn/cotui/latest/cotui.js"></script>
+<script  src="//cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ace.js"></script>
+<script type="text/javascript" src="<!--@echo ANALYTICS-->"></script>
 <script>
   const src_path = "<!--@echo SRC_PATH-->";
   const httpHost = "<!--@echo ENV-->" ;
@@ -43,5 +45,6 @@
     "<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('combined.json')/$value",
     "<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('site_variables.json')/$value"
   ];
+
 </script>
 <!-- cot-app:footer end-->

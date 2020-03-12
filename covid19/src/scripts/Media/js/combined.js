@@ -1,12 +1,14 @@
 /**
  * @method getSubmissionSections(form_id)
- * @param form_id {string} -  the entity set/collection name
+ * @param form_id {string} - the entity set/collection name
  * @return JSON
  * Returns a cot_form sections array defining the form
  */
+let autoSave;
 const getSubmissionSections = (form_id, data) => {
 
-  let sections, model, registerFormEvents, registerDataLoadEvents, registerOnSaveEvents, registerPostSaveEvents, registerPostErrorEvents, success, defaults = {};
+  let sections, model, registerFormEvents, registerDataLoadEvents, registerOnSaveEvents, registerPostSaveEvents,
+    registerPostErrorEvents, success, defaults = {};
   switch (form_id) {
     case 'Media':
       var editor = void 0;
@@ -185,184 +187,2558 @@ const getSubmissionSections = (form_id, data) => {
 
       break;
     case 'submissions':
+
       sections = [
         {
-          id: "submitter_information",
-          title: "Your Information",
+          id: "admin_information",
+          title: "Staff Area",
           className: 'example-form-section panel-default',
           rows: [
             {
               fields: [
                 {
-                  id: 'fullName',
-                  title: 'Full Name',
-                  type: 'text',
-                  className: 'col-xs-12',
-                  required: true,
-                  htmlAttr: {maxLength: 100},
-                  bindTo: 'fullName'
+                  id: "tabs_container",
+                  type: "html",
+                  html: `
+           <div aria-live="polite" role="status" class="sr-only"></div>
+           <div class="row">
+        <div class="row">
+          <div class="pull-right" id="current_info_section"></div>
+        </div>
+           </div>
+`
                 }
               ]
             },
             {
-              fields:
-                [
-                  {
-                    id: 'phone',
-                    title: 'Phone Number',
-                    type: 'phone',
-                    required: true,
-                    infohelp: 'Ex: 416-555-5555',
-                    validationMessage: 'Phone numbers must be entered in a valid format', //optional, when validationtype is used or type is set to daterangepicker||datetimepicker, this can be specified to override the default error message
-                    options: {preferredCountries: ['ca', 'us']},
-                    htmlAttr: {maxLength: 20},
-                    bindTo: 'phone'
-                  },
-                  {
-                    id: 'email',
-                    title: 'Email',
-                    type: 'email',
-                    required: true,
-                    infohelp: 'Ex: you@me.com',
-                    htmlAttr: {maxLength: 254},
-                    bindTo: 'email'
-                  }
-                ]
+              fields: [
+                {
+                  id: 'status',
+                  title: 'Submission Status',
+                  type: 'dropdown',
+                  className: 'col-xs-4 hidden',
+                  required: true,
+                  choices: config.choices.status,
+                  bindTo: 'status'
+                }
+              ]
             }
           ]
+        },
+        {
+          cols: "2",
+          id: null,
+          title: "Section 1: Patient Information",
+          rows: [{
+            fields: [
+              {
+                id: "patient_ontario_health_card_number",
+                type: "text",
+                title: "Ontario Health Card Number:",
+                className: "col-xs-12 col-sm-6",
+                bindTo: "patient_ontario_health_card_number",
+                required: false,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+                id: "patient_hospital_mrn",
+                type: "text",
+                title: "Hospital MRN Number:",
+                className: "col-xs-12 col-sm-6",
+                bindTo: "patient_hospital_mrn",
+                required: false,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+                id: "patient_firstname",
+                type: "text",
+                title: "Client First Name:",
+                className: "col-xs-12 col-sm-4",
+                bindTo: "patient_firstname",
+                required: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+                id: "patient_middlename",
+                type: "text",
+                title: "Client Middle Name:",
+                className: "col-xs-12 col-sm-4",
+                bindTo: "patient_middlename",
+                required: false,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+                id: "patient_lastname",
+                type: "text",
+                title: "Client Last Name:",
+                className: "col-xs-12 col-sm-4",
+                bindTo: "patient_lastname",
+                required: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+                id: "patient_dateofbirth",
+                type: "datetimepicker",
+                title: "Date of Birth:",
+                className: "col-xs-12 col-sm-4",
+                bindTo: "patient_dateofbirth",
+                maxlength: 10,
+                options: {
+                  format: 'YYYY-MM-DD',
+                  maxDate: new moment().format("YYYY-MM-DD"),
+                  keepInvalid: true,
+                  useStrict: true
+                },
+                htmlAttr: {
+                  length: 10
+                },
+                required: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+                id: "patient_gender",
+                type: "dropdown",
+                title: "Gender:",
+                className: "col-xs-12 col-sm-4",
+                bindTo: "patient_gender",
+                required: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                choices: config.field_choices.gender,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+                id: "patient_phone_number",
+                type: "phone",
+                title: "Phone Number:",
+                className: "col-xs-12 col-sm-4",
+                bindTo: "patient_phone_number",
+                required: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+                id: "divider_1",
+                type: "html",
+                html: "<hr/>",
+                className: "col-xs-12"
+              },
+              {
+                id: "addressAutosuggest",
+                type: "html",
+                className: "col-xs-6",
+                html: `<cotui-autosuggest
+                        label="Selected Mailing Address:"
+                        limit="5"
+                        icon="fas fa-map-marker-alt"
+                        button="Lookup"
+                        type="api"
+                        data-api.attr-value="KEYSTRING"
+                        data-api.attr-text="ADDRESS"
+                        data-api.attr-array="result.rows"
+                        data-api.url="https://map.toronto.ca/cotgeocoder/rest/geocoder/suggest?f=json&addressOnly=0&retRowLimit=100&searchString={QUERY}"
+                        id="cotui-autosuggest_address">
+                        </cotui-autosuggest>`
+              }, {
+                id: "patient_mailing_address_data",
+                type: "text",
+                title: "Address data:",
+                className: "col-xs-12 hidden",
+                bindTo: "patient_mailing_address_data",
+                required: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              }, {
+                id: "patient_mailing_street_number",
+                type: "text",
+                title: "Street Number:",
+                className: "col-xs-12 col-sm-2 ",
+                bindTo: "patient_mailing_street_number",
+                required: true,
+                disabled: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              }, {
+                id: "patient_mailing_street_name",
+                type: "text",
+                title: "Street Name:",
+                className: "col-xs-12 col-sm-8 ",
+                bindTo: "patient_mailing_street_name",
+                required: true,
+                disabled: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              }, {
+                id: "patient_mailing_suite_number",
+                type: "text",
+                title: "Suite / Unit:",
+                className: "col-xs-12 col-sm-2 ",
+                bindTo: "patient_mailing_suite_number",
+                disabled: false,
+                required: false,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              }, {
+                id: "patient_mailing_city",
+                type: "text",
+                title: "City:",
+                className: "col-xs-12 col-sm-4 ",
+                bindTo: "patient_mailing_city",
+                required: true,
+                disabled: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              }, {
+                id: "patient_mailing_province",
+                type: "text",
+                title: "Province:",
+                className: "col-xs-12 col-sm-4 ",
+                bindTo: "patient_mailing_province",
+                required: true,
+                disabled: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              }, {
+                id: "patient_mailing_postal_code",
+                type: "text",
+                title: "Postal Code:",
+                className: "col-xs-12 col-sm-4 ",
+                bindTo: "patient_mailing_postal_code",
+                required: true,
+                disabled: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              }, {
+                id: "patient_mailing_long",
+                type: "text",
+                title: "Long:",
+                className: "col-xs-12 col-sm-4 hidden",
+                bindTo: "patient_mailing_long",
+                required: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              }, {
+                id: "patient_mailing_lat",
+                type: "text",
+                title: "Lat:",
+                className: "col-xs-12 col-sm-4 hidden",
+                bindTo: "patient_mailing_lat",
+                required: true,
+                infohelp: null,
+                posthelptext: null,
+                placeholder: null,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              }]
+          }]
+        },
+        {
+          cols: "2",
+          id: null,
+          title: "Section 2: Reporting Source",
+          rows: [{
+            fields: [{
+              id: "reported_date",
+              type: "datetimepicker",
+              title: "Reported Date:",
+              className: "col-xs-12 col-sm-4",
+              bindTo: "reported_date",
+              maxlength: 10,
+              options: {
+                format: 'YYYY-MM-DD',
+                maxDate: new moment().format("YYYY-MM-DD"),
+                keepInvalid: true,
+                useStrict: true
+              },
+              htmlAttr: {
+                length: 10
+              },
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }, {
+              id: "reporting_source",
+              type: "dropdown",
+              title: "Reporting Source",
+              className: "col-xs-12 col-sm-4",
+              bindTo: "reporting_source",
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              choices: config.field_choices.reporting_source,
+              validators: {
+                callback: {
+                  message: "",
+                  callback: function callback(value, validator, $field) {
+                    if (value == 'Other') {
+                      $('#reporting_source_other').show();
+                    } else {
+                      $('#reporting_source_other').hide();
+                    }
+                    return true;
+                  }
+                }
+              }
+            }, {
+              id: "reporting_source_other",
+              type: "text",
+              title: "Other Reporting Source:",
+              className: "col-xs-6 col-sm-4 hidden",
+              bindTo: "reporting_source_other",
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }, {
+              id: "reporting_organization",
+              type: "dropdown",
+              title: "Reporting Organization",
+              className: "col-xs-12 col-sm-4",
+              bindTo: "reporting_organization",
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              choices: config.field_choices.reporting_organization,
+              validators: {
+                callback: {
+                  message: "",
+                  callback: function callback(value, validator, $field) {
+                    if (value == 'Other') {
+                      $('#reporting_organization_other').show();
+                    } else {
+                      $('#reporting_organization_other').hide();
+                    }
+                    return true;
+                  }
+                }
+              }
+            }, {
+              id: "reporting_organization_other",
+              type: "text",
+              title: "Other Reporting Organization:",
+              className: "col-xs-6 col-sm-4 hidden",
+              bindTo: "reporting_organization_other",
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }, {
+              id: "reporting_phone_number",
+              type: "phone",
+              title: "Phone Number:",
+              className: "col-xs-6 col-sm-6",
+              bindTo: "reporting_phone_number",
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }, {
+              id: "reporting_phone_number_extension",
+              type: "text",
+              title: "Extension:",
+              className: "col-xs-6 col-sm-6",
+              bindTo: "reporting_phone_number_extension",
+              required: false,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }]
+          }]
+        },
+        {
+          cols: "2",
+          id: null,
+          title: "Section 3: Patient Health Information",
+          rows: [{
+            fields: [{
+              id: "patient_symptons",
+              type: "checkbox",
+              title: "Symptoms",
+              className: "col-xs-12 col-sm-12",
+              bindTo: "patient_symptons",
+              required: true,
+              orientation: 'horizontal',
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              choices: config.field_choices.patient_symptons,
+              validators: {
+                callback: {
+                  message: "",
+                  callback: function callback(value, validator, $field) {
+                    if (value == 'Other') {
+                      $('#patient_symptons_other').show();
+                    } else {
+                      $('#patient_symptons_other').hide();
+                    }
+                    return true;
+                  }
+                }
+              }
+            }, {
+              id: "patient_symptons_other",
+              type: "textarea",
+              title: "Other Symptoms:",
+              className: "col-xs-12 col-sm-12 hidden",
+              bindTo: "patient_symptons_other",
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }, {
+              id: "patient_exposures",
+              type: "checkbox",
+              title: "Exposures",
+              className: "col-xs-12 col-sm-12",
+              bindTo: "patient_exposures",
+              orientation: 'horizontal',
+              required: true,
+              infohelp: null,
+              prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              choices: config.field_choices.patient_exposures,
+              validators: {
+                callback: {
+                  message: "",
+                  callback: function callback(value, validator, $field) {
+                    console.log("patient_exposures", value)
+                    if (value.indexOf('Other') > -1) {
+                      $("#patient_exposures_otherElement").removeClass('hidden');
+                      $('#patient_exposures_other').show();
+                      console.log("show")
+                    } else {
+                      $('#patient_exposures_other').hide();
+                      console.log("hide")
+                    }
+                    return true;
+                  }
+                }
+              }
+            }, {
+              id: "patient_exposures_other",
+              type: "text",
+              title: "Other Exposures:",
+              className: "col-xs-12 col-sm-12 hidden",
+              bindTo: "patient_exposures_other",
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }, {
+              id: "patient_onset_date",
+              type: "datetimepicker",
+              title: "Onset Date:",
+              className: "col-xs-12 col-sm-6",
+              bindTo: "patient_onset_date",
+              maxlength: 10,
+              options: {
+                format: 'YYYY-MM-DD',
+                maxDate: new moment().format("YYYY-MM-DD"),
+                keepInvalid: true,
+                useStrict: true
+              },
+              htmlAttr: {
+                length: 10
+              },
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }, {
+              id: "patient_specimens_collected",
+              type: "checkbox",
+              title: "Type of Speciment Collected",
+              className: "col-xs-12 col-sm-6",
+              bindTo: "patient_specimens_collected",
+              orientation: 'horizontal',
+              required: true,
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              choices: config.field_choices.patient_specimens_collected,
+              validators: {
+                callback: {
+                  message: "",
+                  callback: function callback(value, validator, $field) {
+                    if (value == 'Other') {
+                      $('#patient_specimens_collected_other').show();
+                    } else {
+                      $('#patient_specimens_collected_other').hide();
+                    }
+                    return true;
+                  }
+                }
+              }
+            }, {
+              id: "patient_specimens_collected_other",
+              type: "text",
+              title: "Other Specimens:",
+              className: "col-xs-12 col-sm-12 hidden",
+              bindTo: "patient_specimens_collected_other",
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }, {
+              id: "patient_seciment_collection_date",
+              type: "datetimepicker",
+              title: "Specimen Collection Date:",
+              className: "col-xs-12 col-sm-6",
+              bindTo: "patient_seciment_collection_date",
+              maxlength: 10,
+              options: {
+                format: 'YYYY-MM-DD',
+                maxDate: new moment().format("YYYY-MM-DD"),
+                keepInvalid: true,
+                useStrict: true
+              },
+              htmlAttr: {
+                length: 10
+              },
+              required: true,
+              infohelp: null,
+              posthelptext: null,
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }, {
+              id: "patient_hospital_told_patient_to_selfisolate",
+              type: "checkbox",
+              title: "Hospital told patient to self-isolate?",
+              className: "col-xs-12 col-sm-6",
+              bindTo: "patient_hospital_told_patient_to_selfisolate",
+              required: true,
+              orientation: 'horizontal',
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              choices: [{
+                value: "Yes",
+                text: "Yes"
+              }, {
+                value: "No",
+                text: "No"
+              }],
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }]
+          }]
+        },
+        {
+          cols: "2",
+          id: null,
+          title: "Section 4 - Public Health Actions",
+          rows: [
+            {
+            fields: [
+              {
+              id: "cores_unique_id",
+              type: "text",
+              title: "CORES Unique ID",
+              className: "col-xs-12 col-sm-12 hidden",
+              bindTo: "cores_unique_id",
+              required: true,
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            },
+              {
+                id: "client_requests_lab_results",
+                type: "radio",
+                title: "Client requested copy of lab results",
+                className: "col-xs-12 col-sm-6",
+                bindTo: "client_requests_lab_results",
+                required: true,
+                infohelp: null,
+                // prehelptext: 'past 14 days prior to onset',
+                orientation: 'horizontal',
+                placeholder: null,
+                choices: config.choices.yesNo,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+                id: "client_requests_clearance_letter",
+                type: "radio",
+                title: "Client requested clearance letter",
+                className: "col-xs-12 col-sm-6",
+                bindTo: "client_requests_clearance_letter",
+                required: true,
+                infohelp: null,
+                // prehelptext: 'past 14 days prior to onset',
+                orientation: 'horizontal',
+                placeholder: null,
+                choices: config.choices.yesNo,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+                id: "lab_results_sent",
+                type: "radio",
+                title: "Lab results sent",
+                className: "col-xs-12 col-sm-6",
+                bindTo: "lab_results_sent",
+                required: true,
+                infohelp: null,
+                // prehelptext: 'past 14 days prior to onset',
+                orientation: 'horizontal',
+                placeholder: null,
+                choices: config.choices.yesNoNA,
+                validators: {
+                  callback: {
+                    message: charactersNotAllowed,
+                    callback: function callback(value, validator, $field) {
+                      return fixEX(value);
+                    }
+                  }
+                }
+              },
+              {
+              id: "clearance_letter_sent",
+              type: "radio",
+              title: "Clearance letter sent",
+              className: "col-xs-12 col-sm-6",
+              bindTo: "clearance_letter_sent",
+              required: true,
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              orientation: 'horizontal',
+              placeholder: null,
+              choices: config.choices.yesNoNA,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            },
+              {
+              id: "case_status",
+              type: "dropdown",
+              title: "Case Status",
+              className: "col-xs-12 col-sm-6",
+              bindTo: "case_status",
+              required: true,
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              choices: config.field_choices.case_status,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            },
+              {
+              id: "case_classification",
+              type: "dropdown",
+              title: "Case Classification",
+              className: "col-xs-12 col-sm-6",
+              bindTo: "case_classification",
+              required: false,
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              choices: config.field_choices.case_classification,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            },
+              {
+              id: "iphis_exposure_name",
+              type: "text",
+              title: "iPHIS Exposure Name",
+              className: "col-xs-12 col-sm-4",
+              bindTo: "iphis_exposure_name",
+              required: false,
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            },
+              {
+              id: "iphis_exposure_id",
+              type: "text",
+              title: "iPHIS Exposure ID",
+              className: "col-xs-12 col-sm-4",
+              bindTo: "iphis_exposure_id",
+              required: false,
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    if (fixEX(value)) {
+                      if (/^\d+$/.test(value)) {
+                        return true;
+                      } else {
+                        if (value == '') {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      }
+                    } else {
+                      return false;
+                    }
+                  }
+                }
+              }
+            },
+              {
+              id: "iphis_case_id",
+              type: "text",
+              title: "iPHIS Case ID",
+              className: "col-xs-12 col-sm-4",
+              bindTo: "iphis_case_id",
+              required: false,
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            },
+              {
+              id: "priority",
+              type: "text",
+              title: "Priority",
+              className: "col-xs-12 col-sm-12 hidden",
+              bindTo: "priority",
+              required: false,
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            },
+              {
+              id: "public_health_actions_screen_notes",
+              type: "textarea",
+              title: "Notes",
+              className: "col-xs-12 col-sm-12",
+              bindTo: "public_health_actions_screen_notes",
+              required: false,
+              infohelp: null,
+              // prehelptext: 'past 14 days prior to onset',
+              placeholder: null,
+              validators: {
+                callback: {
+                  message: charactersNotAllowed,
+                  callback: function callback(value, validator, $field) {
+                    return fixEX(value);
+                  }
+                }
+              }
+            }]
+          },
+            {
+              fields:[
+                {
+                  id:"add_new_note",
+                  type:"button",
+                  title:"Add New Note",
+                  addclass:"add_new_note"
+                }
+              ]
+            },
+
+            {
+              fields:[
+                    {
+                      id:"client_notecontact_container",
+                      type:"html",
+                      html:`
+                     <table id="notesTable" class="display" style="width:100%">
+                              <thead>
+                              <tr>
+                                <th>Date</th>
+                                <th>Note</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                            </table>
+                  `
+                    }
+                    ]
+            }
+          ]
+        },
+        {
+          cols: "2",
+          id: null,
+          title: "Section 5 - Client Call in Details",
+          rows: [
+            {
+              fields:[
+                {
+                id:"add_new_contact",
+                  type:"button",
+                  title:"Add New Client Contact",
+                  addclass:"add_new_contact"
+                }
+              ]
+            },
+            {
+              fields:[
+                {
+                  id:"client_contact_container",
+                  type:"html",
+                  html:`
+                     <table id="newContactTable" class="display" style="width:100%">
+                              <thead>
+                              <tr>
+                                <th>Actions</th>
+                                <th>Date</th>
+                                <th>OLIS Look-up</th>
+                                <th>Lab Results</th>
+                                <th>Shared Results</th>
+                                <th>Self Monitor</th>
+                                <th>Self Isolate</th>
+                                <th>Isolation Not Required</th>
+                                <th>Edu. Info Provided</th>
+                                <th>Notes</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                            </table>
+                  `
+                }
+              ]
+            }
+          ]
+        },
+        {
+          cols: "2",
+          id: "uploads",
+          className: "panel-default hidden",
+          title: "Attachments",
+          rows: [{
+            fields: [{
+              id: 'uploadInfoText',
+              type: 'html',
+              class: 'col-xs-12',
+              html: `Upload area`
+            }, {
+              id: "supportingDocuments",
+              title: 'Choose Files',
+              type: 'dropzone',
+              class: 'col-xs-12',
+              bindTo: 'supportingDocuments',
+              required: false,
+              htmlAttr: {
+                length: totalCharacters
+              },
+
+              //posthelptext: 'post help text',
+              //prehelptext: 'pre help text',
+
+              use_recaptcha: true,
+              recaptcha_sitekey: '6LeN_XIUAAAAAEd8X21vFtkJ3_c7uA0xpUGcrGpe',
+              uploadCondition: function uploadCondition() {
+                if (cannotSubmit) {
+                  return false;
+                }
+
+                if (currentStep <= 5) {
+                  return false;
+                }
+
+                if ($('#covid19_container_form').data('formValidation').$invalidFields.length > 0) {
+                  return false;
+                }
+
+                if (currentStep == 6) {
+                  return true;
+                } else {
+                  return false;
+                }
+              },
+
+              options: {
+                url: 'https://was-intra-sit.toronto.ca/c3api_upload/upload/covid19/attachments',
+                acceptedFiles: 'application/pdf,.pdf,pdf,*.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.doc,.docx,*.doc,*.docx,application/zip',
+                timeout: 180000,
+                maxFiles: 8,
+                maxFilesize: 20,
+                // autoProcessQueue: false,
+                allowFormsubmitionWithUploadError: true,
+                selector: '#cotDropzoneClass2',
+
+                init: function init() {
+                  remainingUploadSize = totalUploadSizeLimit;
+                  dz_uploader = this;
+
+                  this.on("addedfile", function (file) {
+
+                    var $textDescription = $(file.previewElement).find('textarea')[0];
+                    var $textDescriptionID = $($textDescription).attr('id');
+
+                    $($textDescription).attr('length', totalCharacters);
+                    // $($textDescription).after('<div class="label label-default totalCharacters"><span class="charactercount_'+$($textDescription).attr('id')+'">'+totalCharacters+'</span> chars remaining</div>');
+                    $($textDescription).after('<div class="label label-default totalCharacters"><span class="charactercount_' + $($textDescription).attr('id') + '">' + totalCharacters + '</span> characters remaining</div>');
+                    $($textDescription).on("keyup", function (event) {
+                      checkTextAreaMaxLength(this, event);
+                    });
+
+                    remainingUploadSize -= file.size;
+
+                    if (this.files.length >= this.options.maxFiles) {
+                      $(".btn-addFiles").attr("disabled", "true");
+                    }
+
+                    if (remainingUploadSize <= 0) {
+                      file.status = Dropzone.CANCELED;
+                      file.sizeTooLarge = true;
+                      this._errorProcessing([file], "You have exceeded the attachment size limit of 20MB. Please remove one or more files.", null);
+                    }
+                  });
+
+                  this.on("removedfile", function (file) {
+                    remainingUploadSize += file.size;
+
+                    // RE-add files
+                    var dropzoneFilesCopy = this.files;
+                    this.removeAllFiles();
+                    var that = this;
+                    $.each(dropzoneFilesCopy, function (_, file) {
+                      file.status = undefined;
+                      file.accepted = undefined;
+                      file.isExcess = false;
+                      that.addFile(file);
+                    });
+
+                    if (this.files.length < this.options.maxFiles) {
+                      $(".btn-addFiles").removeAttr("disabled");
+                    }
+                  });
+
+                  this.on("error", function (file, errorMessage, xhr) {
+                    if (xhr != null) {
+                      $('.submitBox').removeAttr('disabled');
+
+                      $('#covid19_container').before('    <div id="submitFileUploadError" tabindex="-1">     <div class="">      <div class="alert alert-danger">      We cannot submit your submission at this time. There was an error with file upload, please review this error and try again.      </div>     </div>    </div>   ');
+                      $("#submitFileUploadError").focus();
+                      window.scrollTo(0, 0);
+                    }
+                  });
+                },
+
+                accept: function accept(file, done) {
+                  //console.debug('totalSizeLimit', totalUploadSizeLimit)
+                  //console.debug('remainingUploadSize', remainingUploadSize)
+
+                  if (remainingUploadSize <= 0) {
+                    file.status = Dropzone.CANCELED;
+                    file.sizeTooLarge = true;
+                    this._errorProcessing([file], "You have exceeded the attachment size limit of 20MB. Please remove one or more files.", null);
+                  } else {
+                    done();
+                  }
+                },
+                chunksUploaded: function chunksUploaded(file, done) {
+                  uploadedFiles.push({filenane: file.name, status: true});
+                },
+                fields: [
+                  /*
+                   {
+                    name: 'text01',
+                    title: 'Text Field',
+                    type: 'text',
+                    prehelptext: 'Help text',
+                    posthelptext: 'Help text'
+                   },
+                  */
+                  {
+                    name: 'fileType',
+                    title: 'Attachment Type',
+                    type: 'dropdown',
+                    choices: [{text: 'Document', value: 'document'}, {
+                      text: 'Certification',
+                      value: 'certification'
+                    }, {text: 'Result', value: 'result'}, {text: 'Other', value: 'other'}]
+                    //prehelptext: 'Help text',
+                    //posthelptext: 'Help text'
+                  }, {
+                    name: 'fileDescription',
+                    title: 'Attachment Description',
+                    type: 'textarea'
+                    //prehelptext: 'Help text',
+                    //posthelptext: 'Help text'
+                  }],
+                getFieldsTemplate: function getFieldsTemplate() {
+                  var getFieldTemplate = function getFieldTemplate(field) {
+                    if (field == null) {
+                      return '';
+                    }
+                    var fieldString = void 0;
+                    switch (field.type) {
+                      case 'dropdown':
+                        fieldString = /* html */'<select title="' + field.title + '" aria-required="' + (field.required === true ? 'true' : 'false') + '" class="form-control' + (field.required === true ? ' required' : '') + '" placeholder="' + (field.placeholder || '') + '" row="' + (field.row || '') + '" col="' + (field.col || '') + '">' + (field.choices || []).map(function (choice) {
+                          return '<option value="' + choice.value + '">' + choice.text + '</option>';
+                        }) + '</select>';
+                        break;
+                      case 'textarea':
+                        fieldString = /* html */'<textarea title="' + field.title + '" aria-required="' + (field.required === true ? 'true' : 'false') + '" class="form-control' + (field.required === true ? ' required' : '') + '" placeholder="' + (field.placeholder || '') + '" row="' + (field.row || '') + '" col="' + (field.col || '') + '"></textarea>';
+                        break;
+                      default:
+                        fieldString = /* html */'<input title="' + field.title + '" type="' + (field.type || 'text') + '" aria-required="' + (field.required === true ? 'true' : 'false') + '" class="form-control' + (field.required === true ? ' required' : '') + '" placeholder="' + (field.placeholder || '') + '"></input>';
+                    }
+                    return (/* html */'   <div class="row">    <div data-name="' + field.name + '" class="col-xs-12 form-group form-group-vertical has-feedback">     <div>      <label class="control-label">       <span>' + field.title + '</span>       ' + (field.required !== true ? '<span class="optional">(optional)</span>' : '') + '      </label>      ' + (field.prehelptext != null ? '<p class="helptext prehelptext">' + field.prehelptext + '</p>' : '') + '      <div class="entryField">       ' + fieldString + '      </div>      ' + (field.posthelptext != null ? '<p class="helptext posthelptext">' + field.posthelptext + '</p>' : '') + '     </div>    </div>   </div>  '
+                    );
+                  };
+                  // Add fields to preview template.
+                  if (this.options.fields == null) {
+                    this.options.fields = [];
+                  }
+                  var template = '';
+                  this.options.fields.forEach(function (field) {
+                    template = template + getFieldTemplate(field);
+                  });
+                  return template;
+                },
+                setFieldsTemplate: function setFieldsTemplate(file, row) {
+                  var _this2 = this;
+
+                  var setFieldTemplate = function setFieldTemplate(field) {
+                    var name = (field.name || field.id) + '_' + row;
+                    var formGroup = file.previewElement.querySelector('[data-name="' + (field.name || field.id) + '"]');
+
+                    formGroup.setAttribute('id', name + 'Element');
+                    formGroup.getElementsByTagName('label')[0].setAttribute('for', name);
+                    var describedBy = [];
+                    if (field.prehelptext != null) {
+                      var id = 'prehelptext_' + name;
+                      formGroup.querySelector('.prehelptext').setAttribute('id', id);
+                      describedBy.push(id);
+                    }
+                    if (field.posthelptext != null) {
+                      var _id = 'posthelptext_' + name;
+                      formGroup.querySelector('.posthelptext').setAttribute('id', _id);
+                      describedBy.push(_id);
+                    }
+                    var element = void 0;
+                    switch (field.type) {
+                      case 'dropdown':
+                        element = formGroup.getElementsByTagName('select')[0];
+                        break;
+                      case 'textarea':
+                        element = formGroup.getElementsByTagName('textarea')[0];
+                        break;
+                      default:
+                        element = formGroup.getElementsByTagName('input')[0];
+                    }
+                    element.setAttribute('id', name);
+                    element.setAttribute('name', name);
+                    if (describedBy.length > 0) {
+                      element.setAttribute('aria-describedby', describedBy.join(' '));
+                    }
+                    if (fv) {
+                      var elementValidator = field.validator || {};
+                      if (field.required) {
+                        elementValidator.notEmpty = {
+                          message: field.title + ' is required.'
+                        };
+                      }
+                      fv.addField(name, {validators: elementValidator});
+                    }
+                    if (file.fields[field.name] == null) {
+                      // file.fields[field.name] = null;
+                    } else {
+                      element.value = file.fields[field.name];
+                    }
+                    $(element).change(function (event) {
+                      if (event.currentTarget.value != null && event.currentTarget.value != '') {
+                        file.fields[field.name] = event.currentTarget.value;
+                      } else {
+                        delete file.fields[field.name];
+                      }
+                      if (_this2.options.onFieldChange != null) {
+                        _this2.options.onFieldChange(file, _this2.files);
+                      }
+                    });
+                  };
+                  var fv = void 0;
+                  var $form = $(file.previewElement).closest('form');
+                  if ($form.length > 0) {
+                    fv = $form.data('formValidation');
+                  }
+                  this.options.fields = this.options.fields || [];
+                  this.options.fields.forEach(function (field) {
+                    setFieldTemplate(field);
+                  });
+                }
+              }
+            }]
+          }]
         }
+
       ];
       model = new CotModel({
-        "fullName": "",
-        "phone": "",
-        "email": ""
+        "status": "New",
+        "patient_ontario_health_card_number": "",
+        "patient_firstname": "",
+        "patient_middlename": "",
+        "patient_lastname": "",
+        "patient_dateofbirth": "",
+        "patient_gender": "",
+        "patient_phone_number": "",
+        "patient_hospital_mrn": "",
+        "patient_mailing_address": "",
+        "patient_mailing_address_data": "",
+        "patient_mailing_street_number": "",
+        "patient_mailing_street_name": "",
+        "patient_mailing_suite_number": "",
+        "patient_mailing_city": "",
+        "patient_mailing_province": "",
+        "patient_mailing_postal_code": "",
+        "patient_mailing_country": "",
+        "patient_mailing_long": "",
+        "patient_mailing_lat": "",
+        "reported_date": "",
+        "reporting_source": "",
+        "reporting_source_other": "",
+        "reporting_organization": "",
+        "reporting_organization_other": "",
+        "person_making_the_report": "",
+        "reporting_phone_number": "",
+        "reporting_phone_number_extension": "",
+        "patient_symptons": "",
+        "patient_symptons_other": "",
+        "patient_onset_date": "",
+        "patient_exposures": "",
+        "patient_exposures_other": "",
+        "patient_specimens_collected": "",
+        "patient_specimens_collected_other": "",
+        "patient_seciment_collection_date": "",
+        "patient_hospital_told_patient_to_selfisolate": "",
+        "patient_lab_results": "",
+        "cores_unique_id": "",
+        "patient_adviced_selfmonitor_selfisolate": "",
+        "public_health_actions_lab_findings_shared_with_client": "",
+        "client_advised_isolation_no_longer_needed": "",
+        "clearance_letter_sent": "",
+        "case_status": "",
+        "iphis_exposure_name": "",
+        "iphis_exposure_id": "",
+        "case_classification": "",
+        "iphis_case_id": "",
+        "priority": "",
+        "public_health_actions_screen_notes": "",
+        "date_client_called_hotline": "",
+        "client_identity_validation_method": "",
+        "olis_lookup_for_this_client": "",
+        "olis_lookup_results": "",
+        "client_call_in_details_lab_findings_shared_with_client": "",
+        "hotline_operator_name": "",
+        "client_call_detail_screen_notes": "",
+        "supportingDocuments": []
       });
+      let user;
+      let last_payload = {};
+      let current_id;
+      let ariaLive;
+      let registerAutoSave = function autosave() {
+        var payload = model.toJSON();
+
+        delete payload["__CreatedOn"];
+        delete payload["__ModifiedOn"];
+        delete payload["__Owner"];
+        delete payload["__Status"];
 
 
-      // success: If you want to hijack the framework base functionality to POST/PATCH the entity then implement the success method.
-      /*
-
-      success = () => {
-        event.preventDefault();
-        console.log("Form Success: Now you control the form submission");
-      };
-      */
-
-      //registerDataLoadEvents: Make modification before form render. Make changes to the model for example. this method can return a promise OR can be implemented without a promise.
-      /*
-      registerDataLoadEvents = (data) =>{
-        console.log("registerDataLoadEvents: Make modification before form render. Make changes to the model for example", data);
-      };
-      */
-      registerDataLoadEvents = async function (data){
-        console.log("registerDataLoadEvents: Make modification before form render. Make changes to the model for example", data);
-        let settings = {
-          "url": "/c3api_data/v2/DataAccess.svc/covid19/submissions?$format=application/json;odata.metadata=none&$count=true&$select=id&$top=1",
-          "type": "GET",
-          "headers": {
-            "Content-Type": "application/json; charset=utf-8;"
-          },
-          "dataType": "json",
-          "success": (get_data) =>{ console.log('Submission count data load events: ' , get_data['@odata.count']);}
-        };
-        let promise = new Promise((resolve, reject) => {
-          $.ajax(settings).always(function(){
-            console.log("registerDataLoadEvents work is done, now resolve the promise");
-            resolve(data);
+        if (JSON.stringify(payload) != JSON.stringify(last_payload)) {
+          /*
+          delete payload["__CreatedOn"];
+          delete payload["__ModifiedOn"];
+          delete payload["__Owner"];
+          delete payload["__Status"];
+          delete payload["id"];
+          delete payload["status"];
+          */
+          last_payload = payload;
+          $.ajax({
+            "url": config.httpHost.app[httpHost] + config.api.post + config.default_repo + "/submissions('" + data.id + "')",
+            "data": JSON.stringify(payload),
+            "global": false,
+            "type": "PATCH",
+            "complete": function (data) {
+            },
+            "success": function (data) {
+              $("#current_info_section").html("Last Modified: " + moment(data.__ModifiedOn).format(config.dateTimeFormat))
+            },
+            "error": function (request) {
+              if (request.status === 403 || request.status === 422 || (request.status === 400 && !request.responseJSON && request.responseText && request.responseText.indexOf('Session id') !== -1 && request.responseText.indexOf('is invalid') !== -1)) {
+                if (loginShown === false) {
+                  oLogin.showLogin();
+                }
+              }
+              console.warn("error silent save", request);
+            },
+            "headers": {
+              "Authorization": "AuthSession " + Cookies.get(config.default_repo + '.sid'),
+              "Content-Type": "application/json; charset=utf-8;",
+              "Cache-Control": "no-cache"
+            }
           });
-        });
-        await promise;
+        }
       };
 
-      //"registerFormEvents: Do something like add in addition form elements, hide elements ect"
+      registerDataLoadEvents = async function (data) {
+        if (data && data.id) {
+          window.mymodel = model;
+        }
+      };
+
       registerFormEvents = (data) => {
-        console.log("registerFormEvents: Do something like add in addition form elements, hide elements ect", data);
+        //NEW CONTACT
+        let case_id = data.id;
+        const customSearch = (searchString) => {
+          //return "&$filter=\"" + searchString + "\"" ;
+          let ret = "&$filter=";
+          ret += "contains(tolower(Material), '" + searchString.toLowerCase() + "') or ";
+          ret += "contains(tolower(Material_description), '" + searchString.toLowerCase() + "') or ";
+          ret += "contains(tolower(Material_group_description), '" + searchString.toLowerCase() + "') or ";
+          ret += "contains(tolower(Total_stock_quantity), '" + searchString.toLowerCase() + "') or";
+          ret += "contains(tolower(Material_group), '" + searchString.toLowerCase() + "')";
+          return ret;
+        };
+        const dt_config = {
+          serverSide: true, /*tell datatables that this table is going to load data from an api*/
+          ajax: (data, callback, settings) => {
+            /*implement datatables ajax function*/
+            /*build an array of columns that need to be sorted (orderby odata query parameter) based on the data parameter passed in from datatables*/
+            let sort = [];
+            data.order.forEach((val, i) => {
+              if (!settings.aoColumns[val.column].isArray) {
+                sort.push(data.columns[val.column].data + " " + val.dir);
+              }
+            });
+
+            /*build the url*/
+            let url = config.httpHost["root"][httpHost] + config.api.get + config.default_repo + "/client_contact" ;
+            /*Base URL*/
+            url += "?$format=application/json;odata.metadata=none&$count=true";
+            /*base query string format and count*/
+            url += "&$skip=" + settings._iDisplayStart;
+            /*pagination start*/
+            url += "&$top=" + settings._iDisplayLength;
+            url += "&$filter=case eq '"+case_id+"'";
+            /*pagination entities to return*/
+            //url += data.search.value !== "" ? "&$search=\"" + data.search.value + "\"" : "";
+            if (data.search.value !== "") {
+              if (typeof customSearch === "function") {
+                url += customSearch(data.search.value);
+              } else {
+                url += "&$search=\"" + data.search.value + "\"";
+              }
+            }
+
+            /*if there is a global search add that in*/
+            url += sort.length > 0 ? "&$orderby=" + sort.join(",") : "";
+            /*if there are columns to sort add them in*/
+            console.log(url);
+            /*set up the jquery ajax call*/
+            let options = {
+              url: url,
+              type: "GET",
+              headers:{
+                "Authorization": "AuthSession " + Cookies.get(config.default_repo + '.sid'),
+                "Content-Type": "application/json; charset=utf-8;",
+                "Cache-Control": "no-cache"
+              },
+              success: (response) => {
+                /*call callback functin passed in by datatables to render the data*/
+                callback({
+                  data: response.value,
+                  draw: data.draw,
+                  recordsTotal: response['@odata.count'],
+                  recordsFiltered: response['@odata.count']
+                });
+              }
+            };
+            /*request the data from the server*/
+            $.ajax(options);
+          },
+          order: [[1, 'desc']],
+          columns: [
+            {
+              data: "id", render: (data, x, row) => {
+                return "<button class='btn btn-default view-contact' id='" + data + "'>Open <span class='sr-only'>" +  "</span></button>"
+              }, className:"colSmall", targets: 0, searchable: false, orderable: false
+            },
+            {data: "date_client_called_hotline",  targets: 1, className:"colMed"},
+            {data: "olis_lookup_for_this_client",  targets: 2, orderable:false, className:"colMed"},
+            {data: "olis_lookup_results",  targets: 3, orderable:false, className:"colMed"},
+            {data: "client_call_in_details_lab_findings_shared_with_client", className:"colMed", targets: 4, orderable:false, width:100},
+            {data: "patient_adviced_selfmonitor", width: 125, targets: 4, orderable:false, className:"colMed"},
+            {data: "patient_adviced_selfisolate", width: 125, targets: 4, orderable:false, className:"colMed"},
+            {data: "client_advised_isolation_no_longer_needed", width: 125, targets: 4, orderable:false, className:"colLarge"},
+            {data: "client_health_info_provided", width: 125, targets: 4, orderable:false, className:"colLarge"},
+            {data: "client_call_detail_screen_notes", targets: 5, orderable:false , className:"colXL"}
+          ]
+        };
+        const notes_config = {
+          serverSide: true, /*tell datatables that this table is going to load data from an api*/
+          ajax: (data, callback, settings) => {
+            /*implement datatables ajax function*/
+            /*build an array of columns that need to be sorted (orderby odata query parameter) based on the data parameter passed in from datatables*/
+            let sort = [];
+            data.order.forEach((val, i) => {
+              if (!settings.aoColumns[val.column].isArray) {
+                sort.push(data.columns[val.column].data + " " + val.dir);
+              }
+            });
+
+            /*build the url*/
+            let url = config.httpHost["root"][httpHost] + config.api.get + config.default_repo + "/note" ;
+            /*Base URL*/
+            url += "?$format=application/json;odata.metadata=none&$count=true";
+            /*base query string format and count*/
+            url += "&$skip=" + settings._iDisplayStart;
+            /*pagination start*/
+            url += "&$top=" + settings._iDisplayLength;
+            url += "&$filter=case eq '"+case_id+"'";
+            /*pagination entities to return*/
+            //url += data.search.value !== "" ? "&$search=\"" + data.search.value + "\"" : "";
+            if (data.search.value !== "") {
+              if (typeof customSearch === "function") {
+                url += customSearch(data.search.value);
+              } else {
+                url += "&$search=\"" + data.search.value + "\"";
+              }
+            }
+
+            /*if there is a global search add that in*/
+            url += sort.length > 0 ? "&$orderby=" + sort.join(",") : "";
+            /*if there are columns to sort add them in*/
+            console.log(url);
+            /*set up the jquery ajax call*/
+            let options = {
+              url: url,
+              type: "GET",
+              headers:{
+                "Authorization": "AuthSession " + Cookies.get(config.default_repo + '.sid'),
+                "Content-Type": "application/json; charset=utf-8;",
+                "Cache-Control": "no-cache"
+              },
+              success: (response) => {
+                /*call callback functin passed in by datatables to render the data*/
+                callback({
+                  data: response.value,
+                  draw: data.draw,
+                  recordsTotal: response['@odata.count'],
+                  recordsFiltered: response['@odata.count']
+                });
+              }
+            };
+            /*request the data from the server*/
+            $.ajax(options);
+          },
+          order: [[0, 'desc']],
+          columns: [
+            {data: "__CreatedOn",  targets: 0, className:"colMed", render:(data)=>{return moment(data).format("YYY-MM-DD")}},
+            {data: "note", targets: 1, orderable:false , className:"colXL"}
+          ]
+        };
+        let notes_table = $('#notesTable').DataTable(notes_config);
+        let this_table = $('#newContactTable').DataTable(dt_config);
+        this_table.on('draw.dt', () => {
+
+          $("#newContactTable_length").parent().hide();
+          $("#newContactTable_filter").parent().hide();
+
+          let page_length = $(".paginate_button").last().prev().find("a").text();
+          let paginationset = $('.pagination').find('.paginate_button');
+          paginationset.each(function (index, pageset) {
+            let atag = $(pageset).find('a');
+            if (index === 0) {
+              atag.attr("aria-label", "Previous Page");
+            } else if (index === paginationset.length - 1) {
+              atag.attr("aria-label", "Next Page");
+            } else {
+
+              atag.attr("aria-label", "Page " + atag.text() + " of " + page_length);
+            }
+          });
+        });
+
+        notes_table.on('draw.dt', () => {
+
+          $("#notesTable_length").parent().hide();
+          $("#notesTable_filter").parent().hide();
+
+          let page_length = $(".paginate_button").last().prev().find("a").text();
+          let paginationset = $('.pagination').find('.paginate_button');
+          paginationset.each(function (index, pageset) {
+            let atag = $(pageset).find('a');
+            if (index === 0) {
+              atag.attr("aria-label", "Previous Page");
+            } else if (index === paginationset.length - 1) {
+              atag.attr("aria-label", "Next Page");
+            } else {
+
+              atag.attr("aria-label", "Page " + atag.text() + " of " + page_length);
+            }
+          });
+        });
+
+        $("#maincontent").off('click', '.add_new_note button').on('click', '.add_new_note button', (e) => {
+
+          //NEW CONTACT
+          let note_modal = cot_app.showModal({
+            "title": "New Note",
+            "body": "<div class=\"modal-form\" id=\"new_form_container_div\"></div>",
+            "originatingElement": $('#mi-new-submission'),
+            "modalSize":"modal-xl",
+            "onShow": function () {
+              let contact_model = new CotModel({
+                "note":""
+              });
+
+              let contact_form = new CotForm({
+                "id": "po_modal_form",
+                useBinding: true,
+                sections: [
+                  {
+                    id: "sec_pr_update",
+                    rows: [
+                      {
+                        fields: [
+                          {
+                            id: "note",
+                            type: "textarea",
+                            title: "Note",
+                            className: "col-xs-12",
+                            bindTo: "note",
+                            required: true,
+                            infohelp: null,
+                            // prehelptext: 'past 14 days prior to onset',
+                            placeholder: null,
+                            validators: {
+                              callback: {
+                                message: charactersNotAllowed,
+                                callback: function callback(value, validator, $field) {
+                                  return fixEX(value);
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        fields: [
+                          {
+                            id: "update_pr_price_submit_html",
+                            type: "html",
+                            html: `<button id="note_submit" class="btn btn-primary">Submit</button>`
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                success: function (event) {
+                  event.preventDefault();
+                  let payload = contact_model.toJSON();
+                  payload.case = case_id;
+                  payload.uname = Cookies.get(config.default_repo + ".cot_uname");
+                  payload.createdBy = Cookies.get(config.default_repo + ".firstName") + " " + Cookies.get(config.default_repo + ".lastName");
+                  let options = {
+                    contentType: "application/json",
+                    data: JSON.stringify(payload),
+                    headers:{
+                      "Authorization": "AuthSession " + Cookies.get(config.default_repo + '.sid'),
+                      "Content-Type": "application/json; charset=utf-8;",
+                      "Cache-Control": "no-cache"
+                    },
+                    method: 'POST',
+                    url: config.httpHost.app[httpHost] + config.api.get + config.default_repo + "/note",
+                    success: (data) => {
+                      //router.navigate(submissions + '/' + data.id + '/?ts=' + new Date().getTime(), {trigger: true, replace: true});
+                      console.log("new note:", data);
+                      $('#notesTable').DataTable().ajax.reload();
+                      if (note_modal && note_modal.modal) {
+                        note_modal.modal('toggle');
+                      }
+                    },
+                    failure: (gata) => {
+                      callHouston("GENERAL_ERROR")
+                    },
+                  };
+                  $.ajax(options)
+                }
+              });
+              contact_form.render({target: '#new_form_container_div'});
+              contact_form.setModel(contact_model);
+
+            }
+          });
+
+
+        });
+        $("#maincontent").off('click', '.view-contact').on('click', '.view-contact', (e) => {
+          e.preventDefault();
+          let _this = $(e.target);
+          let table = $("#newContactTable").DataTable();
+          let form_data = table.row($(e.target).closest("tr")).data();
+          let contact_modal = cot_app.showModal({
+            "title": "New Client Contact",
+            "body": "<div class=\"modal-form\" id=\"new_form_container_div\"></div>",
+            "originatingElement": $('#mi-new-submission'),
+            "modalSize":"modal-xl",
+            "onShow": function () {
+              let contact_model = new CotModel({
+                "date_client_called_hotline":"",
+                "patient_adviced_selfmonitor":"",
+                "patient_adviced_selfisolate":"",
+                "client_advised_isolation_no_longer_needed":"",
+                "olis_lookup_for_this_client":"",
+                "olis_lookup_results":"",
+                "client_call_in_details_lab_findings_shared_with_client":"",
+                "client_health_info_provided":"",
+                "client_call_detail_screen_notes":""
+              });
+              contact_model.set(form_data);
+              let contact_form = new CotForm({
+                id: "po_modal_form",
+                useBinding: true,
+                sections: [
+                  {
+                    id: "sec_pr_update",
+                    rows: [
+                      {
+                        fields: [
+                          {
+                            id: "date_client_called_hotline",
+                            type: "datetimepicker",
+                            title: "Date client called hotline",
+                            className: "col-xs-12",
+                            bindTo: "date_client_called_hotline",
+                            orientation: "horizontal",
+                            maxlength: 10,
+                            options: {
+                              format: 'YYYY-MM-DD',
+                              maxDate: new moment().format("YYYY-MM-DD"),
+                              keepInvalid: true,
+                              useStrict: true
+                            },
+                            htmlAttr: {
+                              length: 10
+                            },
+                            required: true,
+                            infohelp: null,
+                            placeholder: null,
+                            validators: {
+                              callback: {
+                                message: charactersNotAllowed,
+                                callback: function callback(value, validator, $field) {
+                                  return fixEX(value);
+                                }
+                              }
+                            }
+                          },
+                          {
+                            id: "olis_lookup_for_this_client",
+                            type: "radio",
+                            title: "OLIS Look-up for this client",
+                            className: "col-xs-12",
+                            bindTo: "olis_lookup_for_this_client",
+                            orientation: "horizontal",
+                            required: true,
+                            infohelp: null,
+                            // prehelptext: 'past 14 days prior to onset',
+                            placeholder: null,
+                            choices: config.choices.yesNoNA,
+                            validators: {
+                              callback: {
+                                message: charactersNotAllowed,
+                                callback: function callback(value, validator, $field) {
+                                  return fixEX(value);
+                                }
+                              }
+                            }
+                          },
+                          {
+                            id: "olis_lookup_results",
+                            type: "text",
+                            title: "OLIS Look-up results",
+                            className: "col-xs-12",
+                            bindTo: "olis_lookup_results",
+                            orientation: "horizontal",
+                            required: true,
+                            infohelp: null,
+                            placeholder: null,
+                            choices: config.field_choices.covid19_detected,
+                            validators: {
+                              callback: {
+                                message: charactersNotAllowed,
+                                callback: function callback(value, validator, $field) {
+                                  return fixEX(value);
+                                }
+                              }
+                            }
+                          },
+                          {
+                            id: "client_call_in_details_lab_findings_shared_with_client",
+                            type: "radio",
+                            title: "Lab findings shared with client",
+                            className: "col-xs-12",
+                            bindTo: "client_call_in_details_lab_findings_shared_with_client",
+                            orientation: "horizontal",
+                            required: true,
+                            infohelp: null,
+                            // prehelptext: 'past 14 days prior to onset',
+                            placeholder: null,
+                            choices: config.choices.yesNoNA,
+                            validators: {
+                              callback: {
+                                message: charactersNotAllowed,
+                                callback: function callback(value, validator, $field) {
+                                  return fixEX(value);
+                                }
+                              }
+                            }
+                          },
+                          {
+                            id: "patient_adviced_selfmonitor",
+                            type: "radio",
+                            title: "Patient advised to self-monitor",
+                            className: "col-xs-12",
+                            bindTo: "patient_adviced_selfmonitor",
+                            orientation: 'horizontal',
+                            required: true,
+                            infohelp: null,
+                            placeholder: null,
+                            choices: config.choices.yesNoNA,
+                            validators: {
+                              callback: {
+                                message: charactersNotAllowed,
+                                callback: function callback(value, validator, $field) {
+                                  return fixEX(value);
+                                }
+                              }
+                            }
+                          },
+                          {
+                            id: "patient_adviced_selfisolate",
+                            type: "radio",
+                            title: "Patient advised to self-isolate",
+                            className: "col-xs-12",
+                            bindTo: "patient_adviced_selfisolate",
+                            orientation: 'horizontal',
+                            required: true,
+                            infohelp: null,
+                            placeholder: null,
+                            choices: config.choices.yesNoNA,
+                            validators: {
+                              callback: {
+                                message: charactersNotAllowed,
+                                callback: function callback(value, validator, $field) {
+                                  return fixEX(value);
+                                }
+                              }
+                            }
+                          },
+                          {
+                            id: "client_advised_isolation_no_longer_needed",
+                            type: "radio",
+                            title: "Client advised isolation no longer needed",
+                            className: "col-xs-12",
+                            bindTo: "client_advised_isolation_no_longer_needed",
+                            required: true,
+                            infohelp: null,
+                            prehelptext: null,
+                            orientation: 'horizontal',
+                            placeholder: null,
+                            choices: config.choices.yesNoNA,
+                            validators: {
+                              callback: {
+                                message: charactersNotAllowed,
+                                callback: function callback(value, validator, $field) {
+                                  return fixEX(value);
+                                }
+                              }
+                            }
+                          },
+                          {
+                            id: "client_health_info_provided",
+                            type: "radio",
+                            title: "Eduaction information provided",
+                            className: "col-xs-12",
+                            bindTo: "client_health_info_provided",
+                            required: true,
+                            infohelp: null,
+                            prehelptext: null,
+                            orientation: 'horizontal',
+                            placeholder: null,
+                            choices: config.choices.yesNoNA,
+                            validators: {
+                              callback: {
+                                message: charactersNotAllowed,
+                                callback: function callback(value, validator, $field) {
+                                  return fixEX(value);
+                                }
+                              }
+                            }
+                          },
+                          {
+                            id: "client_call_detail_screen_notes",
+                            type: "textarea",
+                            title: "Notes",
+                            className: "col-xs-12",
+                            bindTo: "client_call_detail_screen_notes",
+                            required: false,
+                            infohelp: null,
+                            // prehelptext: 'past 14 days prior to onset',
+                            placeholder: null,
+                            validators: {
+                              callback: {
+                                message: charactersNotAllowed,
+                                callback: function callback(value, validator, $field) {
+                                  return fixEX(value);
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                success: function (event) {}
+              });
+              contact_form.render({target: '#new_form_container_div'});
+              contact_form.setModel(contact_model);
+              $("#po_modal_form input,textarea").attr("readonly", true)
+
+            }
+          });
+
+        });
+        $("#maincontent").off('click', '.add_new_contact button').on('click', '.add_new_contact button', (e) => {
+
+        //NEW CONTACT
+        let contact_modal = cot_app.showModal({
+          "title": "New Client Contact",
+          "body": "<div class=\"modal-form\" id=\"new_form_container_div\"></div>",
+          "originatingElement": $('#mi-new-submission'),
+          "modalSize":"modal-xl",
+          "onShow": function () {
+            let contact_model = new CotModel({
+              "date_client_called_hotline":moment().format("YYYY-MM-DD"),
+              "patient_adviced_selfmonitor":"",
+              "patient_adviced_selfisolate":"",
+              "client_advised_isolation_no_longer_needed":"",
+              "olis_lookup_for_this_client":"",
+              "olis_lookup_results":"",
+              "client_call_in_details_lab_findings_shared_with_client":"",
+              "client_health_info_provided":"",
+              "client_call_detail_screen_notes":""
+            });
+            contact_model.set("date_client_called_hotline",moment().format("YYYY-MM-DD"));
+            let contact_form = new CotForm({
+              "id": "po_modal_form",
+              useBinding: true,
+              sections: [
+                {
+                  id: "sec_pr_update",
+                  rows: [
+                    {
+                      fields: [
+                        {
+                          id: "date_client_called_hotline",
+                          type: "datetimepicker",
+                          title: "Date client called hotline",
+                          className: "col-xs-12",
+                          bindTo: "date_client_called_hotline",
+                          orientation: "horizontal",
+                          maxlength: 10,
+                          options: {
+                            format: 'YYYY-MM-DD',
+                            maxDate: new moment().format("YYYY-MM-DD"),
+                            keepInvalid: true,
+                            useStrict: true
+                          },
+                          htmlAttr: {
+                            length: 10
+                          },
+                          required: true,
+                          infohelp: null,
+                          placeholder: null,
+                          validators: {
+                            callback: {
+                              message: charactersNotAllowed,
+                              callback: function callback(value, validator, $field) {
+                                return fixEX(value);
+                              }
+                            }
+                          }
+                        },
+                        {
+                          id: "olis_lookup_for_this_client",
+                          type: "radio",
+                          title: "OLIS Look-up for this client",
+                          className: "col-xs-12",
+                          bindTo: "olis_lookup_for_this_client",
+                          orientation: "horizontal",
+                          required: true,
+                          infohelp: null,
+                          // prehelptext: 'past 14 days prior to onset',
+                          placeholder: null,
+                          choices: config.choices.yesNoNA,
+                          validators: {
+                            callback: {
+                              message: charactersNotAllowed,
+                              callback: function callback(value, validator, $field) {
+                                return fixEX(value);
+                              }
+                            }
+                          }
+                        },
+                        {
+                          id: "olis_lookup_results",
+                          type: "dropdown",
+                          title: "OLIS Look-up results",
+                          className: "col-xs-12",
+                          bindTo: "olis_lookup_results",
+                          orientation: "horizontal",
+                          required: true,
+                          infohelp: null,
+                          placeholder: null,
+                          choices: config.field_choices.covid19_detected,
+                          validators: {
+                            callback: {
+                              message: charactersNotAllowed,
+                              callback: function callback(value, validator, $field) {
+                                return fixEX(value);
+                              }
+                            }
+                          }
+                        },
+                        {
+                          id: "client_call_in_details_lab_findings_shared_with_client",
+                          type: "radio",
+                          title: "Lab findings shared with client",
+                          className: "col-xs-12",
+                          bindTo: "client_call_in_details_lab_findings_shared_with_client",
+                          orientation: "horizontal",
+                          required: true,
+                          infohelp: null,
+                          // prehelptext: 'past 14 days prior to onset',
+                          placeholder: null,
+                          choices: config.choices.yesNoNA,
+                          validators: {
+                            callback: {
+                              message: charactersNotAllowed,
+                              callback: function callback(value, validator, $field) {
+                                return fixEX(value);
+                              }
+                            }
+                          }
+                        },
+                        {
+                          id: "patient_adviced_selfmonitor",
+                          type: "radio",
+                          title: "Patient advised to self-monitor",
+                          className: "col-xs-12",
+                          bindTo: "patient_adviced_selfmonitor",
+                          orientation: 'horizontal',
+                          required: true,
+                          infohelp: null,
+                          placeholder: null,
+                          choices: config.choices.yesNoNA,
+                          validators: {
+                            callback: {
+                              message: charactersNotAllowed,
+                              callback: function callback(value, validator, $field) {
+                                return fixEX(value);
+                              }
+                            }
+                          }
+                        },
+                        {
+                          id: "patient_adviced_selfisolate",
+                          type: "radio",
+                          title: "Patient advised to self-isolate",
+                          className: "col-xs-12",
+                          bindTo: "patient_adviced_selfisolate",
+                          orientation: 'horizontal',
+                          required: true,
+                          infohelp: null,
+                          placeholder: null,
+                          choices: config.choices.yesNoNA,
+                          validators: {
+                            callback: {
+                              message: charactersNotAllowed,
+                              callback: function callback(value, validator, $field) {
+                                return fixEX(value);
+                              }
+                            }
+                          }
+                        },
+                        {
+                          id: "client_advised_isolation_no_longer_needed",
+                          type: "radio",
+                          title: "Client advised isolation no longer needed",
+                          className: "col-xs-12",
+                          bindTo: "client_advised_isolation_no_longer_needed",
+                          required: true,
+                          infohelp: null,
+                          prehelptext: null,
+                          orientation: 'horizontal',
+                          placeholder: null,
+                          choices: config.choices.yesNoNA,
+                          validators: {
+                            callback: {
+                              message: charactersNotAllowed,
+                              callback: function callback(value, validator, $field) {
+                                return fixEX(value);
+                              }
+                            }
+                          }
+                        },
+                        {
+                          id: "client_health_info_provided",
+                          type: "radio",
+                          title: "Eduaction information provided",
+                          className: "col-xs-12",
+                          bindTo: "client_health_info_provided",
+                          required: true,
+                          infohelp: null,
+                          prehelptext: null,
+                          orientation: 'horizontal',
+                          placeholder: null,
+                          choices: config.choices.yesNoNA,
+                          validators: {
+                            callback: {
+                              message: charactersNotAllowed,
+                              callback: function callback(value, validator, $field) {
+                                return fixEX(value);
+                              }
+                            }
+                          }
+                        },
+                        {
+                          id: "client_call_detail_screen_notes",
+                          type: "textarea",
+                          title: "Notes",
+                          className: "col-xs-12",
+                          bindTo: "client_call_detail_screen_notes",
+                          required: false,
+                          infohelp: null,
+                          // prehelptext: 'past 14 days prior to onset',
+                          placeholder: null,
+                          validators: {
+                            callback: {
+                              message: charactersNotAllowed,
+                              callback: function callback(value, validator, $field) {
+                                return fixEX(value);
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      fields: [
+                        {
+                          id: "update_pr_price_submit_html",
+                          type: "html",
+                          html: `<button id="po_price_submit" class="btn btn-primary">Submit</button>`
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              success: function (event) {
+                event.preventDefault();
+                let payload = contact_model.toJSON();
+                payload.case = case_id;
+                payload.uname = Cookies.get(config.default_repo + ".cot_uname");
+                payload.createdBy = Cookies.get(config.default_repo + ".firstName") + " " + Cookies.get(config.default_repo + ".lastName");
+                let options = {
+                  contentType: "application/json",
+                  data: JSON.stringify(payload),
+                  headers:{
+                    "Authorization": "AuthSession " + Cookies.get(config.default_repo + '.sid'),
+                    "Content-Type": "application/json; charset=utf-8;",
+                    "Cache-Control": "no-cache"
+                  },
+                  method: 'POST',
+                  url: config.httpHost.app[httpHost] + config.api.get + config.default_repo + "/client_contact",
+                  success: (data) => {
+                    //router.navigate(submissions + '/' + data.id + '/?ts=' + new Date().getTime(), {trigger: true, replace: true});
+
+                    $('#newContactTable').DataTable().ajax.reload();
+                    if (contact_modal && contact_modal.modal) {
+                      contact_modal.modal('toggle');
+                    }
+
+                  },
+                  failure: (gata) => {
+                    callHouston("GENERAL_ERROR")
+                  },
+                };
+                $.ajax(options)
+              }
+            });
+            contact_form.render({target: '#new_form_container_div'});
+            contact_form.setModel(contact_model);
+
+          }
+        });
+
+
+        });
+        $("#maincontent").off('click', '#menu-print').on('click', '#menu-print', (e) => {
+          let _this = $(e.target);
+          printPDF(config.export_pdf.headerTextRight, config.export_pdf.footerTextLeft, config.export_pdf.watermark)
+        });
+
+        ariaLive = document.querySelector('[aria-live="polite"]');
+        if (data && data.id) {
+          $("#current_info_section").html("Last Modified: " + moment(data.__ModifiedOn).format(config.dateTimeFormat));
+          last_payload = model.toJSON();
+          delete last_payload["__CreatedOn"];
+          delete last_payload["__ModifiedOn"];
+          delete last_payload["__Owner"];
+          delete last_payload["__Status"];
+
+          autoSave = setInterval(registerAutoSave, 30000);
+        } else {
+
+        }
+        // auto suggest address
+        const handleSelected_address = (evt) => {
+          $('#patient_mailing_address').val(evt.text).change();
+          $('#patient_mailing_address_data').val(evt.value).change();
+          $.ajax({
+            url: 'https://map.toronto.ca/cotgeocoder/rest/geocoder/findAddressCandidates?f=json&keyString=' + evt.value + '&retRowLimit=1',
+            method: 'GET',
+            beforeSend: function (xhr) {
+              //xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
+            }
+          })
+            .done(function (data) {
+              //$('#'+id).html(JSON.stringify(data));
+              if (data) {
+                if (data.result) {
+                  if (data.result.rows) {
+                    if (data.result.rows.length >= 1) {
+                      $('#patient_mailing_street_number').val(data.result.rows[0].LO_NUM).change();
+                      $('#patient_mailing_street_name').val(data.result.rows[0].LINEAR_NAME + ' ' + data.result.rows[0].LINEAR_NAME_TYPE).change();
+                      $('#patient_mailing_suite_number').val('').change();
+                      $('#patient_mailing_city').val(data.result.rows[0].CITY).change();
+                      $('#patient_mailing_province').val('Ontario').change();
+                      $('#patient_mailing_country').val('Canada').change();
+                      $('#patient_mailing_postal_code').val(data.result.rows[0].POSTAL_CODE).change();
+                      $('#patient_mailing_long').val(data.result.rows[0].LONGITUDE).change();
+                      $('#patient_mailing_lat').val(data.result.rows[0].LATITUDE).change();
+                      $('#patient_mailing_street_number').attr('disabled', 'disabled');
+                      $('#patient_mailing_street_name').attr('disabled', 'disabled');
+                      $('#patient_mailing_city').attr('disabled', 'disabled');
+                      $('#patient_mailing_province').attr('disabled', 'disabled');
+                      $('#patient_mailing_country').attr('disabled', 'disabled');
+                      $('#patient_mailing_postal_code').attr('disabled', 'disabled');
+                      $('#patient_mailing_long').attr('disabled', 'disabled');
+                      $('#patient_mailing_lat').attr('disabled', 'disabled');
+                    }
+                  }
+                }
+              }
+            })
+            .fail(function () {
+
+              $('#patient_mailing_street_number').val('');
+              $('#patient_mailing_street_name').val('');
+              $('#patient_mailing_suite_number').val('');
+              $('#patient_mailing_city').val('');
+              $('#patient_mailing_province').val('Ontario');
+              $('#patient_mailing_country').val('Canada');
+              $('#patient_mailing_postal_code').val('');
+              $('#patient_mailing_long').val('');
+              $('#patient_mailing_lat').val('');
+
+              $('#patient_mailing_street_number').removeAttr('disabled');
+              $('#patient_mailing_street_name').removeAttr('disabled');
+              // $('#patient_mailing_suite_number').removeAttr('disabled');
+              $('#patient_mailing_city').removeAttr('disabled');
+              $('#patient_mailing_province').removeAttr('disabled');
+              $('#patient_mailing_country').removeAttr('disabled');
+              $('#patient_mailing_postal_code').removeAttr('disabled');
+              $('#patient_mailing_long').removeAttr('disabled');
+              $('#patient_mailing_lat').removeAttr('disabled');
+
+              $('#patient_mailing_address_data').val(' ');
+
+            })
+            .always(function () {
+
+            });
+
+
+          checkAutoSuggest_Address();
+        }
+        const checkAutoSuggest_Address = () => {
+
+          $('#addressAutosuggestElement').removeClass('has-error');
+          $('#addressAutosuggestElement').removeClass('has-success');
+          $('#iconStatus_feedback_addressAutosuggest').remove();
+          $('#text_feedback_addressAutosuggest').remove();
+
+          if ($('#patient_mailing_address_data').val() == '') {
+            $('#addressAutosuggestElement').addClass('has-error');
+            $('#addressAutosuggestElement .typeahead__input--addon').prepend(errorInputIcon('feedback_addressAutosuggest'));
+            $('#cotui-autosuggest_address').append(`
+        <small id="text_feedback_addressAutosuggest" class="error-help-block">Please select a mailing address</small>
+      `);
+            $('#patient_mailing_address').focus();
+            return false;
+          } else {
+            $('#addressAutosuggestElement').addClass('has-success');
+            $('#addressAutosuggestElement .typeahead__input--addon').prepend(successInputIcon('feedback_addressAutosuggest'));
+            $('#text_feedback_addressAutosuggest').remove();
+          }
+
+        };
+        const handleResults_address = (evt) => {
+          $('#patient_mailing_address').val('').change();
+          $('#patient_mailing_address_data').val('').change();
+          // $('#patient_mailing_city').val('').change();
+          // $('#patient_mailing_street_number').val('').change();
+          // $('#patient_mailing_province').val('').change();
+          // $('#patient_mailing_city').val('').change();
+
+          if (evt.length == 0) {
+            $('#cotui-patient_mailing_address').attr('errortext', 'no results found');
+          } else {
+            $('#cotui-patient_mailing_address').attr('errortext', '');
+          }
+
+        }
+
+        const handleSubmit_address = (evt) => {
+
+        };
+
+        const handleInput_address = (evt) => {
+
+          if (document.getElementById('cotui-autosuggest_address').value == "") {
+            $('#patient_mailing_address').val('').change();
+            $('#patient_mailing_address_data').val('').change();
+            $('#cotui-patient_mailing_address').attr('errortext', 'no results found');
+          }
+          checkAutoSuggest_Address();
+        }
+
+        let autoSuggest_address = document.getElementById('cotui-autosuggest_address');
+        autoSuggest_address.onresults = handleResults_address;
+        autoSuggest_address.onselected = handleSelected_address;
+        autoSuggest_address.submit = handleSubmit_address;
+        autoSuggest_address.oninput = handleInput_address;
+        autoSuggest_address.onclear = (term) => {
+          $('#cotui-autosuggest_address').attr('errortext', '');
+          $('#cotui-autosuggest_address').val('');
+        };
       };
 
-      //registerOnSaveEvents: Do something on save like modify the payload before AJAX call . this method can return a promise OR can be implemented without a promise
-      /*
       registerOnSaveEvents = (data) => {
-        console.log("registerOnSaveEvents: Do something on save like modify the payload before AJAX call.", data);
-      };
-      */
-      registerOnSaveEvents = async function (data, formConfig){
-        console.log("registerOnSaveEvents: Do something on save like modify the payload before AJAX call.", data);
-        let settings = {
-          "url": "/c3api_data/v2/DataAccess.svc/covid19/submissions?$format=application/json;odata.metadata=none&$count=true&$select=id&$top=1",
-          "type": "GET",
-          "headers": {
-            "Content-Type": "application/json; charset=utf-8;"
-          },
-          "dataType": "json",
-          "success": (get_data) =>{ console.log('Submission count pre-save' , get_data['@odata.count']);}
-        };
-        let promise = new Promise((resolve, reject) => {
-          $.ajax(settings).always(function(){
-            console.log("registerDataLoadEvents work is done, now resolve the promise");
-            resolve(data);
+        if (data) {
+        } else {
+          data.status = "New"
+        }
+        /*
+router.navigate( 'submissions/' + data.id + '/?alert=success&msg=' + 'test 123' + '&ts=' + new Date().getTime(), {
+            trigger: true,
+            replace: true
           });
-        });
-        await promise;
+
+         */
       };
 
-      //registerPostSaveEvents: Do something post save like change the route or display additional date.
-      //Note: If registerPostSaveEvents is implemented, you need to manage the state change after", data);
-      //This method can return a promise OR can be implemented without a promise
-      /*
-      registerPostSaveEvents = (data) => {
-        console.log("registerPostSaveEvents: Do something post save like change the route or display additional date. Note: If registerPostSaveEvents is implemented, you need to manage the state change after", data);
-        router.navigate(form_id + '/' + data.id + '/?alert=success&msg=save.done&ts=' + new Date().getTime(), {
-          trigger: true,
-          replace: true
-        });
-      };
-      */
-      registerPostSaveEvents= async function (data, formConfig){
-        console.log("registerPostSaveEvents: Do something post save like change the route or display additional date. Note: If registerPostSaveEvents is implemented, you need to manage the state change after", data);
-        let settings = {
-          "url": "/c3api_data/v2/DataAccess.svc/covid19/submissions?$format=application/json;odata.metadata=none&$count=true&$select=id&$top=1",
-          "type": "GET",
-          "headers": {
-            "Content-Type": "application/json; charset=utf-8;"
-          },
-          "dataType": "json",
-          "success": (get_data) =>{ console.log('Post Save submission count:',get_data['@odata.count']);}
+      var _createClass = function () {
+        function defineProperties(target, props) {
+          for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+          }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+          if (protoProps) defineProperties(Constructor.prototype, protoProps);
+          if (staticProps) defineProperties(Constructor, staticProps);
+          return Constructor;
         };
-        let promise = new Promise((resolve, reject) => {
-          $.ajax(settings).always(function(){
-            console.log("registerPostSaveEvents work is done, now resolve the promise");
-            resolve(data);
-          });
-        });
-        await promise;
+      }();
+
+    function _classCallCheck(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+
+      var isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
+      var IE11Cache = function IE11Cache() {
+        if (isIE11) {
+          return '?t=' + new Date().getTime();
+        } else {
+          return '';
+        }
       };
 
-      //registerPostErrorEvents: Do something post save error like change the route or display additional date.
-      //This method can return a promise OR can be implemented without a promise
-      /*
-      registerPostErrorEvents = (jqXHR, textStatus) => {
-        console.log("registerPostErrorEvents manage ajax errors if required.", jqXHR, textStatus);
-      };
-      */
-      registerPostErrorEvents= async function (data, formConfig){
-        console.log("registerPostErrorEvents: Do something post save error like change the route or display additional date.", data);
-        let settings = {
-          "url": "https://was-intra-sit.toronto.ca/c3api_data/v2/DataAccess.svc/covid19/submissions?$format=application/json;odata.metadata=none&$count=true&$select=id&$top=1",
-          "type": "GET",
-          "headers": {
-            "Content-Type": "application/json; charset=utf-8;"
-          },
-          "dataType": "json",
-          "success": (get_data) =>{ console.log('Post Save submission count:',get_data['@odata.count']);}
-        };
-        let promise = new Promise((resolve, reject) => {
-          $.ajax(settings).always(function(){
-            console.log("registerPostErrorEvents work is done, now resolve the promise");
-            resolve(data);
-          });
-        });
-        await promise;
-      };
+      var charactersNotAllowed = 'characters < > % not allowed';
+
+    function fixEX(string) {
+      if (/^[^<>%]*$/.test(string)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+      var firstLoadPage = true;
+      var firstLoadPageLocationSet = true;
+      var originalSearchTerm = false;
+      var cannotSubmit = true;
+      var totalCharacters = 4000;
+      var totalUploadSizeLimit = 20971520;
+      var remainingUploadSize = totalUploadSizeLimit;
+      var uploadedFiles = [];
+      var dz_uploader = void 0;
+      var submitRetries = 0;
+      var dataFirstBeingSent = true;
+      var supportingDocuments = [];
+      var CONTRACTORAPI = '';
+
+    function errorInputIcon(id) {
+      return '  <i id="iconStatus_' + id + '" class="form-control-feedback glyphicon glyphicon-remove" aria-hidden="true"></i> ';
+    }
+
+    function successInputIcon(id) {
+      return '  <i id="iconStatus_' + id + '" class="form-control-feedback glyphicon glyphicon-ok" aria-hidden="true"></i> ';
+    }
+
+    function checkSpecialKeys(e) {
+      if (e.keyCode != 8 && e.keyCode != 46 && e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40) return false; else return true;
+    }
+
+    function uploadInfoText() {
+      var html = '   <p>The following attachments should comply with the following:</p>   <ul>    <li>All attachments must be submitted in <i class="far fa-file-pdf"></i> PDF, <i class="far fa-file-word"></i> Word or <i class="far fa-file-archive"></i> Zip format. </li>    <li>There is a maximum limit of 8 files.</li>    <li>There is a file size limit of 10MB per file.</li>    <li>You can remove any file you have attached by clicking Delete.</li>   </ul>   <p>To upload files, follow these steps for each document:</p>   <ul>    <li>Choose your file(s) from your computer or device. Once you select it, it will upload.</li>    <li>Add description of file.</li>    <li>Attach the file(s) by clicking Next.</li>   </ul>   <p>All files will be scanned at the time of submission. Infected or corrupted files will not be attached to the submission.</p>  ';
+      return html;
+    }
+
+    function summaryHTML() {
+      var html = '   <i class="fas fa-spinner fa-spin"></i> Loading  ';
+      return html;
+    }
+
+    function checkTextAreaMaxLength(textBox, e) {
+      var maxLength = parseInt($(textBox).attr("length"));
+      if (!checkSpecialKeys(e)) {
+        if (textBox.value.length > maxLength - 1) textBox.value = textBox.value.substring(0, maxLength);
+      }
+      $(".charactercount_" + $(textBox).attr('id')).html(maxLength - textBox.value.length);
+      return true;
+    }
 
       break;
   }
@@ -370,7 +2746,7 @@ const getSubmissionSections = (form_id, data) => {
     "sections": sections,
     "model": model,
     "defaults": defaults,
-    "success":success,
+    "success": success,
     "registerDataLoadEvents": registerDataLoadEvents,
     "registerFormEvents": registerFormEvents,
     "registerOnSaveEvents": registerOnSaveEvents,
@@ -425,6 +2801,18 @@ const getColumnDefinitions = (formName, filter) => {
             return view_button;
           }
         },
+
+        {"data": "patient_ontario_health_card_number", "title": "OHCN", "filter": true, "type": "text"},
+        {"data": "patient_firstname", "title": "First Name", "filter": true, "type": "text"},
+        {"data": "patient_lastname", "title": "Last Name", "filter": true, "type": "text"},
+        {"data": "patient_dateofbirth", "title": "DOB", "filter": true, "type": "text"},
+        {
+          "data": "case_status",
+          "title": "Case Status",
+          "filter": true,
+          "type": "dropdown",
+          filterChoices: config.choices.status
+        },
         {
           "data": "__CreatedOn",
           "title": "Created",
@@ -436,9 +2824,248 @@ const getColumnDefinitions = (formName, filter) => {
             return moment(data).format(config.dateTimeFormat)
           }
         },
-        {"data": "fullName", "title": "Full Name", "filter": true, "type": "text"},
-        {"data": "email", "title": "Email", "filter": true, "type": "text"},
-        {"data": "phone", "title": "Phone", "filter": true, "type": "text"}
+      ];
+      view = "submissions";
+      break;
+    case 'admin_view':
+      columnDefs = [
+        {
+          title: "Actions",
+          data: "id",
+          orderable: false,
+          defaultContent: "",
+          render: function (data, type, row, meta) {
+            let desc = "Open " + config.formName[formName] + " " + row[config.formHeaderFieldMap[formName]];
+            let view_button = "<button aria-label=\"" + desc + "\" class=\"btn btn-sm btn-default view_btn\">Open</button>";
+            return view_button;
+          }
+        },
+        {
+          "data": "case_status",
+          "title": "Case Status",
+          "filter": true,
+          "type": "dropdown",
+          filterChoices: config.choices.status
+        },
+        {
+          "data": "__CreatedOn",
+          "title": "Created",
+          "filter": true,
+          "type": "datetime",
+          "sortOrder": "desc",
+          "restrict": filter["__CreatedOn"],
+          "render": function (data) {
+            return moment(data).format(config.dateTimeFormat)
+          }
+        },
+        {"data": "patient_ontario_health_card_number", "title": "OHCN", "filter": true, "type": "text"},
+        {"data": "patient_firstname", "title": "First Name", "filter": true, "type": "text"},
+        {"data": "patient_lastname", "title": "Last Name", "filter": true, "type": "text"},
+        {"data": "patient_dateofbirth", "title": "DOB", "filter": true, "type": "text"},
+        {"data": "patient_phone_number", "title": "Phone", "filter": true, "type": "text"}
+
+      ];
+      view = "submissions";
+      break;
+    case 'mail_merge':
+      columnDefs = [
+        {
+          title: "Actions",
+          data: "id",
+          orderable: false,
+          defaultContent: "",
+          render: function (data, type, row, meta) {
+            let desc = "Open " + config.formName[formName] + " " + row[config.formHeaderFieldMap[formName]];
+            let view_button = "<button aria-label=\"" + desc + "\" class=\"btn btn-sm btn-default view_btn\">Open</button>";
+            return view_button;
+          }
+        },
+        {"data": "patient_firstname", "title": "First Name", "filter": true, "type": "text"},
+        {"data": "patient_middlename", "title": "Middle Name", "filter": true, "type": "text"},
+        {"data": "patient_lastname", "title": "Last Name", "filter": true, "type": "text"},
+        {"data": "patient_mailing_address", "title": "Mail Address", "filter": true, "type": "text"},
+        {"data": "patient_mailing_street_number", "title": "Street Number", "filter": true, "type": "text"},
+        {"data": "patient_mailing_street_name", "title": "Street Name", "filter": true, "type": "text"},
+        {"data": "patient_mailing_suite_number", "title": "Suite Number", "filter": true, "type": "text"},
+        {"data": "patient_mailing_city", "title": "City", "filter": true, "type": "text"},
+        {"data": "patient_mailing_province", "title": "Province", "filter": true, "type": "text"},
+        {"data": "patient_mailing_postal_code", "title": "Postal Code", "filter": true, "type": "text"},
+        {"data": "patient_mailing_country", "title": "Country", "filter": true, "type": "text"},
+        {
+          "data": "case_status",
+          "title": "Case Status",
+          "filter": true,
+          "type": "dropdown",
+          filterChoices: config.choices.status
+        },
+        {"data": "patient_ontario_health_card_number", "title": "OHCN", "filter": true, "type": "text"},
+        {"data": "patient_dateofbirth", "title": "DOB", "filter": true, "type": "text"},
+        {"data": "patient_phone_number", "title": "Phone", "filter": true, "type": "text"},
+        {
+          "data": "__CreatedOn",
+          "title": "Created",
+          "filter": true,
+          "type": "datetime",
+          "sortOrder": "desc",
+          "restrict": filter["__CreatedOn"],
+          "render": function (data) {
+            return moment(data).format(config.dateTimeFormat)
+          }
+        }
+
+      ];
+      view = "submissions";
+      break;
+    case 'export':
+      columnDefs = [
+        {
+          "data": "patient_ontario_health_card_number",
+          "title": "patient_ontario_health_card_number",
+          "filter": true,
+          "type": "text"
+        },
+        {"data": "patient_firstname", "title": "patient_firstname", "filter": true, "type": "text"},
+        {"data": "patient_middlename", "title": "patient_middlename", "filter": true, "type": "text"},
+        {"data": "patient_lastname", "title": "patient_lastname", "filter": true, "type": "text"},
+        {"data": "patient_dateofbirth", "title": "patient_dateofbirth", "filter": true, "type": "text"},
+        {"data": "patient_gender", "title": "patient_gender", "filter": true, "type": "text"},
+        {"data": "patient_phone_number", "title": "patient_phone_number", "filter": true, "type": "text"},
+        {"data": "patient_hospital_mrn", "title": "patient_hospital_mrn", "filter": true, "type": "text"},
+        {"data": "patient_mailing_address", "title": "patient_mailing_address", "filter": true, "type": "text"},
+        {
+          "data": "patient_mailing_address_data",
+          "title": "patient_mailing_address_data",
+          "filter": true,
+          "type": "text"
+        },
+        {
+          "data": "patient_mailing_street_number",
+          "title": "patient_mailing_street_number",
+          "filter": true,
+          "type": "text"
+        },
+        {"data": "patient_mailing_street_name", "title": "patient_mailing_street_name", "filter": true, "type": "text"},
+        {
+          "data": "patient_mailing_suite_number",
+          "title": "patient_mailing_suite_number",
+          "filter": true,
+          "type": "text"
+        },
+        {"data": "patient_mailing_city", "title": "patient_mailing_city", "filter": true, "type": "text"},
+        {"data": "patient_mailing_province", "title": "patient_mailing_province", "filter": true, "type": "text"},
+        {"data": "patient_mailing_postal_code", "title": "patient_mailing_postal_code", "filter": true, "type": "text"},
+        {"data": "patient_mailing_country", "title": "patient_mailing_country", "filter": true, "type": "text"},
+        {"data": "patient_mailing_long", "title": "patient_mailing_long", "filter": true, "type": "text"},
+        {"data": "patient_mailing_lat", "title": "patient_mailing_lat", "filter": true, "type": "text"},
+        {"data": "reported_date", "title": "reported_date", "filter": true, "type": "text"},
+        {"data": "reporting_source", "title": "reporting_source", "filter": true, "type": "text"},
+        {"data": "reporting_source_other", "title": "reporting_source_other", "filter": true, "type": "text"},
+        {"data": "reporting_organization", "title": "reporting_organization", "filter": true, "type": "text"},
+        {
+          "data": "reporting_organization_other",
+          "title": "reporting_organization_other",
+          "filter": true,
+          "type": "text"
+        },
+        {"data": "person_making_the_report", "title": "person_making_the_report", "filter": true, "type": "text"},
+        {"data": "reporting_phone_number", "title": "reporting_phone_number", "filter": true, "type": "text"},
+        {
+          "data": "reporting_phone_number_extension",
+          "title": "reporting_phone_number_extension",
+          "filter": true,
+          "type": "text"
+        },
+        {"data": "patient_symptons", "title": "patient_symptons", "filter": true, "type": "text"},
+        {"data": "patient_symptons_other", "title": "patient_symptons_other", "filter": true, "type": "text"},
+        {"data": "patient_onset_date", "title": "patient_onset_date", "filter": true, "type": "text"},
+        {"data": "patient_exposures", "title": "patient_exposures", "filter": true, "type": "text"},
+        {"data": "patient_exposures_other", "title": "patient_exposures_other", "filter": true, "type": "text"},
+        {"data": "patient_specimens_collected", "title": "patient_specimens_collected", "filter": true, "type": "text"},
+        {
+          "data": "patient_specimens_collected_other",
+          "title": "patient_specimens_collected_other",
+          "filter": true,
+          "type": "text"
+        },
+        {
+          "data": "patient_seciment_collection_date",
+          "title": "patient_seciment_collection_date",
+          "filter": true,
+          "type": "text"
+        },
+        {
+          "data": "patient_hospital_told_patient_to_selfisolate",
+          "title": "patient_hospital_told_patient_to_selfisolate",
+          "filter": true,
+          "type": "text"
+        },
+        {"data": "patient_lab_results", "title": "patient_lab_results", "filter": true, "type": "text"},
+        {"data": "cores_unique_id", "title": "cores_unique_id", "filter": true, "type": "text"},
+        {
+          "data": "patient_adviced_selfmonitor_selfisolate",
+          "title": "patient_adviced_selfmonitor_selfisolate",
+          "filter": true,
+          "type": "text"
+        },
+        {
+          "data": "public_health_actions_lab_findings_shared_with_client",
+          "title": "public_health_actions_lab_findings_shared_with_client",
+          "filter": true,
+          "type": "text"
+        },
+        {
+          "data": "client_advised_isolation_no_longer_needed",
+          "title": "client_advised_isolation_no_longer_needed",
+          "filter": true,
+          "type": "text"
+        },
+        {"data": "clearance_letter_sent", "title": "clearance_letter_sent", "filter": true, "type": "text"},
+        {"data": "case_status", "title": "case_status", "filter": true, "type": "text"},
+        {"data": "iphis_exposure_name", "title": "iphis_exposure_name", "filter": true, "type": "text"},
+        {"data": "iphis_exposure_id", "title": "iphis_exposure_id", "filter": true, "type": "text"},
+        {"data": "case_classification", "title": "case_classification", "filter": true, "type": "text"},
+        {"data": "iphis_case_id", "title": "iphis_case_id", "filter": true, "type": "text"},
+        {"data": "priority", "title": "priority", "filter": true, "type": "text"},
+        {
+          "data": "public_health_actions_screen_notes",
+          "title": "public_health_actions_screen_notes",
+          "filter": true,
+          "type": "text"
+        },
+        {"data": "date_client_called_hotline", "title": "date_client_called_hotline", "filter": true, "type": "text"},
+        {
+          "data": "client_identity_validation_method",
+          "title": "client_identity_validation_method",
+          "filter": true,
+          "type": "text"
+        },
+        {"data": "olis_lookup_for_this_client", "title": "olis_lookup_for_this_client", "filter": true, "type": "text"},
+        {"data": "olis_lookup_results", "title": "olis_lookup_results", "filter": true, "type": "text"},
+        {
+          "data": "client_call_in_details_lab_findings_shared_with_client",
+          "title": "client_call_in_details_lab_findings_shared_with_client",
+          "filter": true,
+          "type": "text"
+        },
+        {"data": "hotline_operator_name", "title": "hotline_operator_name", "filter": true, "type": "text"},
+        {
+          "data": "client_call_detail_screen_notes",
+          "title": "client_call_detail_screen_notes",
+          "filter": true,
+          "type": "text"
+        },
+        {
+          "data": "__CreatedOn",
+          "title": "Created",
+          "filter": true,
+          "type": "datetime",
+          "sortOrder": "desc",
+          "restrict": filter["__CreatedOn"],
+          "render": function (data) {
+            return moment(data).format(config.dateTimeFormat)
+          }
+        }
+
       ];
       view = "submissions";
       break;
@@ -453,7 +3080,7 @@ const getColumnDefinitions = (formName, filter) => {
 const registerEvents = () => {
   $.ajaxSetup({cache: false});
 
-  let cur_user = getCookie(config.default_repo + '.cot_uname') && getCookie(config.default_repo + '.cot_uname') !== "" ? getCookie(config.default_repo + '.cot_uname') : "not set"
+  let cur_user = Cookies.get(config.default_repo + '.cot_uname') && Cookies.get(config.default_repo + '.cot_uname') !== "" ? Cookies.get(config.default_repo + '.cot_uname') : "not set"
   $("<span id=\"user_name_display\" style=\"margin-left:4px;\">" + cur_user + "</span>").insertAfter($("#user_auth_title"));
 
 
@@ -461,7 +3088,10 @@ const registerEvents = () => {
     e.preventDefault();
     let row = $(this).closest('tr');
     row.addClass('selected');
-    router.navigate(row.attr('data-formName') + '/' + row.attr('data-id') + '/?ts=' + new Date().getTime(), {trigger: true, replace: true});
+    router.navigate(row.attr('data-formName') + '/' + row.attr('data-id') + '/?ts=' + new Date().getTime(), {
+      trigger: true,
+      replace: true
+    });
   });
   $("#maincontent").off('click', '#tabExportCSV').on('click', '#tabExportCSV', function () {
     $(".dt-button.buttons-csv.buttons-html5").click();
@@ -481,12 +3111,305 @@ const registerEvents = () => {
     router.navigate($(this).attr('data-id') + '/new/?ts=' + new Date().getTime(), {trigger: true, replace: true});
   });
 
+  $("#maincontent").off('click', '.btn-createNewCase').on('click', '.btn-createNewCase', function () {
+    let searchOptions = {};
+    let payload = {
+      "case_classification": "",
+      "case_status": "",
+      "clearance_letter_sent": [],
+      "client_advised_isolation_no_longer_needed": [],
+      "client_call_detail_screen_notes": "",
+      "client_call_in_details_lab_findings_shared_with_client": [],
+      "client_identity_validation_method": "",
+      "cores_unique_id": "",
+      "date_client_called_hotline": "",
+      "email": null,
+      "fullName": null,
+      "hotline_operator_name": "",
+      "id": "20659327364",
+      "iphis_case_id": "",
+      "iphis_exposure_id": "",
+      "iphis_exposure_name": "",
+      "olis_lookup_for_this_client": [],
+      "olis_lookup_results": "",
+      "patient_adviced_selfmonitor_selfisolate": [],
+      "patient_dateofbirth": "",
+      "patient_exposures": [],
+      "patient_exposures_other": "",
+      "patient_firstname": "",
+      "patient_gender": "",
+      "patient_hospital_mrn": "",
+      "patient_hospital_told_patient_to_selfisolate": [],
+      "patient_lab_results": "",
+      "patient_lastname": "",
+      "patient_mailing_address": "",
+      "patient_mailing_address_data": "",
+      "patient_mailing_city": "",
+      "patient_mailing_country": "",
+      "patient_mailing_lat": "",
+      "patient_mailing_long": "",
+      "patient_mailing_postal_code": "",
+      "patient_mailing_province": "",
+      "patient_mailing_street_name": "",
+      "patient_mailing_street_number": "",
+      "patient_mailing_suite_number": "",
+      "patient_middlename": "",
+      "patient_onset_date": "",
+      "patient_ontario_health_card_number": "",
+      "patient_phone_number": "416-555-2342",
+      "patient_seciment_collection_date": "",
+      "patient_specimens_collected": [],
+      "patient_specimens_collected_other": "",
+      "patient_symptons": [],
+      "patient_symptons_other": "",
+      "person_making_the_report": "",
+      "phone": null,
+      "priority": "",
+      "public_health_actions_lab_findings_shared_with_client": [],
+      "public_health_actions_screen_notes": "",
+      "refSEQNumber": "",
+      "referenceID": "",
+      "reported_date": "",
+      "reporting_organization": "",
+      "reporting_organization_other": "",
+      "reporting_phone_number": "",
+      "reporting_phone_number_extension": "",
+      "reporting_source": "",
+      "reporting_source_other": ""
+    };
+    let options = {
+      contentType: "application/json",
+      data: JSON.stringify(payload),
+      method: 'POST',
+      url: config.httpHost.app[httpHost] + config.api.get + config.default_repo + "/submissions",
+      success: (data) => {
+        router.navigate(submissions + '/' + data.id + '/?ts=' + new Date().getTime(), {trigger: true, replace: true});
+      },
+      failure: (gata) => {
+        callHouston("GENERAL_ERROR")
+      },
+    };
+
+    let po_model = new CotModel({
+      "patient_ontario_health_card_number": "",
+      "patient_firstname": "",
+      "patient_lastname": "",
+      "patient_dateofbirth": ""
+    });
+    let charactersNotAllowed = 'characters < > % not allowed';
+
+    function fixEX(string) {
+      if (/^[^<>%]*$/.test(string)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    let po_modal = cot_app.showModal({
+      "title": "New Open Data Submission",
+      "body": "<div class=\"modal-form\" id=\"new_form_container_div\"></div>",
+      "originatingElement": $('#mi-new-submission'),
+      "callback": function () {
+        return false;
+      },
+      "onShow": function () {
+        let po_form = new CotForm({
+          "id": "po_modal_form",
+          useBinding: true,
+          sections: [
+            {
+              id: "sec_pr_update",
+              rows: [
+                {
+                  fields: [
+                    {
+                      id: "patient_ontario_health_card_number",
+                      type: "text",
+                      title: "Ontario Health Card Number:",
+                      bindTo: "patient_ontario_health_card_number",
+                      className: "col-xs-12",
+                      required: false,
+                      infohelp: null,
+                      posthelptext: null,
+                      placeholder: null,
+                      validators: {
+                        callback: {
+                          message: charactersNotAllowed,
+                          callback: function callback(value, validator, $field) {
+                            return fixEX(value);
+                          }
+                        }
+                      }
+                    },
+                    {
+                      id: "patient_firstname",
+                      type: "text",
+                      title: "Client First Name:",
+                      bindTo: "patient_firstname",
+                      className: "col-xs-12",
+                      required: true,
+                      infohelp: null,
+                      posthelptext: null,
+                      placeholder: null,
+                      validators: {
+                        callback: {
+                          message: charactersNotAllowed,
+                          callback: function callback(value, validator, $field) {
+                            return fixEX(value);
+                          }
+                        }
+                      }
+                    },
+                    {
+                      id: "patient_lastname",
+                      type: "text",
+                      title: "Client Last Name:",
+                      className: "col-xs-12",
+                      bindTo: "patient_lastname",
+                      required: true,
+                      infohelp: null,
+                      posthelptext: null,
+                      placeholder: null,
+                      validators: {
+                        callback: {
+                          message: charactersNotAllowed,
+                          callback: function callback(value, validator, $field) {
+                            return fixEX(value);
+                          }
+                        }
+                      }
+                    },
+                    {
+                      id: "patient_dateofbirth",
+                      type: "datetimepicker",
+                      title: "Date of Birth:",
+                      className: "col-xs-12",
+                      bindTo: "patient_dateofbirth",
+                      maxlength: 10,
+                      options: {
+                        format: 'YYYY-MM-DD',
+                        maxDate: new moment().format("YYYY-MM-DD"),
+                        keepInvalid: true,
+                        useStrict: true
+                      },
+                      htmlAttr: {
+                        length: 10
+                      },
+                      required: true,
+                      infohelp: null,
+                      posthelptext: null,
+                      placeholder: null,
+                      validators: {
+                        callback: {
+                          message: charactersNotAllowed,
+                          callback: function callback(value, validator, $field) {
+                            return fixEX(value);
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  fields: [
+                    {
+                      id: "update_pr_price_submit_html",
+                      type: "html",
+                      html: `<button id="po_price_submit" class="btn btn-success">Create new case</button>`
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          success: function (event) {
+            event.preventDefault();
+            let query = "?$format=application/json;odata.metadata=none&unwrap=true&$skip=0&$top=10&$filter="
+            query += "(tolower(patient_firstname) eq '" + po_model.get('patient_firstname').toLowerCase() + "' and tolower(patient_lastname) eq '" + po_model.get('patient_lastname').toLowerCase() + "' and patient_dateofbirth eq '" + po_model.get('patient_dateofbirth') + "')";
+            query += " or (patient_ontario_health_card_number eq '" + po_model.get('patient_ontario_health_card_number').toLowerCase() + "')"
+            console.log(config.httpHost.app[httpHost] + config.api.post + config.default_repo + "/submissions" + query)
+            let options = {
+              "url": config.httpHost.app[httpHost] + config.api.post + config.default_repo + "/submissions" + query,
+              "async": true,
+              "type": "GET",
+              "headers": {
+                "Authorization": "AuthSession " + Cookies.get(config.default_repo + '.sid'),
+                "Content-Type": "application/json; charset=utf-8;",
+                "Cache-Control": "no-cache"
+              },
+              "success": (data) => {
+                const submitFormData = () => {
+                  let payload = {}, dateStamp = moment().toISOString();
+                  if (po_modal && po_modal.modal) {
+                    po_modal.modal('toggle');
+                  }
+                  payload = po_model.toJSON();
+                  payload.case_status="New";
+                  $.ajax({
+                    "url": config.httpHost.app[httpHost] + config.api.post + config.default_repo + "/submissions",
+                    "data": JSON.stringify(payload),
+                    "async": true,
+                    "type": "POST",
+                    "headers": {
+                      "Authorization": "AuthSession " + Cookies.get(config.default_repo + '.sid'),
+                      "Content-Type": "application/json; charset=utf-8;",
+                      "Cache-Control": "no-cache"
+                    }
+                  })
+                    .success(function (data) {
+                      router.navigate('submissions/' + data.id + '/?ts=' + new Date().getTime(), {
+                        trigger: true,
+                        replace: true
+                      });
+                    })
+                    .error(function (error) {
+
+                    });
+                };
+                let match = false;
+                if (data.length >= 1) {
+                  match = true
+                }
+                let confirmed = false;
+                if (match === false) {
+                  confirmed = true;
+                } else {
+                  confirmed = confirm("A duplicate case was found by OHCN or First Name, Last Name and DOB. Create case anyway?");
+                }
+                if (confirmed === true) {
+                  submitFormData();
+                }
+              },
+              "error": (data) => {
+                console.log('error', data);
+              }
+            };
+            $.ajax(options);
+          }
+        });
+        po_form.render({target: '#new_form_container_div'});
+        po_form.setModel(po_model);
+        app.forms["po_modal_form"] = po_form;
+      },
+      "onShown": function () {
+
+      },
+      "onHide": function () {
+      },
+      "onHidden": function () {
+        //deferred.resolve('onHidden');
+      }
+    });
+
+  });
+
   // Navigation tab links by report status
   $("#maincontent").off('click', '.tablink').on('click', '.tablink', function () {
 
     let newRoute = $(this).attr('data-id') + '/?ts=' + new Date().getTime() + '&status=' + $(this).attr('data-status') + '&filter=' + $(this).attr('data-filter');
 
-    router.navigate(newRoute , {trigger: true, replace: true});
+    router.navigate(newRoute, {trigger: true, replace: true});
   });
   // GLOBAL SEARCH
   $("#maincontent").off('click', '.form-control-clear').on('click', '.form-control-clear', function () {
@@ -517,6 +3440,7 @@ const registerEvents = () => {
 /**
  * Optional. Called when dashboard route is used. Render your custom application dashboard here.
  */
+
 const welcomePage = () => {
 
   $('.forForm, .forView, #form_pane, #view_pane').hide();
@@ -524,8 +3448,7 @@ const welcomePage = () => {
   $('#dashboard_pane, .forDashboard').show();
   if ($('#viewtitle').html() != config.dashboard_title) {
     $("#viewtitle").html($("<span role='alert'>" + config.dashboard_title + "</span>"));
-  }
-  else {
+  } else {
 
   }
 
@@ -537,7 +3460,7 @@ const welcomePage = () => {
   let tomorrow_d = moment().add(1, 'day').endOf('day').format();
   let last_week = moment().add(-1, 'weeks').endOf('day').format();
   let last_month = moment().add(-1, 'months').endOf('day').format();
-  //let welcome_template = config.welcome_template[httpHost]  ? config.welcome_template[httpHost] : src_path + '/html/welcome.html';
+  //let welcome_template = config.welcome_template[httpHost] ? config.welcome_template[httpHost] : src_path + '/html/welcome.html';
   let welcome_template = config.dashboard_template;
   auth(true).then(function (login) {
     tpl('#dashboard_pane', welcome_template, function () {
@@ -595,8 +3518,8 @@ const welcomePage = () => {
           /*
           let objects = arguments;
           $.each(objects, function (x, group_req) {
-            headerCount += group_req[0]["@odata.count"];
-            $("#" + headerObj.id).find(".dashboard_count").html(headerCount);
+           headerCount += group_req[0]["@odata.count"];
+           $("#" + headerObj.id).find(".dashboard_count").html(headerCount);
           })
           */
         });
@@ -606,67 +3529,67 @@ const welcomePage = () => {
 };
 
 /**
- *  Optional - If implemented, allows you to override and define your own routes.
- *  @returns: backbone router object
+ * Optional - If implemented, allows you to override and define your own routes.
+ * @returns: backbone router object
  */
 /*
 const getRoutes = () => {
-  console.log('custom getRoutes implemented');
-  return {
-    routes: {
-      '': 'homePage',
-      'noaccess(/)': 'noaccess',
-      'dashboard(/)': 'dashboard',
-      ':formName(/)': 'frontPage',
-      ':formName/new(/)': 'newPage',
-      ':formName/:id(/)': 'viewEditPage',
-      '*default': 'defautRoute'
-    },
 
-    defautRoute: function () {
-      if (this.lastFragment !== null) {
-        this.navigate(this.lastFragment, {trigger: false});
-      } else {
-        this.navigate('', {trigger: true});
-      }
-    },
+ return {
+  routes: {
+   '': 'homePage',
+   'noaccess(/)': 'noaccess',
+   'dashboard(/)': 'dashboard',
+   ':formName(/)': 'frontPage',
+   ':formName/new(/)': 'newPage',
+   ':formName/:id(/)': 'viewEditPage',
+   '*default': 'defautRoute'
+  },
 
-    route: function (route, name, callback) {
-      const oldCallback = callback || (typeof name === 'function') ? name : this[name];
-      if (oldCallback !== config.defautRoute) {
-        const newCallback = (...args) => {
-          config.lastFragment = Backbone.history.fragment;
-          oldCallback.call(this, ...args);
-        };
+  defautRoute: function () {
+   if (this.lastFragment !== null) {
+    this.navigate(this.lastFragment, {trigger: false});
+   } else {
+    this.navigate('', {trigger: true});
+   }
+  },
 
-        if (callback) {
-          callback = newCallback;
-        } else if (typeof name === 'function') {
-          name = newCallback;
-        } else {
-          this[name] = newCallback;
-        }
-      }
+  route: function (route, name, callback) {
+   const oldCallback = callback || (typeof name === 'function') ? name : this[name];
+   if (oldCallback !== config.defautRoute) {
+    const newCallback = (...args) => {
+     config.lastFragment = Backbone.history.fragment;
+     oldCallback.call(this, ...args);
+    };
 
-      return Backbone.Router.prototype.route.call(this, route, name, callback);
-    },
-    noaccess: function () {
-      noaccess()
-    },
-    homePage: function () {
-      homePage();
-    },
-    frontPage: function (formName, query) {
-      frontPage(formName, query);
-    },
-    newPage: function (formName, query) {
-      newPage(formName, query);
-    },
-    viewEditPage: function (formName, id, query) {
-      viewEditPage(formName, id, query)
+    if (callback) {
+     callback = newCallback;
+    } else if (typeof name === 'function') {
+     name = newCallback;
+    } else {
+     this[name] = newCallback;
     }
+   }
 
-  };
+   return Backbone.Router.prototype.route.call(this, route, name, callback);
+  },
+  noaccess: function () {
+   noaccess()
+  },
+  homePage: function () {
+   homePage();
+  },
+  frontPage: function (formName, query) {
+   frontPage(formName, query);
+  },
+  newPage: function (formName, query) {
+   newPage(formName, query);
+  },
+  viewEditPage: function (formName, id, query) {
+   viewEditPage(formName, id, query)
+  }
+
+ };
 };
 */
 /**
@@ -675,26 +3598,56 @@ const getRoutes = () => {
  * @return jQuery promise
  */
 
-/*
-const registerAuthEvents = (oLogin) =>{
+
+const registerAuthEvents = (oLogin) => {
   let deferred = new $.Deferred();
-  console.log('registerAuthEvents', oLogin);
-  deferred.resolve();
+  let groups = JSON.parse(oLogin.groups);
+
+  if (groups.indexOf("CN=Office-Metro Hall,OU=Distribution Groups,OU=Exchange,OU=Service Accounts,DC=org,DC=ad,DC=toronto,DC=ca") > -1) {
+    loadUserView("one");
+
+    deferred.resolve();
+  }
+  if (groups.indexOf("cn=covid19_admin,ou=production,ou=WCM,ou=Groups,o=Toronto") > -1) {
+    loadUserView("one");
+
+    deferred.resolve();
+  }
+  else if (groups.indexOf("cn=covid19_hotline_staff,ou=production,ou=WCM,ou=Groups,o=Toronto") > -1) {
+    $("#export-menu").hide();
+    loadUserView("two");
+    deferred.resolve();
+  }
+  else {
+    noaccess();
+    deferred.reject();
+  }
+
+  //
   return deferred.promise();
 };
-*/
+
 /**
- *  optional - called every time OpenView is called to open an entity collection in the datatable. Returns null. Can be used to hook into events on the datatable or other as need for your usecase.
+ * optional - called every time OpenView is called to open an entity collection in the datatable. Returns null. Can be used to hook into events on the datatable or other as need for your usecase.
  */
 /*
-const appInitialize = () =>{console.log('appInitialize')};
+const appInitialize = () =>{};
 */
 /**
  * Optional. This can be used to provide custom logic and show/hide differnet components based on the current users access rights (based on your logic and needs). Called in the toggleView method that switches between form, dashboard and datatable views.
  */
-/*
-const loadUserView = () => {};
-*/
+
+const loadUserView = (user_type) => {
+  if (!$("#view_pane").is(":visible")) {
+    if (autoSave) {
+      clearTimeout(autoSave);
+    } else {
+    }
+  } else {
+  }
+
+};
+
 
 /**
  * Optional. If implemented, you can provide your own logic to manage unauthorized access to data or interface. Default, the framework calls noaccess().
@@ -703,3 +3656,140 @@ const loadUserView = () => {};
 /*
 const implement_noaccess = () => {};
 */
+
+const printPDF = (headerTextRight, footerTextLeft, watermark) => {
+  let data = mymodel.toJSON();
+  let content = [];
+  let section = {
+    style: 'wo_table',
+    table: {
+      widths: [125, '*'],
+      body: []
+    },
+    layout: 'lightHorizontalLines',
+    headerRows: 1
+  }
+
+  $(".panel").each(function (i) {
+
+    let this_section = {
+      style: 'wo_table',
+      table: {
+        widths: ['*', '*'],
+        body: []
+      },
+      layout: 'lightHorizontalLines',
+      headerRows: 1
+    };
+    let this_row = [];
+    let panel_heading = $(this).find('.panel-heading').text();
+    if (panel_heading == "Supporting Documents") {
+    } else {
+      this_row.push([{
+        text: $(this).find('.panel-heading').text(),
+        colSpan: 2,
+        alignment: 'left',
+        style: 'tableHeader'
+      }, {}]);
+      this_section.table.body.push([{
+        text: $(this).find('.panel-heading').text(),
+        colSpan: 2,
+        alignment: 'left',
+        style: 'tableHeader'
+      }, {}]);
+      $(this).find('.panel-body .row').each(function (index) {
+
+        $(this).find('.form-group:visible').each(function (index, that) {
+          $(this).find('.optional').empty();
+          let label = $(this).find('.control-label, .staticlabel').text();
+          let value = $(this).find('.form-control').val();
+          if (value) {
+
+          } else if ($(this).attr('id') === "uploadedFilesV2Element") {
+            /*
+            let tmp = [];
+            $.each(data[$(this).attr('id').replace("Element", "")], function (i,val) {
+             tmp.push(val.name);
+            });
+            value = tmp;
+            */
+          } else {
+            //value = data[$(this).attr('id').replace("Element", "")];
+          }
+          if (label) {
+            let this_row = [label, value];
+            this_section.table.body.push(this_row);
+          }
+        });
+
+        $(this).find('.dropzone:visible').each(function (index) {
+          $.each(data[$(this).attr("id")], function (i, val) {
+            let row_title = i === 0 ? "Uploaded Files" : "";
+            let this_row = [row_title, val.name];
+            this_section.table.body.push(this_row);
+          });
+        });
+
+      });
+      content.push(this_section);
+    }
+
+  });
+  try {
+
+    pdfMake.createPdf({
+      watermark: {text: watermark, opacity: 0.05, bold: false},
+      header: {
+        margin: 10,
+        columns: [
+          {text: $("#viewtitle").text()},
+          {alignment: 'right', text: headerTextRight}
+        ]
+      },
+      footer: function (page, pages) {
+        return {
+          columns: [
+            footerTextLeft,
+            {
+              alignment: 'right',
+              text: [
+                {text: page.toString(), italics: true},
+                ' of ',
+                {text: pages.toString(), italics: true}
+              ]
+            }
+          ],
+          margin: [10, 0]
+        };
+      },
+      pageOrientation: 'portrait',
+      content: [content],
+      styles: {
+        header: {
+          fontSize: 22,
+          bold: true,
+          margin: [0, 0, 0, 10]
+        },
+        subheader: {
+          fontSize: 10,
+          bold: true,
+          margin: [0, 5, 0, 5]
+        },
+        wo_table: {
+          fontSize: 10,
+          margin: [0, 5, 0, 5]
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 10,
+          color: 'black'
+        }
+      }
+    }).download($("#viewtitle").text() + ".pdf")
+
+  } catch (e) {
+
+  }
+  ;
+
+};

@@ -1,8 +1,9 @@
 {
-  "title": "Persons Under Investigations Rapid Entry System (CORES)",
+  "title": "COVID19 PUI Admin Area",
+  "title_decoy": "Contractor Status Update",
   "dashboard_title":"TPH Staff Dashboard",
   "default_repo": "covid19",
-  "default_view": "dashboard",
+  "default_view": "submissions",
   "dateTimeFormat": "YYYY-MM-DD h:mm A",
   "dateFormat": "YYYY-MM-DD",
   "check_session_on_server": true,
@@ -14,12 +15,20 @@
     "Media": "Media"
   },
   "formHeaderFieldMap": {
-    "submissions": "fullName",
+    "submissions": "referenceID",
     "Media": "id"
   },
   "listName": {
-    "submissions": "Submissions",
+    "submissions": "View",
+    "mail_merge": "View",
+    "admin_view": "View",
+    "export": "View",
     "Media": "Media"
+  },
+  "export_pdf": {
+    "headerTextRight": "Toronto Public Health",
+    "footerTextLeft": "Confidential - DO NOT DISTRIBUTE",
+    "watermark": "Confidential"
   },
   "httpHost": {
     "root": {
@@ -174,22 +183,28 @@
         "value": "Site"
       }
     ],
+    "case_status": [
+      {
+        "text": "Open",
+        "value": "Open"
+      },
+      {
+        "text": "Closed",
+        "value": "Closed"
+      }
+    ],
     "status": [
       {
-        "text": "Pending",
-        "value": "Pending"
+        "text": "New",
+        "value": "New"
       },
       {
-        "text": "Approved",
-        "value": "Approved"
+        "text": "Active",
+        "value": "Active"
       },
       {
-        "text": "Denied",
-        "value": "Denied"
-      },
-      {
-        "text": "Cancelled",
-        "value": "Cancelled"
+        "text": "Closed",
+        "value": "Closed"
       }
     ]
   },
@@ -216,6 +231,21 @@
       "mi-click": "$('#form_pane form:first').trigger('submit');"
     },
     {
+      "dropdown": false,
+      "mi-class": "btn btn-default forForm",
+      "title": " Print",
+      "mi-icon-class": "glyphicon glyphicon-print",
+      "mi-id": "menu-print"
+    },
+    {
+      "dropdown": false,
+      "title": "New Case File",
+      "mi-icon-class": "",
+      "mi-id": "mi-new-case",
+      "mi-class": "btn btn-default btn-createNewCase forView forAdmin",
+      "data-id": "submissions"
+    },
+    {
       "dropdown": true,
       "tm-title": "Actions",
       "tm-class": "dropdown forView",
@@ -227,10 +257,10 @@
           "sm-class": "glyphicon glyphicon-pencil forAdmin",
           "menu-item": [
             {
-              "title": "Submission",
+              "title": "Case File",
               "mi-icon-class": "",
               "mi-id": "mi-new-submission",
-              "mi-class": "btn-createReport forAdmin",
+              "mi-class": "btn-createNewCase forAdmin",
               "data-id": "submissions"
             }
           ]
@@ -268,12 +298,39 @@
           "data-filter": ""
         },
         {
-          "title": "All Submissions",
+          "title": "Hotline",
           "mi-class": "tablink",
           "mi-icon-class": "",
           "mi-id": "mi-visit-all",
           "data-id": "submissions",
-          "data-status": "",
+          "data-status": "Call Centre",
+          "data-filter": ""
+        },
+        {
+          "title": "Admin View",
+          "mi-class": "tablink",
+          "mi-icon-class": "",
+          "mi-id": "mi-admin-view-all",
+          "data-id": "admin_view",
+          "data-status": "Case Mgt",
+          "data-filter": ""
+        },
+        {
+          "title": "Mail Merge",
+          "mi-class": "tablink",
+          "mi-icon-class": "",
+          "mi-id": "mi-mail_merge-all",
+          "data-id": "mail_merge",
+          "data-status": "Mail Merge",
+          "data-filter": ""
+        },
+        {
+          "title": "Export",
+          "mi-class": "tablink",
+          "mi-icon-class": "",
+          "mi-id": "mi-mail_merge-all",
+          "data-id": "export",
+          "data-status": "Export",
           "data-filter": ""
         }
       ]

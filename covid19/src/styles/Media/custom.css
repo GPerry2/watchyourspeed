@@ -1,4 +1,16 @@
 /**CUSTOM**/
-
-#maincontent .app_nav .btn{margin-right:10px;}
+#maincontent .app_nav .btn{margin-right:10px;margin-top:10px !important;}
 #maincontent .custom-search-input{margin-top:6px;}
+#maincontent #current_info_section{margin-right: 20px;}
+#maincontent .typeahead .typeahead__result:hover, .typeahead .typeahead__result[aria-selected=true]{
+  color: #0D1B28 !important;
+  background-color: wheat;
+}
+#maincontent .typeahead__input{
+border:1px solid #ccc !important;
+}
+#form_pane .dataTables_wrapper{overflow-y:auto;}
+.colSmall{min-width: 60px;}
+.colMed{min-width: 110px;}
+.colLarge{min-width: 175px;}
+.colXL{min-width: 425px;}
