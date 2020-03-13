@@ -12,6 +12,9 @@ let options = {
   pkg, //pass in the contents of package.json
   embedArea: 'full',
   preprocessorContext: {
+    COTUI_PATH:'/webapps/cdn/cotui/latest/',
+    _DATA_ACCESS_ROOT:'/c3api_data/v2/DataAccess.svc/',
+    DATA_ACCESS_ROOT:'/data-access-api-cores/v2/DataAccess.svc/',
     CONFIG_APP_NAME: config_app_name,
     COTSTAFF_ROOT:cotstaff_root,
     COTSTAFF_VERSION:cotstaff_version,
@@ -31,7 +34,7 @@ let options = {
     },
     prod: {
       ROOT_ENV: 'https://insideto-secure.toronto.ca',
-      COT_UI_ROOT:'https://was-intra-qa.toronto.ca',
+      COT_UI_ROOT:'https://insideto-secure.toronto.ca',
       ANALYTICS:'https://insideto-secure.toronto.ca/web-analytics/intra-webtrends-infinity.load.js'
     }
   },

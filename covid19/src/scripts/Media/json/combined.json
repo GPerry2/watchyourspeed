@@ -63,6 +63,16 @@
     }
   },
   "api": {
+    "get": "/data-access-api-cores/v2/DataAccess.svc/",
+    "post": "/data-access-api-cores/v2/DataAccess.svc/",
+    "put": "/data-access-api-cores/v2/DataAccess.svc/",
+    "config": "/c3api_config/v2/ConfigService.svc/",
+    "delete": "/data-access-api-cores/v2/DataAccess.svc/",
+    "authPath": "/c3api_auth/",
+    "authEndpoint": "v2/AuthService.svc/AuthSet",
+    "timeout": 30
+  },
+  "_api": {
     "get": "/c3api_data/v2/DataAccess.svc/",
     "post": "/c3api_data/v2/DataAccess.svc/",
     "put": "/c3api_data/v2/DataAccess.svc/",
@@ -389,7 +399,7 @@
           "title": "Logout",
           "mi-id": "lo_username",
           "mi-icon-class": "glyphicon glyphicon-log-out",
-          "mi-click": "oLogin.logout();"
+          "mi-click": "enhancedLogout();"
         }
       ]
     }

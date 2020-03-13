@@ -2,6 +2,10 @@ const https = require('https');
 const prompt = require('prompt');
 const fs = require('fs');
 const path = require('path');
+const api_root = '/data-access-api-cores/v2/DataAccess.svc';
+const config_root = '/config-api-cores/v2/ConfigService.svc/ConfigSet';
+const _api_root = '/c3api_data/v2/DataAccess.svc';
+const _config_root = '/c3api_config/v2/ConfigService.svc/ConfigSet';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Needed to perform HTTPS requests without certificates.
 
@@ -371,7 +375,7 @@ const CONFIG_REQUEST_OPTIONS_LIST = Object.freeze({
     protocol: 'https:',
     host: 'config.cc.toronto.ca',
     port: 49092,
-    path: '/c3api_config/v2/ConfigService.svc/ConfigSet'
+    path: config_root
   },
   SIT: {
     protocol: 'https:',
@@ -383,13 +387,13 @@ const CONFIG_REQUEST_OPTIONS_LIST = Object.freeze({
     protocol: 'https:',
     host: 'was-intra-qa.toronto.ca',
     port: 443,
-    path: '/c3api_config/v2/ConfigService.svc/ConfigSet'
+    path: config_root
   },
   PROD: {
     protocol: 'https:',
     host: 'insideto-secure.toronto.ca',
     port: 443,
-    path: '/c3api_config/v2/ConfigService.svc/ConfigSet'
+    path: config_root
   }
 });
 
@@ -589,11 +593,12 @@ module.exports.config = {
 ////////////////////////////////////////////////////////////////////////////////
 
 const DATAACCESS_REQUEST_OPTIONS_LIST = Object.freeze({
+
   MASERATI: {
     protocol: 'https:',
     host: 'config.cc.toronto.ca',
     port: 49093,
-    path: '/c3api_data/v2/DataAccess.svc'
+    path: api_root
   },
   SIT: {
     protocol: 'https:',
@@ -605,13 +610,13 @@ const DATAACCESS_REQUEST_OPTIONS_LIST = Object.freeze({
     protocol: 'https:',
     host: 'was-intra-qa.toronto.ca',
     port: 443,
-    path: '/c3api_data/v2/DataAccess.svc'
+    path: api_root
   },
   PROD: {
     protocol: 'https:',
     host: 'insideto-secure.toronto.ca',
     port: 443,
-    path: '/c3api_data/v2/DataAccess.svc'
+    path: api_root
   }
 });
 

@@ -191,7 +191,7 @@ const getSubmissionSections = (form_id, data) => {
       sections = [
         {
           id: "admin_information",
-          title: "Staff Area",
+          title: "",
           className: 'example-form-section panel-default',
           rows: [
             {
@@ -229,747 +229,1636 @@ const getSubmissionSections = (form_id, data) => {
           cols: "2",
           id: null,
           title: "Section 1: Patient Information",
-          rows: [{
-            fields: [
-              {
-                id: "patient_ontario_health_card_number",
-                type: "text",
-                title: "Ontario Health Card Number:",
-                className: "col-xs-12 col-sm-6",
-                bindTo: "patient_ontario_health_card_number",
-                required: false,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+          rows: [
+            {
+              fields: [
+
+                {
+                  id: "patient_ontario_health_card_number",
+                  type: "text",
+                  title: "Ontario Health Card Number and Version Code:",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "patient_ontario_health_card_number",
+                  required: false,
+                  infohelp: null,
+                  prehelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: "Not a valid ontario health card number",
+                      callback: (value, validator, $field) => {
+                        if (validateHC(value.replace(/ /gi, ''))) {
+                          return fixEX(value)
+                        } else {
+                          if (value == '') {
+                            return fixEX(value);
+                          } else {
+                            return false;
+                          }
+                        }
+                      }
                     }
                   }
-                }
-              },
-              {
-                id: "patient_hospital_mrn",
-                type: "text",
-                title: "Hospital MRN Number:",
-                className: "col-xs-12 col-sm-6",
-                bindTo: "patient_hospital_mrn",
-                required: false,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
-                    }
-                  }
-                }
-              },
-              {
-                id: "patient_firstname",
-                type: "text",
-                title: "Client First Name:",
-                className: "col-xs-12 col-sm-4",
-                bindTo: "patient_firstname",
-                required: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
-                    }
-                  }
-                }
-              },
-              {
-                id: "patient_middlename",
-                type: "text",
-                title: "Client Middle Name:",
-                className: "col-xs-12 col-sm-4",
-                bindTo: "patient_middlename",
-                required: false,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
-                    }
-                  }
-                }
-              },
-              {
-                id: "patient_lastname",
-                type: "text",
-                title: "Client Last Name:",
-                className: "col-xs-12 col-sm-4",
-                bindTo: "patient_lastname",
-                required: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
-                    }
-                  }
-                }
-              },
-              {
-                id: "patient_dateofbirth",
-                type: "datetimepicker",
-                title: "Date of Birth:",
-                className: "col-xs-12 col-sm-4",
-                bindTo: "patient_dateofbirth",
-                maxlength: 10,
-                options: {
-                  format: 'YYYY-MM-DD',
-                  maxDate: new moment().format("YYYY-MM-DD"),
-                  keepInvalid: true,
-                  useStrict: true
                 },
-                htmlAttr: {
-                  length: 10
+
+
+                {
+                  id: "patient_hospital_mrn",
+                  type: "text",
+                  title: "Hospital MRN Number:",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "patient_hospital_mrn",
+                  required: false,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
+                  }
                 },
-                required: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+
+
+                {
+                  id: "patient_firstname",
+                  type: "text",
+                  title: "Client First Name:",
+                  className: "col-xs-12 col-sm-4",
+                  bindTo: "patient_firstname",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              },
-              {
-                id: "patient_gender",
-                type: "dropdown",
-                title: "Gender:",
-                className: "col-xs-12 col-sm-4",
-                bindTo: "patient_gender",
-                required: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                choices: config.field_choices.gender,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+
+                {
+                  id: "patient_middlename",
+                  type: "text",
+                  title: "Client Middle Name:",
+                  className: "col-xs-12 col-sm-4",
+                  bindTo: "patient_middlename",
+                  required: false,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              },
-              {
-                id: "patient_phone_number",
-                type: "phone",
-                title: "Phone Number:",
-                className: "col-xs-12 col-sm-4",
-                bindTo: "patient_phone_number",
-                required: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+
+                {
+                  id: "patient_lastname",
+                  type: "text",
+                  title: "Client Last Name:",
+                  className: "col-xs-12 col-sm-4",
+                  bindTo: "patient_lastname",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              },
-              {
-                id: "divider_1",
-                type: "html",
-                html: "<hr/>",
-                className: "col-xs-12"
-              },
-              {
-                id: "addressAutosuggest",
-                type: "html",
-                className: "col-xs-6",
-                html: `<cotui-autosuggest
-                        label="Selected Mailing Address:"
-                        limit="5"
-                        icon="fas fa-map-marker-alt"
-                        button="Lookup"
-                        type="api"
-                        data-api.attr-value="KEYSTRING"
-                        data-api.attr-text="ADDRESS"
-                        data-api.attr-array="result.rows"
-                        data-api.url="https://map.toronto.ca/cotgeocoder/rest/geocoder/suggest?f=json&addressOnly=0&retRowLimit=100&searchString={QUERY}"
-                        id="cotui-autosuggest_address">
-                        </cotui-autosuggest>`
-              }, {
-                id: "patient_mailing_address_data",
-                type: "text",
-                title: "Address data:",
-                className: "col-xs-12 hidden",
-                bindTo: "patient_mailing_address_data",
-                required: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+
+                {
+                  id: "patient_dateofbirth",
+                  type: "datetimepicker",
+                  title: "Date of Birth:",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "patient_dateofbirth",
+                  maxlength: 10,
+                  options: {
+                    format: 'YYYY-MM-DD',
+                    maxDate: new moment().format("YYYY-MM-DD"),
+                    keepInvalid: true,
+                    useStrict: true
+                  },
+                  htmlAttr: {
+                    length: 10
+                  },
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  //validators: {
+                  // regexp: {
+                  //   regexp: dateFormat,
+                  //   message: dateFormatText
+                  // },
+                  // callback: {
+                  //   message: charactersNotAllowed,
+                  //   callback: (value, validator, $field) => {
+                  //     return fixEX(value);
+                  //   }
+                  // }
+                  //}
+                },
+
+
+                {
+                  id: "patient_gender",
+                  type: "dropdown",
+                  title: "Gender:",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "patient_gender",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "Male",
+                      text: "Male"
+                    },
+                    {
+                      value: "Female",
+                      text: "Female"
+                    },
+                    {
+                      value: "Transgender",
+                      text: "Transgender"
+                    },
+                    {
+                      value: "Other",
+                      text: "Other"
+                    },
+                    {
+                      value: "Unknown",
+                      text: "Unknown"
+                    }
+                  ],
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              }, {
-                id: "patient_mailing_street_number",
-                type: "text",
-                title: "Street Number:",
-                className: "col-xs-12 col-sm-2 ",
-                bindTo: "patient_mailing_street_number",
-                required: true,
-                disabled: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+
+                {
+                  id: "divider_1",
+                  type: "html",
+                  html: "<hr/>",
+                  className: "col-xs-12",
+                },
+
+
+                {
+                  id: "addressAutosuggest",
+                  type: "html",
+                  className: "col-xs-12 col-sm-8",
+                  html: `
+                        <cotui-autosuggest
+                          label="Mailing Address:"
+                          limit="5"
+                          icon="fas fa-map-marker-alt"
+                          button="Lookup"
+                          type="api"
+                          data-api.attr-value="KEYSTRING"
+                          data-api.attr-text="ADDRESS"
+                          data-api.attr-array="result.rows"
+                          data-api.url="https://map.toronto.ca/cotgeocoder/rest/geocoder/suggest?f=json&addressOnly=0&retRowLimit=100&searchString={QUERY}"
+                          id="cotui-autosuggest_address"
+                          >
+                        </cotui-autosuggest>
+                      `
+                },
+                {
+                  id: "patient_mailing_address_data",
+                  type: "text",
+                  title: "Address data:",
+                  className: "col-xs-12 hidden",
+                  bindTo: "patient_mailing_address_data",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              }, {
-                id: "patient_mailing_street_name",
-                type: "text",
-                title: "Street Name:",
-                className: "col-xs-12 col-sm-8 ",
-                bindTo: "patient_mailing_street_name",
-                required: true,
-                disabled: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+
+                {
+                  id: "nofixedaddress_option",
+                  type: "radio",
+                  title: "Address Exception:",
+                  className: "col-xs-12 col-sm-4",
+                  bindTo: "nofixedaddress_option",
+                  orientation: "horizontal",
+                  required: false,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "Yes",
+                      text: "No Fixed Address"
+                    },
+                    {
+                      value: "No",
+                      text: "Resides outside Toronto"
+                    },
+                  ],
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        //console.log(value);
+
+                        $('#nofixedaddress_option_textElement').addClass('hidden');
+
+                        if (value == 'Yes') {
+                          $('#nofixedaddress_option_textElement').removeClass('hidden');
+
+                          $('#patient_mailing_street_number').val('');
+                          $('#patient_mailing_street_name').val('');
+                          $('#patient_mailing_suite_number').val('');
+                          $('#patient_mailing_city').val('');
+                          $('#patient_mailing_province').val('Ontario');
+                          $('#patient_mailing_country').val('Canada');
+                          $('#patient_mailing_postal_code').val('');
+                          $('#patient_mailing_long').val('');
+                          $('#patient_mailing_lat').val('');
+
+                          $('#patient_mailing_street_number').removeAttr('disabled');
+                          $('#patient_mailing_street_name').removeAttr('disabled');
+                          // $('#patient_mailing_suite_number').removeAttr('disabled');
+                          $('#patient_mailing_city').removeAttr('disabled');
+                          $('#patient_mailing_province').removeAttr('disabled');
+                          $('#patient_mailing_country').removeAttr('disabled');
+                          $('#patient_mailing_postal_code').removeAttr('disabled');
+                          $('#patient_mailing_long').removeAttr('disabled');
+                          $('#patient_mailing_lat').removeAttr('disabled');
+
+                          $('#patient_mailing_address_data').val(' ');
+                          $('#cotui-autosuggest_address').val(' ');
+                          $('#cotui-autosuggest_address .typeahead__input').val(' ');
+
+                          $('#cotui-autosuggest_address ').addClass('disabled');
+                          //$('.addressBox').addClass('hidden');
+
+                        }
+                        else {
+                          $('#nofixedaddress_option_textElement').addClass('hidden');
+
+                          $('#patient_mailing_street_number').val('');
+                          $('#patient_mailing_street_name').val('');
+                          $('#patient_mailing_suite_number').val('');
+                          $('#patient_mailing_city').val('');
+                          $('#patient_mailing_province').val('Ontario');
+                          $('#patient_mailing_country').val('Canada');
+                          $('#patient_mailing_postal_code').val('');
+                          $('#patient_mailing_long').val('');
+                          $('#patient_mailing_lat').val('');
+
+                          $('#patient_mailing_street_number').attr('disabled', 'disabled');
+                          $('#patient_mailing_street_name').attr('disabled', 'disabled');
+                          // $('#patient_mailing_suite_number').attr('disabled','disabled');
+                          $('#patient_mailing_city').attr('disabled', 'disabled');
+                          $('#patient_mailing_province').attr('disabled', 'disabled');
+                          $('#patient_mailing_country').attr('disabled', 'disabled');
+                          $('#patient_mailing_postal_code').attr('disabled', 'disabled');
+                          $('#patient_mailing_long').attr('disabled', 'disabled');
+                          $('#patient_mailing_lat').attr('disabled', 'disabled');
+
+                          $('#patient_mailing_address_data').val('');
+                          $('#cotui-autosuggest_address').val('');
+                          $('#cotui-autosuggest_address .typeahead__input').val('');
+
+                          $('#cotui-autosuggest_address ').removeClass('disabled');
+                          $('.addressBox').removeClass('hidden');
+
+                          // let notEmpty = {
+                          //   notEmpty: {
+                          //     message: 'Phone number is required and cannot be empty',
+                          //     priority: 1
+                          //   }
+                          // }
+                          // formID.enableFieldValidators('patient_phone_number',false,notEmpty);
+
+                        }
+
+                        return true;
+
+                      }
                     }
                   }
-                }
-              }, {
-                id: "patient_mailing_suite_number",
-                type: "text",
-                title: "Suite / Unit:",
-                className: "col-xs-12 col-sm-2 ",
-                bindTo: "patient_mailing_suite_number",
-                disabled: false,
-                required: false,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+
+                {
+                  id: "nofixedaddress_option_text",
+                  type: "textarea",
+                  title: "Specify any address information:",
+                  className: "col-xs-12 col-sm-12 hidden",
+                  bindTo: "nofixedaddress_option_text",
+                  required: false,
+                  disabled: false,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              }, {
-                id: "patient_mailing_city",
-                type: "text",
-                title: "City:",
-                className: "col-xs-12 col-sm-4 ",
-                bindTo: "patient_mailing_city",
-                required: true,
-                disabled: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+
+                {
+                  id: "patient_mailing_street_number",
+                  type: "text",
+                  title: "Street Number:",
+                  className: "col-xs-12 col-sm-2 addressBox",
+                  bindTo: "patient_mailing_street_number",
+                  required: true,
+                  disabled: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              }, {
-                id: "patient_mailing_province",
-                type: "text",
-                title: "Province:",
-                className: "col-xs-12 col-sm-4 ",
-                bindTo: "patient_mailing_province",
-                required: true,
-                disabled: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+                {
+                  id: "patient_mailing_street_name",
+                  type: "text",
+                  title: "Street Name:",
+                  className: "col-xs-12 col-sm-8 addressBox",
+                  bindTo: "patient_mailing_street_name",
+                  required: true,
+                  disabled: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              }, {
-                id: "patient_mailing_postal_code",
-                type: "text",
-                title: "Postal Code:",
-                className: "col-xs-12 col-sm-4 ",
-                bindTo: "patient_mailing_postal_code",
-                required: true,
-                disabled: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+                {
+                  id: "patient_mailing_suite_number",
+                  type: "text",
+                  title: "Suite / Unit:",
+                  className: "col-xs-12 col-sm-2 addressBox",
+                  bindTo: "patient_mailing_suite_number",
+                  disabled: false,
+                  required: false,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              }, {
-                id: "patient_mailing_long",
-                type: "text",
-                title: "Long:",
-                className: "col-xs-12 col-sm-4 hidden",
-                bindTo: "patient_mailing_long",
-                required: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+
+                {
+                  id: "patient_mailing_city",
+                  type: "text",
+                  title: "City:",
+                  className: "col-xs-12 col-sm-4 addressBox",
+                  bindTo: "patient_mailing_city",
+                  required: true,
+                  disabled: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              }, {
-                id: "patient_mailing_lat",
-                type: "text",
-                title: "Lat:",
-                className: "col-xs-12 col-sm-4 hidden",
-                bindTo: "patient_mailing_lat",
-                required: true,
-                infohelp: null,
-                posthelptext: null,
-                placeholder: null,
-                validators: {
-                  callback: {
-                    message: charactersNotAllowed,
-                    callback: function callback(value, validator, $field) {
-                      return fixEX(value);
+                },
+
+                {
+                  id: "patient_mailing_province",
+                  type: "text",
+                  title: "Province:",
+                  className: "col-xs-12 col-sm-4 addressBox",
+                  bindTo: "patient_mailing_province",
+                  required: true,
+                  disabled: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
                   }
-                }
-              }]
-          }]
+                },
+
+                {
+                  id: "patient_mailing_postal_code",
+                  type: "text",
+                  title: "Postal Code:",
+                  className: "col-xs-12 col-sm-4 addressBox",
+                  bindTo: "patient_mailing_postal_code",
+                  required: true,
+                  disabled: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
+                  }
+                },
+
+                {
+                  id: "patient_mailing_long",
+                  type: "text",
+                  title: "Long:",
+                  className: "col-xs-12 col-sm-4 hidden",
+                  bindTo: "patient_mailing_long",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
+                  }
+                },
+
+                {
+                  id: "patient_mailing_lat",
+                  type: "text",
+                  title: "Lat:",
+                  className: "col-xs-12 col-sm-4 hidden",
+                  bindTo: "patient_mailing_lat",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
+                  }
+                },
+
+
+                {
+                  id: "patient_phone_number",
+                  type: "phone",
+                  title: "Phone Number:",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "patient_phone_number",
+                  required: false,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: phoneFormatText,
+                      callback: (value, validator, $field) => {
+                        if (phoneFormat.test(value)) {
+                          return fixEX(value);
+                        } else {
+                          return false;
+                        }
+                      }
+                    }
+                  }
+                },
+
+
+                {
+                  id: "patient_email",
+                  type: "email",
+                  title: "Email Address:",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "patient_email",
+                  required: false,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
+                  }
+                },
+
+
+              ]
+            }
+          ],
         },
         {
           cols: "2",
           id: null,
           title: "Section 2: Reporting Source",
-          rows: [{
-            fields: [{
-              id: "reported_date",
-              type: "datetimepicker",
-              title: "Reported Date:",
-              className: "col-xs-12 col-sm-4",
-              bindTo: "reported_date",
-              maxlength: 10,
-              options: {
-                format: 'YYYY-MM-DD',
-                maxDate: new moment().format("YYYY-MM-DD"),
-                keepInvalid: true,
-                useStrict: true
-              },
-              htmlAttr: {
-                length: 10
-              },
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
-                  }
-                }
-              }
-            }, {
-              id: "reporting_source",
-              type: "dropdown",
-              title: "Reporting Source",
-              className: "col-xs-12 col-sm-4",
-              bindTo: "reporting_source",
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              choices: config.field_choices.reporting_source,
-              validators: {
-                callback: {
-                  message: "",
-                  callback: function callback(value, validator, $field) {
-                    if (value == 'Other') {
-                      $('#reporting_source_other').show();
-                    } else {
-                      $('#reporting_source_other').hide();
+          rows: [
+            {
+              fields: [
+
+                {
+                  id: "reported_date",
+                  type: "datetimepicker",
+                  title: "Reported Date:",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "reported_date",
+                  maxlength: 10,
+                  options: {
+                    format: 'YYYY-MM-DD',
+                    maxDate: new moment().format("YYYY-MM-DD"),
+                    keepInvalid: true,
+                    useStrict: true
+                  },
+                  htmlAttr: {
+                    length: 10
+                  },
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  // validators: {
+                  //   regexp: {
+                  //     regexp: dateFormat,
+                  //     message: dateFormatText
+                  //   },
+                  //   // callback: {
+                  //   //   message: charactersNotAllowed,
+                  //   //   callback: (value, validator, $field) => {
+                  //   //     return fixEX(value);
+                  //   //   }
+                  //   // }
+                  // }
+                },
+
+                {
+                  id: "reporting_source",
+                  type: "dropdown",
+                  title: "Reporting Source",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "reporting_source",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "Hospital physician / Infection Prevention and Control",
+                      text: "Hospital physician / Infection Prevention and Control"
+                    },
+                    {
+                      value: "Assessment Centre",
+                      text: "Assessment Centre"
+                    },
+                    {
+                      value: "Physician Office",
+                      text: "Physician Office"
+                    },
+                    {
+                      value: "TPH Staff",
+                      text: "TPH Staff"
+                    },
+                    {
+                      value: "Other",
+                      text: "Other"
+                    },
+                  ],
+                  validators: {
+                    callback: {
+                      message: "",
+                      callback: (value, validator, $field) => {
+                        $('#cpso_numberElement').addClass('hidden');
+                        $('#reporting_source_otherElement').addClass('hidden');
+
+                        if (value == 'Physician Office') {
+                          $('#cpso_numberElement').removeClass('hidden');
+                        } else {
+                          $('#cpso_numberElement').addClass('hidden');
+                          $('#cpso_number').val('');
+                        }
+
+                        if (value == 'Other') {
+                          $('#reporting_source_otherElement').removeClass('hidden');
+                        } else {
+                          $('#reporting_source_otherElement').addClass('hidden');
+                          $('#reporting_source_other').val('');
+                        }
+
+                        return true;
+                      }
                     }
-                    return true;
                   }
-                }
-              }
-            }, {
-              id: "reporting_source_other",
-              type: "text",
-              title: "Other Reporting Source:",
-              className: "col-xs-6 col-sm-4 hidden",
-              bindTo: "reporting_source_other",
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
-                  }
-                }
-              }
-            }, {
-              id: "reporting_organization",
-              type: "dropdown",
-              title: "Reporting Organization",
-              className: "col-xs-12 col-sm-4",
-              bindTo: "reporting_organization",
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              choices: config.field_choices.reporting_organization,
-              validators: {
-                callback: {
-                  message: "",
-                  callback: function callback(value, validator, $field) {
-                    if (value == 'Other') {
-                      $('#reporting_organization_other').show();
-                    } else {
-                      $('#reporting_organization_other').hide();
+                },
+
+
+                {
+                  id: "reporting_source_other",
+                  type: "text",
+                  title: "Other Reporting Source:",
+                  className: "col-xs-6 col-sm-6 hidden",
+                  bindTo: "reporting_source_other",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
-                    return true;
                   }
-                }
-              }
-            }, {
-              id: "reporting_organization_other",
-              type: "text",
-              title: "Other Reporting Organization:",
-              className: "col-xs-6 col-sm-4 hidden",
-              bindTo: "reporting_organization_other",
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
+                },
+
+
+                {
+                  id: "cpso_number",
+                  type: "text",
+                  title: "CPSO Number:",
+                  className: "col-xs-6 col-sm-6 hidden",
+                  bindTo: "cpso_number",
+                  required: false,
+                  // maxlength: 6,
+                  // htmlAttr: {
+                  //     length: 6
+                  // },
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: "Alpha characters are not allowed",
+                      callback: (value, validator, $field) => {
+                        // check if number only
+                        let digitOnly = /(\d)$/gi;
+                        if (digitOnly.test(value)) {
+                          if (value == '') {
+                            return true;
+                          } else {
+                            return fixEX(value)
+                          }
+                        } else {
+                          if (value == '') {
+                            return fixEX(value)
+                          } else {
+                            return false;
+                          }
+                        }
+                      }
+                    }
                   }
-                }
-              }
-            }, {
-              id: "reporting_phone_number",
-              type: "phone",
-              title: "Phone Number:",
-              className: "col-xs-6 col-sm-6",
-              bindTo: "reporting_phone_number",
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
+                },
+
+
+                {
+                  id: "reporting_organization",
+                  type: "dropdown",
+                  title: "Reporting Organization",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "reporting_organization",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "Hospital for Sick Children",
+                      text: "Hospital for Sick Children"
+                    },
+                    {
+                      value: "Humber River Hospital",
+                      text: "Humber River Hospital"
+                    },
+                    {
+                      value: "Michael Garron Hospital",
+                      text: "Michael Garron Hospital"
+                    },
+                    {
+                      value: "Hospital for Sick Children",
+                      text: "Hospital for Sick Children"
+                    },
+                    {
+                      value: "Mount Sinai Hospital",
+                      text: "Mount Sinai Hospital"
+                    },
+                    {
+                      value: "North York General Hospital",
+                      text: "North York General Hospital"
+                    },
+                    {
+                      value: "Scarborough Health Network-Birchmount Hospital",
+                      text: "Scarborough Health Network-Birchmount Hospital"
+                    },
+                    {
+                      value: "Scarborough Health Network-Centenary Hospital",
+                      text: "Scarborough Health Network-Centenary Hospital"
+                    },
+                    {
+                      value: "Scarborough Health Network-General Hospital",
+                      text: "Scarborough Health Network-General Hospital"
+                    },
+                    {
+                      value: "St. Joseph’s Health Centre",
+                      text: "St. Joseph’s Health Centre"
+                    },
+                    {
+                      value: "St. Michael’s Hospital",
+                      text: "St. Michael’s Hospital"
+                    },
+                    {
+                      value: "Sunnybrook Health Sciences Centre",
+                      text: "Sunnybrook Health Sciences Centre"
+                    },
+                    {
+                      value: "Trillium Health Partners",
+                      text: "Trillium Health Partners"
+                    },
+                    {
+                      value: "UHN-Princess Margaret Hospital",
+                      text: "UHN-Princess Margaret Hospital"
+                    },
+                    {
+                      value: "UHN-Toronto Western Hospital",
+                      text: "UHN-Toronto Western Hospital"
+                    },
+                    {
+                      value: "UHN-Toronto General Hospital",
+                      text: "UHN-Toronto General Hospital"
+                    },
+                    {
+                      value: "William Osler Health System",
+                      text: "William Osler Health System"
+                    },
+                    {
+                      value: "Toronto Public Health",
+                      text: "Toronto Public Health"
+                    },
+                    {
+                      value: "Other",
+                      text: "Other"
+                    },
+                  ],
+                  validators: {
+                    callback: {
+                      message: "",
+                      callback: (value, validator, $field) => {
+                        $('#reporting_organization_otherElement').addClass('hidden');
+                        $('#reporting_organization_other').val('');
+                        if (value == 'Other') {
+                          $('#reporting_organization_otherElement').removeClass('hidden');
+                        } else {
+                          $('#reporting_organization_otherElement').addClass('hidden');
+                          $('#reporting_organization_other').val('');
+                        }
+                        return true;
+                      }
+                    }
                   }
-                }
-              }
-            }, {
-              id: "reporting_phone_number_extension",
-              type: "text",
-              title: "Extension:",
-              className: "col-xs-6 col-sm-6",
-              bindTo: "reporting_phone_number_extension",
-              required: false,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
+                },
+
+
+                {
+                  id: "reporting_organization_other",
+                  type: "text",
+                  title: "Other Reporting Organization:",
+                  className: "col-xs-6 col-sm-6 hidden",
+                  bindTo: "reporting_organization_other",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
                   }
-                }
-              }
-            }]
-          }]
+                },
+
+
+                {
+                  id: "person_making_the_report",
+                  type: "text",
+                  title: "Person Making the Report:",
+                  className: "col-xs-6 col-sm-6",
+                  bindTo: "person_making_the_report",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
+                  }
+                },
+
+
+                {
+                  id: "reporting_phone_number",
+                  type: "phone",
+                  title: "Phone Number:",
+                  className: "col-xs-6 col-sm-6",
+                  bindTo: "reporting_phone_number",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: phoneFormatText,
+                      callback: (value, validator, $field) => {
+                        if (phoneFormat.test(value)) {
+                          return fixEX(value);
+                        } else {
+                          return false;
+                        }
+                      }
+                    }
+                  }
+                },
+
+                {
+                  id: "reporting_phone_number_extension",
+                  type: "text",
+                  title: "Extension:",
+                  className: "col-xs-6 col-sm-6",
+                  bindTo: "reporting_phone_number_extension",
+                  required: false,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  maxlength: 6,
+                  htmlAttr: {
+                    length: 6
+                  },
+                  validators: {
+                    callback: {
+                      message: phoneExFormatText + ' and up to 6 digits',
+                      callback: (value, validator, $field) => {
+                        if (phoneExFormat.test(value)) {
+                          if (phoneExFormat.length > 6) {
+                            return false;
+                          } else {
+                            if (value == '') {
+                              return true;
+                            } else {
+                              return fixEX(value)
+                            }
+                          }
+                        } else {
+                          if (value == '') {
+                            return fixEX(value)
+                          } else {
+                            return false;
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+
+
+              ]
+            }
+          ],
         },
         {
           cols: "2",
           id: null,
           title: "Section 3: Patient Health Information",
-          rows: [{
-            fields: [{
-              id: "patient_symptons",
-              type: "checkbox",
-              title: "Symptoms",
-              className: "col-xs-12 col-sm-12",
-              bindTo: "patient_symptons",
-              required: true,
-              orientation: 'horizontal',
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              choices: config.field_choices.patient_symptons,
-              validators: {
-                callback: {
-                  message: "",
-                  callback: function callback(value, validator, $field) {
-                    if (value == 'Other') {
-                      $('#patient_symptons_other').show();
-                    } else {
-                      $('#patient_symptons_other').hide();
+          rows: [
+            {
+              fields: [
+                {
+                  id: "patient_symptoms",
+                  type: "checkbox",
+                  title: "Symptoms",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "patient_symptoms",
+                  required: true,
+                  orientation: 'horizontal',
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "Fever",
+                      text: "Fever"
+                    },
+                    {
+                      value: "Difficulty Breathing/SOB",
+                      text: "Difficulty Breathing/SOB"
+                    },
+                    {
+                      value: "Cough",
+                      text: "Cough"
+                    },
+                    {
+                      value: "Fatigue",
+                      text: "Fatigue"
+                    },
+                    {
+                      value: "Headache",
+                      text: "Headache"
+                    },
+                    {
+                      value: "Sore Throat",
+                      text: "Sore Throat"
+                    },
+                    {
+                      value: "Other",
+                      text: "Other"
+                    },
+                  ],
+                  validators: {
+                    callback: {
+                      message: "",
+                      callback: (value, validator, $field) => {
+                        console.log(value);
+                        // $('#patient_symptoms_otherElement').addClass('hidden');
+                        // $('#patient_onset_dateElement').addClass('hidden');
+
+                        // if(value==''){
+                        //   $('#patient_onset_dateElement').addClass('hidden');
+                        // } else{
+                        //   $('#patient_onset_dateElement').removeClass('hidden');
+                        // }
+
+                        $('#patient_symptoms_otherElement').addClass('hidden');
+                        $('#patient_symptoms_other').val('');
+
+                        if ($('#patient_symptoms_0').prop('checked') ||
+                          $('#patient_symptoms_1').prop('checked') ||
+                          $('#patient_symptoms_2').prop('checked') ||
+                          $('#patient_symptoms_3').prop('checked') ||
+                          $('#patient_symptoms_4').prop('checked') ||
+                          $('#patient_symptoms_5').prop('checked') ||
+                          $('#patient_symptoms_6').prop('checked')
+                        ) {
+                          if ($('#patient_symptoms_6').prop('checked')) {
+                            $('#patient_symptoms_otherElement').removeClass('hidden');
+                          } else {
+                            $('#patient_symptoms_otherElement').addClass('hidden');
+                            $('#patient_symptoms_other').val('');
+                          }
+                          $('#patient_onset_dateElement').removeClass('hidden');
+                        } else {
+                          $('#patient_onset_dateElement').addClass('hidden');
+                          $('#patient_onset_date').val('');
+                        }
+
+
+                        // if(value=='Other'){
+                        //   $('#patient_symptoms_otherElement').removeClass('hidden');
+                        // } else{
+                        //   $('#patient_symptoms_otherElement').addClass('hidden');
+                        // }
+
+                        return true;
+                      }
                     }
-                    return true;
                   }
-                }
-              }
-            }, {
-              id: "patient_symptons_other",
-              type: "textarea",
-              title: "Other Symptoms:",
-              className: "col-xs-12 col-sm-12 hidden",
-              bindTo: "patient_symptons_other",
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
-                  }
-                }
-              }
-            }, {
-              id: "patient_exposures",
-              type: "checkbox",
-              title: "Exposures",
-              className: "col-xs-12 col-sm-12",
-              bindTo: "patient_exposures",
-              orientation: 'horizontal',
-              required: true,
-              infohelp: null,
-              prehelptext: 'past 14 days prior to onset',
-              placeholder: null,
-              choices: config.field_choices.patient_exposures,
-              validators: {
-                callback: {
-                  message: "",
-                  callback: function callback(value, validator, $field) {
-                    console.log("patient_exposures", value)
-                    if (value.indexOf('Other') > -1) {
-                      $("#patient_exposures_otherElement").removeClass('hidden');
-                      $('#patient_exposures_other').show();
-                      console.log("show")
-                    } else {
-                      $('#patient_exposures_other').hide();
-                      console.log("hide")
+                },
+
+
+                {
+                  id: "patient_onset_date",
+                  type: "datetimepicker",
+                  title: "Earliest Symptoms Onset Date:",
+                  className: "col-xs-12 col-sm-6 hidden",
+                  bindTo: "patient_onset_date",
+                  maxlength: 10,
+                  options: {
+                    format: 'YYYY-MM-DD',
+                    maxDate: new moment().format("YYYY-MM-DD"),
+                    keepInvalid: true,
+                    useStrict: true
+                  },
+                  htmlAttr: {
+                    length: 10
+                  },
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  // validators: {
+                  //   regexp: {
+                  //     regexp: dateFormat,
+                  //     message: dateFormatText
+                  //   },
+                  //   // callback: {
+                  //   //   message: charactersNotAllowed,
+                  //   //   callback: (value, validator, $field) => {
+                  //   //     return fixEX(value);
+                  //   //   }
+                  //   // }
+                  // }
+                },
+
+
+                {
+                  id: "patient_symptoms_other",
+                  type: "textarea",
+                  title: "Other Symptoms:",
+                  className: "col-xs-12 col-sm-12 hidden",
+                  bindTo: "patient_symptoms_other",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
                     }
-                    return true;
                   }
-                }
-              }
-            }, {
-              id: "patient_exposures_other",
-              type: "text",
-              title: "Other Exposures:",
-              className: "col-xs-12 col-sm-12 hidden",
-              bindTo: "patient_exposures_other",
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
-                  }
-                }
-              }
-            }, {
-              id: "patient_onset_date",
-              type: "datetimepicker",
-              title: "Onset Date:",
-              className: "col-xs-12 col-sm-6",
-              bindTo: "patient_onset_date",
-              maxlength: 10,
-              options: {
-                format: 'YYYY-MM-DD',
-                maxDate: new moment().format("YYYY-MM-DD"),
-                keepInvalid: true,
-                useStrict: true
-              },
-              htmlAttr: {
-                length: 10
-              },
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
-                  }
-                }
-              }
-            }, {
-              id: "patient_specimens_collected",
-              type: "checkbox",
-              title: "Type of Speciment Collected",
-              className: "col-xs-12 col-sm-6",
-              bindTo: "patient_specimens_collected",
-              orientation: 'horizontal',
-              required: true,
-              infohelp: null,
-              // prehelptext: 'past 14 days prior to onset',
-              placeholder: null,
-              choices: config.field_choices.patient_specimens_collected,
-              validators: {
-                callback: {
-                  message: "",
-                  callback: function callback(value, validator, $field) {
-                    if (value == 'Other') {
-                      $('#patient_specimens_collected_other').show();
-                    } else {
-                      $('#patient_specimens_collected_other').hide();
+                },
+
+
+                {
+                  id: "patient_exposures",
+                  type: "checkbox",
+                  title: "Exposures",
+                  className: "col-xs-12 col-sm-12",
+                  bindTo: "patient_exposures",
+                  // orientation: 'horizontal',
+                  required: true,
+                  infohelp: null,
+                  prehelptext: 'past 14 days prior to onset',
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "Travel to an affected country",
+                      text: "Travel to an affected country"
+                    },
+                    {
+                      value: "Travel to another country",
+                      text: "Travel to another country"
+                    },
+                    {
+                      value: "Was on a cruise ship",
+                      text: "Was on a cruise ship"
+                    },
+                    {
+                      value: "Have close contact with a confirmed or probable case of COVID-19",
+                      text: "Have close contact with a confirmed or probable case of COVID-19"
+                    },
+                    {
+                      value: "Have close contact with a person with acute respiratory illness who has been to an affected area* within 14 days prior to their illness onset",
+                      text: "Have close contact with a person with acute respiratory illness who has been to an affected area* within 14 days prior to their illness onset"
+                    },
+                    {
+                      value: "Have laboratory exposure to biological material (e.g. primary clinical specimens, virus culture isolates) known to contain COVID-19",
+                      text: "Have laboratory exposure to biological material (e.g. primary clinical specimens, virus culture isolates) known to contain COVID-19"
+                    },
+                    {
+                      value: "Other",
+                      text: "Other"
+                    },
+                  ],
+                  validators: {
+                    callback: {
+                      message: "",
+                      callback: (value, validator, $field) => {
+                        //console.log(value);
+
+                        // $('#patient_exposures_otherElement').addClass('hidden');
+                        // $('#patient_travel_affected_areaElement').addClass('hidden');
+                        // $('#patient_travel_otherElement').addClass('hidden');
+
+                        // if(value=='Other'){
+                        //   $('#patient_exposures_otherElement').removeClass('hidden');
+                        // } else{
+                        //   $('#patient_exposures_otherElement').addClass('hidden');
+                        // }
+
+                        // if(value=='Travel to an affected area'){
+                        //   $('#patient_travel_affected_areaElement').removeClass('hidden');
+                        // } else{
+                        //   $('#patient_travel_affected_areaElement').addClass('hidden');
+                        // }
+
+                        // if(value=='Travel to another country'){
+                        //   $('#patient_travel_otherElement').removeClass('hidden');
+                        // } else{
+                        //   $('#patient_travel_otherElement').addClass('hidden');
+                        // }
+
+
+                        if ($('#patient_exposures_0').prop('checked')) {
+                          $('#patient_travel_affected_areaElement').removeClass('hidden');
+                        } else {
+                          $('#patient_travel_affected_areaElement').addClass('hidden');
+                          $('#patient_travel_affected_area').val('');
+                        }
+
+                        if ($('#patient_exposures_1').prop('checked')) {
+                          $('#patient_travel_otherElement').removeClass('hidden');
+                        } else {
+                          $('#patient_travel_otherElement').addClass('hidden');
+                          $('#patient_travel_other').val('');
+                        }
+
+                        if ($('#patient_exposures_6').prop('checked')) {
+                          $('#patient_exposures_otherElement').removeClass('hidden');
+                        } else {
+                          $('#patient_exposures_otherElement').addClass('hidden');
+                          $('#patient_exposures_other').val('');
+                        }
+
+                        return true;
+                      }
                     }
-                    return true;
                   }
-                }
-              }
-            }, {
-              id: "patient_specimens_collected_other",
-              type: "text",
-              title: "Other Specimens:",
-              className: "col-xs-12 col-sm-12 hidden",
-              bindTo: "patient_specimens_collected_other",
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
+                },
+
+
+                {
+                  id: "patient_travel_affected_area",
+                  type: "dropdown",
+                  title: "Please select travel affected country:",
+                  className: "col-xs-12 col-sm-6 hidden",
+                  bindTo: "patient_travel_affected_area",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "China",
+                      text: "China"
+                    },
+                    {
+                      value: "Iran",
+                      text: "Iran"
+                    },
+                    {
+                      value: "Italy",
+                      text: "Italy"
+                    },
+                    {
+                      value: "South Korea",
+                      text: "South Korea"
+                    },
+                    {
+                      value: "USA",
+                      text: "USA"
+                    },
+                  ],
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        // $('#patient_travel_affected_otherElement').addClass('hidden');
+                        // $('#patient_travel_affected_other').val('');
+
+                        // if($('#patient_travel_affected_area').val()=='Other'){
+                        //   $('#patient_travel_affected_otherElement').removeClass('hidden');
+                        // } else{
+                        //   $('#patient_travel_affected_otherElement').addClass('hidden');
+                        // }
+
+                        return true;
+                      }
+                    }
                   }
-                }
-              }
-            }, {
-              id: "patient_seciment_collection_date",
-              type: "datetimepicker",
-              title: "Specimen Collection Date:",
-              className: "col-xs-12 col-sm-6",
-              bindTo: "patient_seciment_collection_date",
-              maxlength: 10,
-              options: {
-                format: 'YYYY-MM-DD',
-                maxDate: new moment().format("YYYY-MM-DD"),
-                keepInvalid: true,
-                useStrict: true
-              },
-              htmlAttr: {
-                length: 10
-              },
-              required: true,
-              infohelp: null,
-              posthelptext: null,
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
+                },
+
+
+                // {
+                //   id: "patient_travel_affected_other",
+                //   type: "textarea",
+                //   title: "Please specify another travel affected area:",
+                //   className: "col-xs-12 col-sm-6 hidden",
+                //   bindTo: "patient_travel_affected_other",
+                //   required: true,
+                //   infohelp: null,
+                //   posthelptext: null,
+                //   placeholder: null,
+                //   validators: {
+                //     callback: {
+                //       message: charactersNotAllowed,
+                //       callback: (value, validator, $field) => {
+                //         return fixEX(value)
+                //       }
+                //     }
+                //   }
+                // },
+
+
+                {
+                  id: "patient_travel_other",
+                  type: "textarea",
+                  title: "Please specify another country:",
+                  className: "col-xs-12 col-sm-6 hidden",
+                  bindTo: "patient_travel_other",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
                   }
-                }
-              }
-            }, {
-              id: "patient_hospital_told_patient_to_selfisolate",
-              type: "checkbox",
-              title: "Hospital told patient to self-isolate?",
-              className: "col-xs-12 col-sm-6",
-              bindTo: "patient_hospital_told_patient_to_selfisolate",
-              required: true,
-              orientation: 'horizontal',
-              infohelp: null,
-              // prehelptext: 'past 14 days prior to onset',
-              placeholder: null,
-              choices: [{
-                value: "Yes",
-                text: "Yes"
-              }, {
-                value: "No",
-                text: "No"
-              }],
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
+                },
+
+
+                {
+                  id: "patient_exposures_other",
+                  type: "textarea",
+                  title: "Other Exposures:",
+                  className: "col-xs-12 col-sm-12 hidden",
+                  bindTo: "patient_exposures_other",
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
                   }
-                }
-              }
-            }]
-          }]
+                },
+
+
+                {
+                  id: "patient_specimens_collected",
+                  type: "checkbox",
+                  title: "Specimens Collected",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "patient_specimens_collected",
+                  orientation: 'horizontal',
+                  required: true,
+                  infohelp: null,
+                  // prehelptext: 'past 14 days prior to onset',
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "Throat swab",
+                      text: "Throat swab"
+                    },
+                    {
+                      value: "Nasopharyngeal Swab",
+                      text: "Nasopharyngeal Swab"
+                    },
+                    // {
+                    //     value: "Other",
+                    //     text: "Other"
+                    // },
+                  ],
+                  validators: {
+                    callback: {
+                      message: "",
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                      //callback: (value, validator, $field) => {
+                      // if(value=='Other'){
+                      //   $('#patient_specimens_collected_other').show();
+                      // } else{
+                      //   $('#patient_specimens_collected_other').hide();
+                      // }
+                      //return true;
+                      //}
+                    }
+                  }
+                },
+
+
+                // {
+                //   id: "patient_specimens_collected_other",
+                //   type: "text",
+                //   title: "Other Specimens:",
+                //   className: "col-xs-12 col-sm-12 hidden",
+                //   bindTo: "patient_specimens_collected_other",
+                //   required: true,
+                //   infohelp: null,
+                //   posthelptext: null,
+                //   placeholder: null,
+                //   validators: {
+                //     callback: {
+                //       message: charactersNotAllowed,
+                //       callback: (value, validator, $field) => {
+                //         return fixEX(value)
+                //       }
+                //     }
+                //   }
+                // },
+
+
+                {
+                  id: "patient_specimen_collection_date",
+                  type: "datetimepicker",
+                  title: "Specimen Collection Date:",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "patient_specimen_collection_date",
+                  maxlength: 10,
+                  options: {
+                    format: 'YYYY-MM-DD',
+                    maxDate: new moment().format("YYYY-MM-DD"),
+                    keepInvalid: true,
+                    useStrict: true
+                  },
+                  htmlAttr: {
+                    length: 10
+                  },
+                  required: true,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  // validators: {
+                  //   regexp: {
+                  //     regexp: dateFormat,
+                  //     message: dateFormatText
+                  //   },
+                  //   // callback: {
+                  //   //   message: charactersNotAllowed,
+                  //   //   callback: (value, validator, $field) => {
+                  //   //     return fixEX(value);
+                  //   //   }
+                  //   // }
+                  // }
+                },
+
+
+                {
+                  id: "patient_hospital_told_patient_to_selfisolate",
+                  type: "radio",
+                  title: "Healthcare Provider / Organization told patient to self-isolate?",
+                  className: "col-xs-12 col-sm-6",
+                  bindTo: "patient_hospital_told_patient_to_selfisolate",
+                  required: true,
+                  orientation: 'horizontal',
+                  infohelp: null,
+                  // prehelptext: 'past 14 days prior to onset',
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "Yes",
+                      text: "Yes"
+                    },
+                    {
+                      value: "No",
+                      text: "No"
+                    },
+                  ],
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
+                  }
+                },
+
+
+                {
+                  id: "patient_lab_results",
+                  type: "checkbox",
+                  title: "Patient Health Status",
+                  className: "col-xs-12 col-sm-12",
+                  bindTo: "patient_lab_results",
+                  required: true,
+                  // orientation: 'horizontal',
+                  infohelp: null,
+                  // prehelptext: 'past 14 days prior to onset',
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "Hospitalized",
+                      text: "Hospitalized"
+                    },
+                    {
+                      value: "non-ICU (connect with Infection Prevention & Control to ensure appropriate precautions are in place)",
+                      text: "non-ICU (connect with Infection Prevention & Control to ensure appropriate precautions are in place)"
+                    },
+                    {
+                      value: "Admitted to ICU (connect with Infection Prevention & Control to ensure appropriate precautions are in place)",
+                      text: "Admitted to ICU (connect with Infection Prevention & Control to ensure appropriate precautions are in place)"
+                    },
+                    {
+                      value: "ED Visit only and discharged",
+                      text: "ED Visit only and discharged"
+                    },
+                    {
+                      value: "Currently in the ED (if being discharged please advise to self isolate)",
+                      text: "Currently in the ED (if being discharged please advise to self isolate)"
+                    },
+                    {
+                      value: "Deceased",
+                      text: "Deceased"
+                    },
+                    {
+                      value: "Other",
+                      text: "Other"
+                    },
+                  ],
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        $('#patient_lab_results_otherElement').addClass('hidden');
+                        $('#patient_lab_results_other').val('');
+
+                        if ($('#patient_lab_results_6').prop('checked')) {
+                          $('#patient_lab_results_otherElement').removeClass('hidden');
+                        } else {
+                          $('#patient_lab_results_otherElement').addClass('hidden');
+                          $('#patient_lab_results_other').val('');
+                        }
+
+                        return true;
+                      }
+                    }
+                  }
+                },
+
+
+                {
+                  id: "patient_lab_results_other",
+                  type: "textarea",
+                  title: "Other Patient Health Status",
+                  className: "col-xs-12 col-sm-6 hidden",
+                  bindTo: "patient_lab_results_other",
+                  required: true,
+                  orientation: 'horizontal',
+                  infohelp: null,
+                  // prehelptext: 'past 14 days prior to onset',
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
+                  }
+                },
+
+
+                {
+                  id: "comments",
+                  type: "textarea",
+                  title: "Comments:",
+                  className: "col-xs-12 col-sm-12",
+                  bindTo: "comments",
+                  required: false,
+                  infohelp: null,
+                  posthelptext: null,
+                  placeholder: null,
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        return fixEX(value)
+                      }
+                    }
+                  }
+                },
+
+
+              ]
+            }
+          ],
         },
         {
           cols: "2",
           id: null,
-          title: "Section 4 - Public Health Actions",
+          title: "Section 4 - Client Call in Details",
+          rows: [
+            {
+              fields:[
+                {
+                  id:"add_new_contact",
+                  type:"button",
+                  title:"Add New Client Interaction",
+                  addclass:"add_new_contact"
+                }
+              ]
+            },
+            {
+              fields:[
+                {
+                  id:"client_contact_container",
+                  type:"html",
+                  html:`
+                     <table id="newContactTable" class="display" style="width:100%">
+                              <thead>
+                              <tr>
+                                <th>Actions</th>
+                                <th>Date</th>
+                                <th>OLIS Look-up</th>
+                                <th>Lab Results</th>
+                                <th>Shared Results</th>
+                                <th>Self Monitor</th>
+                                <th>Self Isolate</th>
+                                <th>Isolation Not Required</th>
+                                <th>Edu. Info Provided</th>
+                                <th>Notes</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                            </table>
+                  `
+                }
+              ]
+            }
+          ]
+        },
+        {
+          cols: "2",
+          id: null,
+          title: "Section 5 - Public Health Actions",
           rows: [
             {
             fields: [
@@ -1080,7 +1969,7 @@ const getSubmissionSections = (form_id, data) => {
               id: "case_status",
               type: "dropdown",
               title: "Case Status",
-              className: "col-xs-12 col-sm-6",
+              className: "col-xs-12 col-sm-4",
               bindTo: "case_status",
               required: true,
               infohelp: null,
@@ -1100,7 +1989,7 @@ const getSubmissionSections = (form_id, data) => {
               id: "case_classification",
               type: "dropdown",
               title: "Case Classification",
-              className: "col-xs-12 col-sm-6",
+              className: "col-xs-12 col-sm-4",
               bindTo: "case_classification",
               required: false,
               infohelp: null,
@@ -1116,6 +2005,14 @@ const getSubmissionSections = (form_id, data) => {
                 }
               }
             },
+              {
+                id:"case_referred_to",
+                bindTo:"case_referred_to",
+                title:"Referred To",
+                className: "col-xs-12 col-sm-4",
+                type:"dropdown",
+                choices:config.field_choices.case_referred_to
+              },
               {
               id: "iphis_exposure_name",
               type: "text",
@@ -1203,26 +2100,8 @@ const getSubmissionSections = (form_id, data) => {
                   }
                 }
               }
-            },
-              {
-              id: "public_health_actions_screen_notes",
-              type: "textarea",
-              title: "Notes",
-              className: "col-xs-12 col-sm-12",
-              bindTo: "public_health_actions_screen_notes",
-              required: false,
-              infohelp: null,
-              // prehelptext: 'past 14 days prior to onset',
-              placeholder: null,
-              validators: {
-                callback: {
-                  message: charactersNotAllowed,
-                  callback: function callback(value, validator, $field) {
-                    return fixEX(value);
-                  }
-                }
-              }
-            }]
+            }
+            ]
           },
             {
               fields:[
@@ -1234,7 +2113,6 @@ const getSubmissionSections = (form_id, data) => {
                 }
               ]
             },
-
             {
               fields:[
                     {
@@ -1254,51 +2132,6 @@ const getSubmissionSections = (form_id, data) => {
                   `
                     }
                     ]
-            }
-          ]
-        },
-        {
-          cols: "2",
-          id: null,
-          title: "Section 5 - Client Call in Details",
-          rows: [
-            {
-              fields:[
-                {
-                id:"add_new_contact",
-                  type:"button",
-                  title:"Add New Client Contact",
-                  addclass:"add_new_contact"
-                }
-              ]
-            },
-            {
-              fields:[
-                {
-                  id:"client_contact_container",
-                  type:"html",
-                  html:`
-                     <table id="newContactTable" class="display" style="width:100%">
-                              <thead>
-                              <tr>
-                                <th>Actions</th>
-                                <th>Date</th>
-                                <th>OLIS Look-up</th>
-                                <th>Lab Results</th>
-                                <th>Shared Results</th>
-                                <th>Self Monitor</th>
-                                <th>Self Isolate</th>
-                                <th>Isolation Not Required</th>
-                                <th>Edu. Info Provided</th>
-                                <th>Notes</th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              </tbody>
-                            </table>
-                  `
-                }
-              ]
             }
           ]
         },
@@ -1566,18 +2399,21 @@ const getSubmissionSections = (form_id, data) => {
             }]
           }]
         }
-
       ];
       model = new CotModel({
         "status": "New",
-        "patient_ontario_health_card_number": "",
-        "patient_firstname": "",
-        "patient_middlename": "",
-        "patient_lastname": "",
-        "patient_dateofbirth": "",
-        "patient_gender": "",
-        "patient_phone_number": "",
-        "patient_hospital_mrn": "",
+        "external": "no",
+        "patient_ontario_health_card_number":"",
+        "patient_hospital_mrn":"",
+        "patient_firstname":"",
+        "patient_middlename":"",
+        "patient_lastname":"",
+        "patient_dateofbirth":"",
+        "patient_gender":"",
+        "patient_phone_number":"",
+        "patient_email": "",
+        "nofixedaddress_option": "",
+        "nofixedaddress_option_text": "",
         "patient_mailing_address": "",
         "patient_mailing_address_data": "",
         "patient_mailing_street_number": "",
@@ -1589,43 +2425,40 @@ const getSubmissionSections = (form_id, data) => {
         "patient_mailing_country": "",
         "patient_mailing_long": "",
         "patient_mailing_lat": "",
-        "reported_date": "",
-        "reporting_source": "",
-        "reporting_source_other": "",
-        "reporting_organization": "",
-        "reporting_organization_other": "",
-        "person_making_the_report": "",
-        "reporting_phone_number": "",
-        "reporting_phone_number_extension": "",
-        "patient_symptons": "",
-        "patient_symptons_other": "",
-        "patient_onset_date": "",
-        "patient_exposures": "",
-        "patient_exposures_other": "",
-        "patient_specimens_collected": "",
-        "patient_specimens_collected_other": "",
-        "patient_seciment_collection_date": "",
-        "patient_hospital_told_patient_to_selfisolate": "",
-        "patient_lab_results": "",
-        "cores_unique_id": "",
-        "patient_adviced_selfmonitor_selfisolate": "",
-        "public_health_actions_lab_findings_shared_with_client": "",
-        "client_advised_isolation_no_longer_needed": "",
-        "clearance_letter_sent": "",
-        "case_status": "",
-        "iphis_exposure_name": "",
-        "iphis_exposure_id": "",
-        "case_classification": "",
-        "iphis_case_id": "",
-        "priority": "",
-        "public_health_actions_screen_notes": "",
-        "date_client_called_hotline": "",
-        "client_identity_validation_method": "",
-        "olis_lookup_for_this_client": "",
-        "olis_lookup_results": "",
-        "client_call_in_details_lab_findings_shared_with_client": "",
-        "hotline_operator_name": "",
-        "client_call_detail_screen_notes": "",
+        "reported_date":"",
+        "reporting_source":"",
+        "reporting_source_other":"",
+        "reporting_organization":"",
+        "reporting_organization_other":"",
+        "person_making_the_report":"",
+        "comments": "",
+        "cpso_number":"",
+        "reporting_phone_number":"",
+        "reporting_phone_number_extension":"",
+        "patient_symptoms":[],
+        "patient_symptoms_other":"",
+        "patient_onset_date":"",
+        "patient_exposures":[],
+        "patient_exposures_other":"",
+        "patient_specimens_collected":[],
+        "patient_specimens_collected_other":"",
+        "patient_specimen_collection_date":"",
+        "patient_hospital_told_patient_to_selfisolate":"",
+        "patient_lab_results":[],
+        "patient_lab_results_other": "",
+        "patient_travel_affected_area": "",
+        "patient_travel_other": "",
+        "client_requests_lab_results":"",
+        "client_requests_clearance_letter":"",
+        "lab_results_sent":"",
+        "clearance_letter_sent":"",
+        "case_status":"",
+        "case_classification":"",
+        "case_referred_to":"",
+        "iphis_exposure_name":"",
+        "iphis_exposure_id":"",
+        "iphis_case_id":"",
+        "priority":"",
         "supportingDocuments": []
       });
       let user;
@@ -1831,7 +2664,7 @@ const getSubmissionSections = (form_id, data) => {
           },
           order: [[0, 'desc']],
           columns: [
-            {data: "__CreatedOn",  targets: 0, className:"colMed", render:(data)=>{return moment(data).format("YYY-MM-DD")}},
+            {data: "__CreatedOn",  targets: 0, className:"colMed", render:(data)=>{return moment(data).format("YYYY-MM-DD")}},
             {data: "note", targets: 1, orderable:false , className:"colXL"}
           ]
         };
@@ -2005,7 +2838,7 @@ const getSubmissionSections = (form_id, data) => {
                         fields: [
                           {
                             id: "date_client_called_hotline",
-                            type: "datetimepicker",
+                            type: "text",
                             title: "Date client called hotline",
                             className: "col-xs-12",
                             bindTo: "date_client_called_hotline",
@@ -2034,7 +2867,7 @@ const getSubmissionSections = (form_id, data) => {
                           },
                           {
                             id: "olis_lookup_for_this_client",
-                            type: "radio",
+                            type: "text",
                             title: "OLIS Look-up for this client",
                             className: "col-xs-12",
                             bindTo: "olis_lookup_for_this_client",
@@ -2075,7 +2908,7 @@ const getSubmissionSections = (form_id, data) => {
                           },
                           {
                             id: "client_call_in_details_lab_findings_shared_with_client",
-                            type: "radio",
+                            type: "text",
                             title: "Lab findings shared with client",
                             className: "col-xs-12",
                             bindTo: "client_call_in_details_lab_findings_shared_with_client",
@@ -2096,7 +2929,7 @@ const getSubmissionSections = (form_id, data) => {
                           },
                           {
                             id: "patient_adviced_selfmonitor",
-                            type: "radio",
+                            type: "text",
                             title: "Patient advised to self-monitor",
                             className: "col-xs-12",
                             bindTo: "patient_adviced_selfmonitor",
@@ -2116,7 +2949,7 @@ const getSubmissionSections = (form_id, data) => {
                           },
                           {
                             id: "patient_adviced_selfisolate",
-                            type: "radio",
+                            type: "text",
                             title: "Patient advised to self-isolate",
                             className: "col-xs-12",
                             bindTo: "patient_adviced_selfisolate",
@@ -2136,7 +2969,7 @@ const getSubmissionSections = (form_id, data) => {
                           },
                           {
                             id: "client_advised_isolation_no_longer_needed",
-                            type: "radio",
+                            type: "text",
                             title: "Client advised isolation no longer needed",
                             className: "col-xs-12",
                             bindTo: "client_advised_isolation_no_longer_needed",
@@ -2157,7 +2990,7 @@ const getSubmissionSections = (form_id, data) => {
                           },
                           {
                             id: "client_health_info_provided",
-                            type: "radio",
+                            type: "text",
                             title: "Eduaction information provided",
                             className: "col-xs-12",
                             bindTo: "client_health_info_provided",
@@ -2395,7 +3228,7 @@ const getSubmissionSections = (form_id, data) => {
                         {
                           id: "client_health_info_provided",
                           type: "radio",
-                          title: "Eduaction information provided",
+                          title: "Education information provided",
                           className: "col-xs-12",
                           bindTo: "client_health_info_provided",
                           required: true,
@@ -2500,7 +3333,7 @@ const getSubmissionSections = (form_id, data) => {
           delete last_payload["__Owner"];
           delete last_payload["__Status"];
 
-          autoSave = setInterval(registerAutoSave, 30000);
+          autoSave = setInterval(registerAutoSave, 3000);
         } else {
 
         }
@@ -2652,83 +3485,127 @@ router.navigate( 'submissions/' + data.id + '/?alert=success&msg=' + 'test 123' 
          */
       };
 
-      var _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];
-            descriptor.enumerable = descriptor.enumerable || false;
-            descriptor.configurable = true;
-            if ("value" in descriptor) descriptor.writable = true;
-            Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }
-
-        return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);
-          if (staticProps) defineProperties(Constructor, staticProps);
-          return Constructor;
-        };
-      }();
-
-    function _classCallCheck(instance, Constructor) {
-      if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-      }
-    }
-
       var isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
-      var IE11Cache = function IE11Cache() {
+      var IE11Cache = function () {
         if (isIE11) {
-          return '?t=' + new Date().getTime();
+          //return '?t='+(new Date).getTime();
+          return '';
         } else {
           return '';
         }
-      };
+      }
 
-      var charactersNotAllowed = 'characters < > % not allowed';
+      let charactersNotAllowed = 'characters < > % not allowed';
 
     function fixEX(string) {
       if (/^[^<>%]*$/.test(string)) {
+        //console.log(string);
+        //console.log('matches');
         return true;
+      } else {
+        //console.log(string);
+        //console.log('no match');
+        return false;
+      }
+    }
+
+      let dateFormat = /(19|20)[0-9]{2}-((02-(0[1-9]|[1-2][0-9]))|((01|03|05|07|08|10|12)-(0[1-9]|[1-2][0-9]|3[0-1]))|((04|06|09|11)-(0[1-9]|[1-2][0-9]|30)))/g;
+      let dateFormatText = 'Please provide a valid date format YYYY-MM-DD';
+
+      let phoneFormat = /\d/gi;
+      let phoneFormatText = 'Alpha characters are not allowed in phone format';
+
+      let phoneExFormat = /\d/gi;
+      let phoneExFormatText = 'Alpha characters are not allowed in phone format';
+
+    function validateHC(valueGET) {
+
+      var value = valueGET.replace(/-/gi, '').replace(/ /gi, '');
+      var sin = value.replace(/[^\d]/g, "");
+      var alpha = value.replace(/[^\D]/g, "");
+
+      // console.log(sin);
+      // console.log(alpha);
+
+      var HC_LENGTH = 10;
+      if (sin && sin.length === HC_LENGTH) {
+        var len = HC_LENGTH,
+          mul = 0,
+          luhnArr = [
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
+          ],
+          sum = 0;
+        while (len--) {
+          sum += luhnArr[mul][parseInt(sin.charAt(len), 10)];
+          mul = mul ^ 1;
+        }
+        if (sum % 10 === 0) {
+
+          if (alpha && alpha != '') {
+            if (alpha.length == 2) {
+              return true;
+            } else {
+              return false;
+            }
+          } else {
+            return true;
+          }
+
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
     }
 
-      var firstLoadPage = true;
-      var firstLoadPageLocationSet = true;
-      var originalSearchTerm = false;
-      var cannotSubmit = true;
-      var totalCharacters = 4000;
-      var totalUploadSizeLimit = 20971520;
-      var remainingUploadSize = totalUploadSizeLimit;
-      var uploadedFiles = [];
-      var dz_uploader = void 0;
-      var submitRetries = 0;
-      var dataFirstBeingSent = true;
-      var supportingDocuments = [];
-      var CONTRACTORAPI = '';
+      let firstLoadPage = true;
+      let firstLoadPageLocationSet = true;
+      let originalSearchTerm = false;
+
+      let cannotSubmit = true;
+      let totalCharacters = 4000;
+      let totalUploadSizeLimit = 20971520;
+      let remainingUploadSize = totalUploadSizeLimit;
+      let uploadedFiles = []
+      let dz_uploader;
+      let submitRetries = 0;
+      let dataFirstBeingSent = true;
+
+      let supportingDocuments = [];
+
+      let CONTRACTORAPI = '';
+
 
     function errorInputIcon(id) {
-      return '  <i id="iconStatus_' + id + '" class="form-control-feedback glyphicon glyphicon-remove" aria-hidden="true"></i> ';
+      return `
+    <i id="iconStatus_${id}" class="form-control-feedback glyphicon glyphicon-remove" aria-hidden="true"></i>
+  `;
     }
 
     function successInputIcon(id) {
-      return '  <i id="iconStatus_' + id + '" class="form-control-feedback glyphicon glyphicon-ok" aria-hidden="true"></i> ';
+      return `
+    <i id="iconStatus_${id}" class="form-control-feedback glyphicon glyphicon-ok" aria-hidden="true"></i>
+  `;
+    }
+
+// show loading
+    function showLoading() {
+      //$('.searchingBox').removeClass('hidden');
+      $('#loading-indicator').css('display', 'block');
+    }
+
+// hide loading
+    function hideLoading(renderLoad) {
+      $('#loading-indicator').css('display', 'none');
     }
 
     function checkSpecialKeys(e) {
-      if (e.keyCode != 8 && e.keyCode != 46 && e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40) return false; else return true;
-    }
-
-    function uploadInfoText() {
-      var html = '   <p>The following attachments should comply with the following:</p>   <ul>    <li>All attachments must be submitted in <i class="far fa-file-pdf"></i> PDF, <i class="far fa-file-word"></i> Word or <i class="far fa-file-archive"></i> Zip format. </li>    <li>There is a maximum limit of 8 files.</li>    <li>There is a file size limit of 10MB per file.</li>    <li>You can remove any file you have attached by clicking Delete.</li>   </ul>   <p>To upload files, follow these steps for each document:</p>   <ul>    <li>Choose your file(s) from your computer or device. Once you select it, it will upload.</li>    <li>Add description of file.</li>    <li>Attach the file(s) by clicking Next.</li>   </ul>   <p>All files will be scanned at the time of submission. Infected or corrupted files will not be attached to the submission.</p>  ';
-      return html;
-    }
-
-    function summaryHTML() {
-      var html = '   <i class="fas fa-spinner fa-spin"></i> Loading  ';
-      return html;
+      if (e.keyCode != 8 && e.keyCode != 46 && e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40)
+        return false;
+      else
+        return true;
     }
 
     function checkTextAreaMaxLength(textBox, e) {
@@ -2739,6 +3616,62 @@ router.navigate( 'submissions/' + data.id + '/?alert=success&msg=' + 'test 123' 
       $(".charactercount_" + $(textBox).attr('id')).html(maxLength - textBox.value.length);
       return true;
     }
+
+      $(document).on('click', '#covid19_container input[type="radio"]', function () {
+        //console.log($(this).val());
+        $(this).parents('.form-group.has-feedback').last().attr('data-value', $(this).val()).attr('data-id', this.id)
+      });
+
+
+    function getLicence(licence, date, callback) {
+      //<licenceNo>/<yyyyMMdd>
+      $.ajax({
+        url: "/*@echo LICENCE_API_URL*/" + licence + '/' + moment(date).format('YYYYMMDD'),
+        method: 'POST',
+        //headers: {
+        // userName: username,
+        // password: pass,
+        // customerGuid: cid
+        //},
+        beforeSend: function (xhr) {
+          //xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
+        }
+      })
+        .done(function (data) {
+          // {
+          //   name: "",
+          //   valid: true,
+          //   errMsg: ""
+          // }
+
+          if (data.valid) {
+            callback([{
+              text: data.name,
+              value: licence,
+              data: data
+            }]);
+          } else {
+            callback([]);
+          }
+
+        })
+        .fail(function (error) {
+          //alert( "error" );
+          callback([]);
+        })
+        .always(function () {
+          //alert( "complete" );
+        });
+
+    }
+
+
+      $(document).on('click', '.typeahead__button--clear', function () {
+        $('.typeahead__input--addon').html(errorInputIcon());
+        $('#patient_mailing_address').val('');
+      });
+
+
 
       break;
   }
@@ -2801,7 +3734,6 @@ const getColumnDefinitions = (formName, filter) => {
             return view_button;
           }
         },
-
         {"data": "patient_ontario_health_card_number", "title": "OHCN", "filter": true, "type": "text"},
         {"data": "patient_firstname", "title": "First Name", "filter": true, "type": "text"},
         {"data": "patient_lastname", "title": "Last Name", "filter": true, "type": "text"},
@@ -2880,6 +3812,10 @@ const getColumnDefinitions = (formName, filter) => {
             return view_button;
           }
         },
+        {"data": "client_requests_lab_results", "title": "Results Requested", "filter": true, "type": "dropdown" ,"filterChoices":config.choices.yesNo},
+        {"data": "lab_results_sent", "title": "Results Sent", "filter": true, "type": "dropdown" ,"filterChoices":config.choices.yesNo},
+        {"data": "client_requests_clearance_letter", "title": "Clearance Letter Requested", "filter": true, "type": "dropdown" ,"filterChoices":config.choices.yesNo},
+        {"data": "clearance_letter_sent", "title": "Clearance Letter Sent", "filter": true, "type": "dropdown" ,"filterChoices":config.choices.yesNo},
         {"data": "patient_firstname", "title": "First Name", "filter": true, "type": "text"},
         {"data": "patient_middlename", "title": "Middle Name", "filter": true, "type": "text"},
         {"data": "patient_lastname", "title": "Last Name", "filter": true, "type": "text"},
@@ -2901,6 +3837,7 @@ const getColumnDefinitions = (formName, filter) => {
         {"data": "patient_ontario_health_card_number", "title": "OHCN", "filter": true, "type": "text"},
         {"data": "patient_dateofbirth", "title": "DOB", "filter": true, "type": "text"},
         {"data": "patient_phone_number", "title": "Phone", "filter": true, "type": "text"},
+        {"data": "patient_email", "title": "Email", "filter": true, "type": "text"},
         {
           "data": "__CreatedOn",
           "title": "Created",
@@ -2944,6 +3881,7 @@ const getColumnDefinitions = (formName, filter) => {
           "filter": true,
           "type": "text"
         },
+        /*
         {"data": "patient_mailing_street_name", "title": "patient_mailing_street_name", "filter": true, "type": "text"},
         {
           "data": "patient_mailing_suite_number",
@@ -2975,8 +3913,8 @@ const getColumnDefinitions = (formName, filter) => {
           "filter": true,
           "type": "text"
         },
-        {"data": "patient_symptons", "title": "patient_symptons", "filter": true, "type": "text"},
-        {"data": "patient_symptons_other", "title": "patient_symptons_other", "filter": true, "type": "text"},
+        {"data": "patient_symptoms", "title": "patient_symptoms", "filter": false, "type": "text"},
+        {"data": "patient_symptoms_other", "title": "patient_symptoms_other", "filter": true, "type": "text"},
         {"data": "patient_onset_date", "title": "patient_onset_date", "filter": true, "type": "text"},
         {"data": "patient_exposures", "title": "patient_exposures", "filter": true, "type": "text"},
         {"data": "patient_exposures_other", "title": "patient_exposures_other", "filter": true, "type": "text"},
@@ -3026,12 +3964,6 @@ const getColumnDefinitions = (formName, filter) => {
         {"data": "case_classification", "title": "case_classification", "filter": true, "type": "text"},
         {"data": "iphis_case_id", "title": "iphis_case_id", "filter": true, "type": "text"},
         {"data": "priority", "title": "priority", "filter": true, "type": "text"},
-        {
-          "data": "public_health_actions_screen_notes",
-          "title": "public_health_actions_screen_notes",
-          "filter": true,
-          "type": "text"
-        },
         {"data": "date_client_called_hotline", "title": "date_client_called_hotline", "filter": true, "type": "text"},
         {
           "data": "client_identity_validation_method",
@@ -3054,6 +3986,7 @@ const getColumnDefinitions = (formName, filter) => {
           "filter": true,
           "type": "text"
         },
+        */
         {
           "data": "__CreatedOn",
           "title": "Created",
@@ -3078,6 +4011,11 @@ const getColumnDefinitions = (formName, filter) => {
  *
  */
 const registerEvents = () => {
+
+//  $(window).on( "unload", ()=>{enhancedLogout()} );
+//  $(window).unload(function(){
+//    enhancedLogout();
+//  });
   $.ajaxSetup({cache: false});
 
   let cur_user = Cookies.get(config.default_repo + '.cot_uname') && Cookies.get(config.default_repo + '.cot_uname') !== "" ? Cookies.get(config.default_repo + '.cot_uname') : "not set"
@@ -3114,68 +4052,11 @@ const registerEvents = () => {
   $("#maincontent").off('click', '.btn-createNewCase').on('click', '.btn-createNewCase', function () {
     let searchOptions = {};
     let payload = {
-      "case_classification": "",
-      "case_status": "",
-      "clearance_letter_sent": [],
-      "client_advised_isolation_no_longer_needed": [],
-      "client_call_detail_screen_notes": "",
-      "client_call_in_details_lab_findings_shared_with_client": [],
-      "client_identity_validation_method": "",
-      "cores_unique_id": "",
-      "date_client_called_hotline": "",
-      "email": null,
-      "fullName": null,
-      "hotline_operator_name": "",
-      "id": "20659327364",
-      "iphis_case_id": "",
-      "iphis_exposure_id": "",
-      "iphis_exposure_name": "",
-      "olis_lookup_for_this_client": [],
-      "olis_lookup_results": "",
-      "patient_adviced_selfmonitor_selfisolate": [],
-      "patient_dateofbirth": "",
-      "patient_exposures": [],
-      "patient_exposures_other": "",
-      "patient_firstname": "",
-      "patient_gender": "",
-      "patient_hospital_mrn": "",
-      "patient_hospital_told_patient_to_selfisolate": [],
-      "patient_lab_results": "",
-      "patient_lastname": "",
-      "patient_mailing_address": "",
-      "patient_mailing_address_data": "",
-      "patient_mailing_city": "",
-      "patient_mailing_country": "",
-      "patient_mailing_lat": "",
-      "patient_mailing_long": "",
-      "patient_mailing_postal_code": "",
-      "patient_mailing_province": "",
-      "patient_mailing_street_name": "",
-      "patient_mailing_street_number": "",
-      "patient_mailing_suite_number": "",
-      "patient_middlename": "",
-      "patient_onset_date": "",
       "patient_ontario_health_card_number": "",
-      "patient_phone_number": "416-555-2342",
-      "patient_seciment_collection_date": "",
-      "patient_specimens_collected": [],
-      "patient_specimens_collected_other": "",
-      "patient_symptons": [],
-      "patient_symptons_other": "",
-      "person_making_the_report": "",
-      "phone": null,
-      "priority": "",
-      "public_health_actions_lab_findings_shared_with_client": [],
-      "public_health_actions_screen_notes": "",
-      "refSEQNumber": "",
-      "referenceID": "",
-      "reported_date": "",
-      "reporting_organization": "",
-      "reporting_organization_other": "",
-      "reporting_phone_number": "",
-      "reporting_phone_number_extension": "",
-      "reporting_source": "",
-      "reporting_source_other": ""
+      "patient_firstname": "",
+      "patient_lastname": "",
+      "patient_dateofbirth": "",
+      "case_status":"new"
     };
     let options = {
       contentType: "application/json",
@@ -3602,12 +4483,14 @@ const getRoutes = () => {
 const registerAuthEvents = (oLogin) => {
   let deferred = new $.Deferred();
   let groups = JSON.parse(oLogin.groups);
-
+/*
   if (groups.indexOf("CN=Office-Metro Hall,OU=Distribution Groups,OU=Exchange,OU=Service Accounts,DC=org,DC=ad,DC=toronto,DC=ca") > -1) {
     loadUserView("one");
 
     deferred.resolve();
   }
+
+ */
   if (groups.indexOf("cn=covid19_admin,ou=production,ou=WCM,ou=Groups,o=Toronto") > -1) {
     loadUserView("one");
 
@@ -3793,3 +4676,29 @@ const printPDF = (headerTextRight, footerTextLeft, watermark) => {
   ;
 
 };
+
+
+function enhancedLogout() {
+  // call to invalidate session
+  // GET /session/{session id}?r={user name}
+  $.ajax({
+    // for v1 Auth session
+    // "url": config.httpHost.app[httpHost] + config.api.authPath + config.api.authEndpoint + '/' + oLogin.session.sid + '?r='' + oLogin.username
+    // for v2 Auth session
+    // end point
+    // DELETE /c3api_auth/v2/AuthService.svc/AuthSet('{session id}') --header 'Authorization: {user name}'
+    "url": config.httpHost.app[httpHost] + config.api.authPath + config.api.authEndpoint + "('" + oLogin.session.sid + "')",
+    "type": "delete",
+    "async": false,
+    "headers": { "Authorization": oLogin.username }
+  })
+    .success(function (data, jqXHR) {
+      oLogin.logout();
+    })
+    .error(function (textStatus, error) {
+      oLogin.logout();
+    })
+    .fail(function (textStatus, error) {
+      oLogin.logout();
+    });
+}

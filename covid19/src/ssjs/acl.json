@@ -1,27 +1,93 @@
 [
   {
-    "group": "staff",
-    "resource": "/c3api_config/v2/ConfigService.svc/ConfigSet/covid19/**",
-    "action": "**"
+    "group": "anonymous",
+    "resource": "/config-api-cores/v2/ConfigService.svc/ConfigSet/covid19/**",
+    "action": "GET"
   },
   {
-    "group": ["cn=DTS_APP_ADMIN,ou=production,ou=WCM,ou=Groups,o=Toronto", "gperry2","ebiba"],
-    "resource": "/c3api_data/v2/DataAccess.svc/covid19/**",
+    "group": [
+      "cn=DTS_APP_ADMIN,ou=production,ou=WCM,ou=Groups,o=Toronto",
+      "gperry2", "ebiba", "jpaul4"
+    ],
+    "resource": "/config-api-cores/v2/ConfigService.svc/ConfigSet/covid19/**",
+    "action":  ["GET","PATCH","PUT","POST","DELETE"]
+  },
+  {
+    "group": ["cn=DTS_APP_ADMIN,ou=production,ou=WCM,ou=Groups,o=Toronto", "gperry2","ebiba","jpaul4"],
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/**",
     "action": ["GET","PATCH","PUT","POST","DELETE"]
   },
   {
     "group": "anonymous",
-    "resource": "/c3api_data/v2/DataAccess.svc/covid19/submissions**",
-    "action": ["POST","GET"]
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/submissions**",
+    "action": ["POST","OPTIONS"]
+  },
+  {
+    "group": "anonymous",
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/tokens**",
+    "action": ["POST","OPTIONS"]
+  },
+  {
+    "group": [
+      "cn=DTS_APP_ADMIN,ou=production,ou=WCM,ou=Groups,o=Toronto",
+      "cn=covid19_admin,ou=production,ou=WCM,ou=Groups,o=Toronto",
+      "gperry2","ebiba","jpaul4"
+    ],
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/submissions**",
+    "action":  ["GET","PATCH","PUT","POST","DELETE"]
+  },
+  {
+    "group": [
+      "cn=DTS_APP_ADMIN,ou=production,ou=WCM,ou=Groups,o=Toronto",
+      "cn=covid19_hotline_staff,ou=production,ou=WCM,ou=Groups,o=Toronto",
+     "gperry2","ebiba","jpaul4"
+    ],
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/submissions**",
+    "action":  ["GET","PATCH","PUT","POST"]
+  },
+  {
+    "group": [
+      "cn=covid19_hotline_staff,ou=production,ou=WCM,ou=Groups,o=Toronto",
+      "cn=covid19_admin,ou=production,ou=WCM,ou=Groups,o=Toronto",
+      "gperry2","ebiba","jpaul4"
+    ],
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/client_contact**",
+    "action":  ["GET","POST"]
+  },
+  {
+    "group": [
+      "cn=covid19_hotline_staff,ou=production,ou=WCM,ou=Groups,o=Toronto",
+      "cn=covid19_admin,ou=production,ou=WCM,ou=Groups,o=Toronto", "gperry2","ebiba","jpaul4"
+    ],
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/note**",
+    "action":  ["GET","POST"]
   },
   {
     "group": ["anonymous","staff"],
-    "resource": "/c3api_data/v2/DataAccess.svc/covid19/Media**",
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/Media**",
     "action": "GET"
   },
   {
     "group": ["cn=DTS_APP_ADMIN,ou=production,ou=WCM,ou=Groups,o=Toronto", "gperry2","ebiba"],
-    "resource": "/c3api_data/v2/DataAccess.svc/covid19/Media**",
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/Media**",
     "action": ["GET","PATCH","PUT","POST","DELETE"]
+  },
+  {
+    "group": "anonymous",
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/submissions\\?\\$format=json&\\$select=refSEQNumber&\\$filter=\\(refSEQNumber eq \\d*\\)&\\$count=true&\\$top=1&unwrap=true",
+    "matchType": "regex",
+    "action": [
+      "OPTIONS",
+      "GET"
+    ]
+  },
+  {
+    "group": "anonymous",
+    "resource": "/data-access-api-cores/v2/DataAccess.svc/covid19/submissions\\?\\$format=json&\\$select=refSEQNumber&\\$filter=\\(refSEQNumber ne null\\)&\\$orderby=refSEQNumber desc&\\$top=1&unwrap=true",
+    "matchType": "regex",
+    "action": [
+      "OPTIONS",
+      "GET"
+    ]
   }
 ]

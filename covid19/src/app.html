@@ -16,14 +16,14 @@
 <!--@exec startBuildTagWithCacheBuster('styles/main.css')-->
 <!-- core:css -->
 <!-- endinject -->
-<link rel="stylesheet" type="text/css" href="<!--@echo COT_UI_ROOT-->/webapps/cdn/cotui/latest/cotui.css">
 <!-- endbuild -->
 <!--@exec startBuildTagWithCacheBuster('styles/core_print.css', 'media="print"')-->
 <!-- core_print:css -->
 <!-- endinject -->
 <!-- endbuild -->
+<link rel="stylesheet" type="text/css" href="<!--@echo COT_UI_ROOT--><!--@echo COTUI_PATH-->cotui.css">
 <link rel="stylesheet" type="text/css" href="/<!-- @echo COTSTAFF_ROOT --><!-- @echo COTSTAFF_VERSION -->/styles/cotstaff<!-- @echo COTSTAFF_VERSION -->.css">
-<link rel="stylesheet" type="text/css" href="<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('custom.css')/$value">
+<link rel="stylesheet" type="text/css" href="<!--@echo ROOT_ENV--><!--@echo DATA_ACCESS_ROOT--><!--@echo CONFIG_APP_NAME-->/Media('custom.css')/$value">
 <!-- cot-app:head end-->
 <!-- cot-app:body -->
 <!-- cot-app:body end-->
@@ -33,8 +33,8 @@
 <!-- endinject -->
 <!-- endbuild -->
 <script type="text/javascript" src="/<!-- @echo COTSTAFF_ROOT --><!-- @echo COTSTAFF_VERSION -->/scripts/cotstaff<!-- @echo COTSTAFF_VERSION -->.js"></script>
-<script  src="<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('combined.js')/$value"></script>
-<script  src="<!--@echo COT_UI_ROOT-->/webapps/cdn/cotui/latest/cotui.js"></script>
+<script  src="<!--@echo ROOT_ENV--><!--@echo DATA_ACCESS_ROOT--><!--@echo CONFIG_APP_NAME-->/Media('combined.js')/$value"></script>
+<script  src="<!--@echo COT_UI_ROOT--><!--@echo COTUI_PATH-->cotui.js"></script>
 <script  src="//cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ace.js"></script>
 <script type="text/javascript" src="<!--@echo ANALYTICS-->"></script>
 <script>
@@ -42,8 +42,8 @@
   const httpHost = "<!--@echo ENV-->" ;
   const CONFIG_APP_NAME = "<!--@echo CONFIG_APP_NAME-->";
   const configURL= [
-    "<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('combined.json')/$value",
-    "<!--@echo ROOT_ENV-->/c3api_data/v2/DataAccess.svc/<!--@echo CONFIG_APP_NAME-->/Media('site_variables.json')/$value"
+    "<!--@echo ROOT_ENV--><!--@echo DATA_ACCESS_ROOT--><!--@echo CONFIG_APP_NAME-->/Media('combined.json')/$value",
+    "<!--@echo ROOT_ENV--><!--@echo DATA_ACCESS_ROOT--><!--@echo CONFIG_APP_NAME-->/Media('site_variables.json')/$value"
   ];
 
 </script>

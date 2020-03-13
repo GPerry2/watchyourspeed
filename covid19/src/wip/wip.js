@@ -1,21 +1,22 @@
+
+
 var isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
-var IE11Cache = function () {
-  if (isIE11) {
+var IE11Cache = function(){
+  if(isIE11){
     //return '?t='+(new Date).getTime();
     return '';
-  } else {
+  } else{
     return '';
   }
 }
 
 let charactersNotAllowed = 'characters < > % not allowed';
-
-function fixEX(string) {
-  if (/^[^<>%]*$/.test(string)) {
+function fixEX(string){
+  if(/^[^<>%]*$/.test(string)){
     //console.log(string);
     //console.log('matches');
     return true;
-  } else {
+  } else{
     //console.log(string);
     //console.log('no match');
     return false;
@@ -23,9 +24,13 @@ function fixEX(string) {
 }
 
 
+
+
 // $(document).on('click','.datetimepicker input',function(){
 //   $(this).parents('.datetimepicker').find('.input-group-addon').click();
 // });
+
+
 
 
 //let dateFormat = /(\d\d\d\d\d\d\d\d)/gi;
@@ -36,13 +41,14 @@ let dateFormatText = 'Please provide a valid date format YYYY-MM-DD';
 let phoneFormat = /\d/gi;
 let phoneFormatText = 'Alpha characters are not allowed in phone format';
 
-let phoneExFormat = /\d/gi;
+let phoneExFormat = /^[0-9]*$/;
 let phoneExFormatText = 'Alpha characters are not allowed in phone format';
 
 
-function validateHC(valueGET) {
 
-  var value = valueGET.replace(/-/gi, '').replace(/ /gi, '');
+function validateHC (valueGET) {
+
+  var value = valueGET.replace(/-/gi,'').replace(/ /gi,'');
   var sin = value.replace(/[^\d]/g, "");
   var alpha = value.replace(/[^\D]/g, "");
 
@@ -62,15 +68,15 @@ function validateHC(valueGET) {
       sum += luhnArr[mul][parseInt(sin.charAt(len), 10)];
       mul = mul ^ 1;
     }
-    if (sum % 10 === 0) {
+    if ( sum % 10 === 0 ) {
 
-      if (alpha && alpha != '') {
-        if (alpha.length == 2) {
+      if(alpha && alpha!=''){
+        if(alpha.length==2){
           return true;
-        } else {
+        } else{
           return false;
         }
-      } else {
+      } else{
         return true;
       }
 
@@ -102,6 +108,9 @@ function validateHC(valueGET) {
 // }
 
 
+
+
+
 let firstLoadPage = true;
 let firstLoadPageLocationSet = true;
 let originalSearchTerm = false;
@@ -120,28 +129,54 @@ let supportingDocuments = [];
 let CONTRACTORAPI = '';
 
 
-function errorInputIcon(id) {
+function errorInputIcon(id){
   return `
     <i id="iconStatus_${id}" class="form-control-feedback glyphicon glyphicon-remove" aria-hidden="true"></i>
   `;
 }
 
-function successInputIcon(id) {
+function successInputIcon(id){
   return `
     <i id="iconStatus_${id}" class="form-control-feedback glyphicon glyphicon-ok" aria-hidden="true"></i>
   `;
 }
 
+
+
+// $.ajax({
+//   url: `/*@echo PDF_API*/('9364b699-ce01-49c5-8fb8-07fb7637cbc3')`,
+//   method: "GET",
+//   headers:{
+//     'Content-Type':'application/json'
+//   },
+
+// }).then(res=>{
+//   console.log("GOT THE FILE",res);
+//   var a = document.createElement('a');
+//   var url = `/*@echo DOWNLOAD_API*/${res.BIN_ID[0].bin_id}`;
+//   a.href = url;
+//   a.download = 'claimlein-form12.pdf';
+//   console.log(a);
+
+
+//   document.body.append(a);
+//   a.click();
+//   a.remove();
+// });
+
+
+
 // show loading
-function showLoading() {
+function showLoading(){
   //$('.searchingBox').removeClass('hidden');
-  $('#loading-indicator').css('display', 'block');
+  $('#loading-indicator').css('display','block');
 }
 
 // hide loading
-function hideLoading(renderLoad) {
-  $('#loading-indicator').css('display', 'none');
+function hideLoading(renderLoad){
+  $('#loading-indicator').css('display','none');
 }
+
 
 
 function checkSpecialKeys(e) {
@@ -156,62 +191,69 @@ function checkTextAreaMaxLength(textBox, e) {
   if (!checkSpecialKeys(e)) {
     if (textBox.value.length > maxLength - 1) textBox.value = textBox.value.substring(0, maxLength);
   }
-  $(".charactercount_" + $(textBox).attr('id')).html(maxLength - textBox.value.length);
+  $(".charactercount_"+$(textBox).attr('id')).html(maxLength - textBox.value.length);
   return true;
 }
 
 
+
 // attach radio button value and id to parent div for summary
-$(document).on('click', '#covid19_container input[type="radio"]', function () {
+$(document).on('click','#covid19_container input[type="radio"]',function(){
   //console.log($(this).val());
-  $(this).parents('.form-group.has-feedback').last().attr('data-value', $(this).val()).attr('data-id', this.id)
+  $(this).parents('.form-group.has-feedback').last().attr('data-value',$(this).val()).attr('data-id',this.id)
 });
 
 
-function getLicence(licence, date, callback) {
+
+
+
+
+function getLicence(licence,date,callback){
   //<licenceNo>/<yyyyMMdd>
   $.ajax({
-    url: "/*@echo LICENCE_API_URL*/" + licence + '/' + moment(date).format('YYYYMMDD'),
+    url: "/*@echo LICENCE_API_URL*/"+licence+'/'+moment(date).format('YYYYMMDD'),
     method: 'POST',
     //headers: {
     // userName: username,
     // password: pass,
     // customerGuid: cid
     //},
-    beforeSend: function (xhr) {
+    beforeSend: function( xhr ) {
       //xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
     }
   })
-    .done(function (data) {
+    .done(function( data ) {
       // {
       //   name: "",
       //   valid: true,
       //   errMsg: ""
       // }
 
-      if (data.valid) {
+      if(data.valid){
         callback([{
           text: data.name,
           value: licence,
           data: data
         }]);
-      } else {
+      } else{
         callback([]);
       }
 
     })
-    .fail(function (error) {
+    .fail(function(error) {
       //alert( "error" );
       callback([]);
     })
-    .always(function () {
+    .always(function() {
       //alert( "complete" );
     });
 
 }
 
 
-$(document).on('click', '.typeahead__button--clear', function () {
+
+
+$(document).on('click','.typeahead__button--clear',function(){
   $('.typeahead__input--addon').html(errorInputIcon());
   $('#patient_mailing_address').val('');
 });
@@ -227,9 +269,8 @@ $(document).on('click', '.typeahead__button--clear', function () {
 
 let currentStep = 1;
 let totalSteps = 4;
-
 //let currentStep = 3; // testing
-function progressChange(step) {
+function progressChange(step){
 
   let formID = $(formHtmlIdHashform).data('formValidation');
 
@@ -260,21 +301,22 @@ function progressChange(step) {
 
 
   // progress bar
-  let stepProgress = (step / totalSteps * 100).toFixed(0);
-  let stepProgressWidth = (step / totalSteps * 100).toFixed(0);
-  if (step == 1) {
+  let stepProgress = (step/totalSteps*100).toFixed(0);
+  let stepProgressWidth = (step/totalSteps*100).toFixed(0);
+  if(step==1){
     stepProgress = 0;
     stepProgressWidth = 4;
   }
-  $('.progress-bar').css('width', stepProgressWidth + '%');
-  $('.progress-bar').attr('aria-valuenow', stepProgress);
-  $('.progress-bar').html(stepProgress + '%');
+  $('.progress-bar').css('width',stepProgressWidth+'%');
+  $('.progress-bar').attr('aria-valuenow',stepProgress);
+  $('.progress-bar').html(stepProgress+'%');
 
 
   console.log(step);
 
 
-  if (step == 1) {
+
+  if(step==1){
     $(".nextButton").attr("data-wt_params", "WT.si_n=covid19;;WT.si_x=1");
 
     $('.steps').removeClass('active');
@@ -282,7 +324,7 @@ function progressChange(step) {
 
     $('#section0').removeClass('hidden');
 
-  } else if (step == 2) {
+  } else if(step==2){
     $(".nextButton").attr("data-wt_params", "WT.si_n=covid19;;WT.si_x=2");
 
     $('.steps').removeClass('final');
@@ -290,7 +332,7 @@ function progressChange(step) {
 
     $('.well').addClass('hidden');
     $('#section1').removeClass('hidden');
-  } else if (step == 3) {
+  } else if(step==3){
     $(".nextButton").attr("data-wt_params", "WT.si_n=covid19;;WT.si_x=3");
 
     $('.steps').removeClass('final');
@@ -312,7 +354,7 @@ function progressChange(step) {
     //   $('.steps').addClass('active');
     //   $('#section4').removeClass('hidden');
 
-  } else if (step == 4) {
+  } else if(step==4){
 
     //   $(".nextButton").attr("data-wt_params", "WT.si_n=covid19;;WT.si_x=6");
 
@@ -336,7 +378,7 @@ function progressChange(step) {
     $('.submitBox').removeClass('disabled');
     $('.submitBox').removeAttr('disabled');
 
-  } else {
+  } else{
     // do nothing
     $('.steps').removeClass('final');
     $('.steps').removeClass('active');
@@ -344,14 +386,15 @@ function progressChange(step) {
 }
 
 
-function checkAutoSuggest_Address() {
+
+function checkAutoSuggest_Address(){
 
   $('#addressAutosuggestElement').removeClass('has-error');
   $('#addressAutosuggestElement').removeClass('has-success');
   $('#iconStatus_feedback_addressAutosuggest').remove();
   $('#text_feedback_addressAutosuggest').remove();
 
-  if ($('#patient_mailing_address_data').val() == '') {
+  if($('#patient_mailing_address_data').val()==''){
     $('#addressAutosuggestElement').addClass('has-error');
     $('#addressAutosuggestElement .typeahead__input--addon').prepend(errorInputIcon('feedback_addressAutosuggest'));
     $('#cotui-autosuggest_address').append(`
@@ -359,7 +402,7 @@ function checkAutoSuggest_Address() {
       `);
     $('#patient_mailing_address').focus();
     return false;
-  } else {
+  } else{
     $('#addressAutosuggestElement').addClass('has-success');
     $('#addressAutosuggestElement .typeahead__input--addon').prepend(successInputIcon('feedback_addressAutosuggest'));
     $('#text_feedback_addressAutosuggest').remove();
@@ -368,7 +411,9 @@ function checkAutoSuggest_Address() {
 }
 
 
-function getSummary() {
+
+
+function getSummary(){
 
   // let radioChecks = {};
   // $(formHtmlIdHash+" input[type=radio]:checked").each(function() {
@@ -413,9 +458,9 @@ function getSummary() {
   let filesHTML = '';
 
 
-  if (filesAttached == '') {
+  if(filesAttached==''){
     filesHTML = 'No files attached.';
-  } else {
+  } else{
     filesHTML += `
         <table id="uploadedFilesBox" class="table table-bordered table-hover">
           <thead>
@@ -452,6 +497,7 @@ function getSummary() {
     // })
 
 
+
     // loop through files
     // let filesArray = JSON.parse(filesAttached);
     // $.each( filesArray, function( key, value ) {
@@ -479,6 +525,7 @@ function getSummary() {
   }
 
 
+
   // let tabs = `
 
   //     <cotui-tabs id="tabs-to-accordion" selected="0" label="Review Submission Information">
@@ -502,6 +549,9 @@ function getSummary() {
   // `;
 
 
+
+
+
   let tabs = `
 
 
@@ -519,6 +569,13 @@ function getSummary() {
 
 
     `;
+
+
+
+
+
+
+
 
 
   // <div data-label="Attachments" id="5">
@@ -594,19 +651,21 @@ function getSummary() {
   /* End - New Implementation to create a "read only / review page" - changed */
 
 
-  $('#reviewHTMLElement textarea').replaceWith(function () {
-    return '<span class="form-control fxinput ' + this.id + '">' + $('#' + this.id).val().replace(/\n/gi, '<br>') + '</span>'
+
+  $('#reviewHTMLElement textarea').replaceWith(function(){
+    return '<span class="form-control fxinput '+this.id+'">'+$('#'+this.id).val().replace(/\n/gi,'<br>')+'</span>'
   });
 
 
+
   // checkboxes
-  $.each($('#reviewHTMLElement input[type="checkbox"]'), function (key, value) {
+  $.each( $('#reviewHTMLElement input[type="checkbox"]'), function( key, value ) {
     //console.log( key + ": " + value );
     $(value).parent('.checkboxLabel').find('input').after('<i class="fas fa-check"></i>');
     $(value).parent('.checkboxLabel').find('input').addClass('hidden');
-    if ($('#' + value.id).prop("checked")) {
-      $(value).parent('.checkboxLabel').data('id', $('#' + value.id).val());
-    } else {
+    if($('#'+value.id).prop("checked")){
+      $(value).parent('.checkboxLabel').data('id',$('#'+value.id).val());
+    } else{
       //$(value).parent('.checkboxLabel').addClass($('#'+value.id).val());
       $(value).parent('.checkboxLabel').addClass('hidden');
       //$('#reviewHTMLElement .form-control .checkboxLabel').remove();
@@ -615,12 +674,14 @@ function getSummary() {
   });
 
 
+
   // if($('#'+this.id).prop("checked")){
 
   // } else{
   //   $(this).parent('.checkboxLabel').addClass($('#'+this.id).val());
   //   $('#reviewHTMLElement .form-control .checkboxLabel').remove();
   // }
+
 
 
   //$('#reviewHTMLElement input[type="checkbox"]').replaceWith(function(){
@@ -645,7 +706,8 @@ function getSummary() {
   //});
 
 
-  $('#reviewHTMLElement input[type="radio"]').replaceWith(function () {
+
+  $('#reviewHTMLElement input[type="radio"]').replaceWith(function(){
     // if(this.checked){
     //   return '<span class="form-control fxinput '+this.id+'">'+$('#'+this.id).val()+'</span>'
     // } else{
@@ -662,15 +724,15 @@ function getSummary() {
     //console.log(parentValue);
     //console.log($('#'+this.id).val());
 
-    if (typeof parentValue !== 'undefined') {
+    if(typeof parentValue !== 'undefined'){
 
-      if (parentValue == $('#' + this.id).val()) {
+      if(parentValue==$('#'+this.id).val()){
         $(this).parent('.radioLabel').addClass('checked');
-      } else {
+      } else{
         $(this).parent('.radioLabel').remove();
       }
 
-    } else {
+    } else{
       $(this).parents('.form-group.has-feedback').last().remove();
     }
 
@@ -680,31 +742,31 @@ function getSummary() {
     // }
 
   });
-  $('#reviewHTMLElement input[type="email"]').replaceWith(function () {
+  $('#reviewHTMLElement input[type="email"]').replaceWith(function(){
     //console.log($('#'+this.id).val());
-    if ($('#' + this.id).val() != '') {
-      return '<span class="form-control fxinput ' + this.id + '">' + $('#' + this.id).val() + '</span>'
-    } else {
+    if($('#'+this.id).val()!=''){
+      return '<span class="form-control fxinput '+this.id+'">'+$('#'+this.id).val()+'</span>'
+    } else{
       $(this).parents('.form-group.has-feedback').last().remove();
       return '';
     }
   });
 
-  $('#reviewHTMLElement input[type="text"]').replaceWith(function () {
+  $('#reviewHTMLElement input[type="text"]').replaceWith(function(){
     //console.log($('#'+this.id).val());
-    if ($('#' + this.id).val() != '') {
-      return '<span class="form-control fxinput ' + this.id + '">' + $('#' + this.id).val() + '</span>'
-    } else {
+    if($('#'+this.id).val()!=''){
+      return '<span class="form-control fxinput '+this.id+'">'+$('#'+this.id).val()+'</span>'
+    } else{
       $(this).parents('.form-group.has-feedback').last().remove();
       return '';
     }
   });
 
-  $('#reviewHTMLElement input[type="tel"]').replaceWith(function () {
+  $('#reviewHTMLElement input[type="tel"]').replaceWith(function(){
     //console.log($('#'+this.id).val());
-    if ($('#' + this.id).val() != '') {
-      return '<span class="form-control fxinput ' + this.id + '">' + $('#' + this.id).val() + '</span>'
-    } else {
+    if($('#'+this.id).val()!=''){
+      return '<span class="form-control fxinput '+this.id+'">'+$('#'+this.id).val()+'</span>'
+    } else{
       $(this).parents('.form-group.has-feedback').last().remove();
       return '';
     }
@@ -714,10 +776,10 @@ function getSummary() {
   //    return '<span class="form-control fxinput '+this.id+'">'+this.value+'</span>'
   // });
 
-  $('#reviewHTMLElement select').replaceWith(function () {
+  $('#reviewHTMLElement select').replaceWith(function(){
 
     //return '<span class="form-control fxinput '+this.id+'">'+this.value+'</span>'
-    return '<span class="form-control fxinput ' + this.id + '">' + $('#' + this.id).val() + '</span>'
+    return '<span class="form-control fxinput '+this.id+'">'+$('#'+this.id).val()+'</span>'
   });
 
   //$('#reviewHTMLElement .entryField').remove();
@@ -748,6 +810,7 @@ function getSummary() {
 }
 
 
+
 class HomeForm {
   constructor(container) {
     this.model = new SubmissionModel();
@@ -769,11 +832,11 @@ class HomeForm {
 
     hideLoading(true);
 
-    $(document).on('click', '.nextButton', function () {
+    $(document).on('click','.nextButton',function(){
       $('#submitNoticeData').remove();
-      window.scrollTo(0, 0);
+      window.scrollTo(0,0);
       // check validation
-      if (currentStep == 3) {
+      if(currentStep == 3){
 
         // if(dz_uploader.files.length > 0) {
         //   let errorDidOccur = false;
@@ -832,27 +895,29 @@ class HomeForm {
       $('.typeahead__input').addClass('form-control has-feedback');
 
 
+
       $(formHtmlIdHashform).data('formValidation').validate();
 
-      if ($(formHtmlIdHashform).data('formValidation').$invalidFields.length > 0) {
-        if (currentStep == 1) {
+      if($(formHtmlIdHashform).data('formValidation').$invalidFields.length>0){
+        if(currentStep==1){
           checkAutoSuggest_Address();
         }
         return false;
-      } else {
-        if (currentStep == 1) {
+      } else{
+        if(currentStep==1){
           checkAutoSuggest_Address();
         }
       }
 
 
-      if ($('.steps').hasClass('active')) {
+
+      if($('.steps').hasClass('active')){
         // do nothing
-      } else {
+      } else{
         $('.steps').addClass('active');
       }
 
-      if (currentStep >= 0 && currentStep <= 3) {
+      if(currentStep>=0 && currentStep<=3){
         currentStep++;
         progressChange(currentStep);
       }
@@ -860,35 +925,37 @@ class HomeForm {
     });
 
 
-    $(document).on('click', '.previousButton', function () {
+    $(document).on('click','.previousButton',function(){
       $('#submitNoticeData').remove();
 
-      if (currentStep > 1) {
+      if(currentStep>1){
         currentStep--;
         progressChange(currentStep);
       }
 
-      if ($('.progress').hasClass('final')) {
+      if($('.progress').hasClass('final')){
         return false;
-      } else {
+      } else{
         // do nothing
       }
-      if ($('.steps').hasClass('active')) {
+      if($('.steps').hasClass('active')){
         // do nothing
-      } else {
+      } else{
         $('.steps').addClass('active');
       }
     });
 
 
-    $(document).on('click', '.cancelButton', function () {
+
+
+    $(document).on('click','.cancelButton',function(){
 
       CotApp.showModal({
-        title: 'Are you sure you want to leave?',
+        title:'Are you sure you want to leave?',
         body: 'You will lose any changes you’ve made on this page.',
         preset: 'confirm',
         footerButtonsHtml: '',
-        onShown: function () {
+        onShown: function(){
           $('.modal-footer .btn:eq(0)').addClass('btn-cancel');
         },
         buttons: {
@@ -901,14 +968,15 @@ class HomeForm {
             bootstrapType: 'danger'
           }
         },
-        callback: function (e) {
+        callback: function(e){
           // clear terms
-          if (currentStep == 1) {
+          if(currentStep == 1){
             var $el = document.getElementById('covid19_container')
-            var url = "#";
-            window.location.href = url;
+            // var url = "#";
+            // window.location.href = url;
+            location.reload();
           } else {
-            $.removeCookie('terms_cookie_covid19_terms_agreed', {path: '/'});
+            $.removeCookie('terms_cookie_covid19_terms_agreed', { path: '/' });
             location.reload();
           }
           return false;
@@ -919,14 +987,16 @@ class HomeForm {
     });
 
 
-    $(document).on("keyup", "textarea", function (event) {
-      checkTextAreaMaxLength(this, event);
+
+    $(document).on("keyup","textarea",function(event){
+      checkTextAreaMaxLength(this,event);
     });
 
 
-    $(document).on('click', '.submitBox', function () {
+
+    $(document).on('click','.submitBox',function(){
       $('.submitBox').attr('disabled', 'true');
-      if (cannotSubmit) {
+      if(cannotSubmit){
         return false;
         $('.submitBox').removeAttr('disabled');
       }
@@ -939,10 +1009,10 @@ class HomeForm {
     this.cotForm.render({target: this.container});
 
     // Fix Date MaxLength
-    $('.dateInput').attr('maxlength', 10);
+    $('.dateInput').attr('maxlength',10);
 
     // Accessibility fix shift h3 to h2 for panel-heading
-    $('.panel-heading h3').replaceWith(function () {
+    $('.panel-heading h3').replaceWith(function() {
       return $("<h2>", {
         "class": this.className,
         html: $(this).html()
@@ -959,7 +1029,7 @@ class HomeForm {
 
 
     // auto suggest address
-    var handleSelected_address = function (evt) {
+    var handleSelected_address = function(evt){
       //console.log('Selected', evt)
       //$('.typeahead__input--addon').html(successInputIcon());
       $('#patient_mailing_address').val(evt.text);
@@ -968,20 +1038,20 @@ class HomeForm {
       //console.log(evt.value);
 
       $.ajax({
-        url: 'https://map.toronto.ca/cotgeocoder/rest/geocoder/findAddressCandidates?f=json&keyString=' + evt.value + '&retRowLimit=1',
+        url: 'https://map.toronto.ca/cotgeocoder/rest/geocoder/findAddressCandidates?f=json&keyString='+evt.value+'&retRowLimit=1',
         method: 'GET',
-        beforeSend: function (xhr) {
+        beforeSend: function( xhr ) {
           //xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
         }
       })
-        .done(function (data) {
+        .done(function( data ) {
           //$('#'+id).html(JSON.stringify(data));
-          if (data) {
-            if (data.result) {
-              if (data.result.rows) {
-                if (data.result.rows.length >= 1) {
+          if(data){
+            if(data.result){
+              if(data.result.rows){
+                if(data.result.rows.length>=1){
                   $('#patient_mailing_street_number').val(data.result.rows[0].LO_NUM);
-                  $('#patient_mailing_street_name').val(data.result.rows[0].LINEAR_NAME + ' ' + data.result.rows[0].LINEAR_NAME_TYPE);
+                  $('#patient_mailing_street_name').val(data.result.rows[0].LINEAR_NAME+' '+data.result.rows[0].LINEAR_NAME_TYPE+' '+(data.result.rows[0].LINEAR_NAME_DIR||''));
                   $('#patient_mailing_suite_number').val('');
                   $('#patient_mailing_city').val(data.result.rows[0].CITY);
                   $('#patient_mailing_province').val('Ontario');
@@ -990,15 +1060,15 @@ class HomeForm {
                   $('#patient_mailing_long').val(data.result.rows[0].LONGITUDE);
                   $('#patient_mailing_lat').val(data.result.rows[0].LATITUDE);
 
-                  $('#patient_mailing_street_number').attr('disabled', 'disabled');
-                  $('#patient_mailing_street_name').attr('disabled', 'disabled');
+                  $('#patient_mailing_street_number').attr('disabled','disabled');
+                  $('#patient_mailing_street_name').attr('disabled','disabled');
                   // $('#patient_mailing_suite_number').attr('disabled','disabled');
-                  $('#patient_mailing_city').attr('disabled', 'disabled');
-                  $('#patient_mailing_province').attr('disabled', 'disabled');
-                  $('#patient_mailing_country').attr('disabled', 'disabled');
-                  $('#patient_mailing_postal_code').attr('disabled', 'disabled');
-                  $('#patient_mailing_long').attr('disabled', 'disabled');
-                  $('#patient_mailing_lat').attr('disabled', 'disabled');
+                  $('#patient_mailing_city').attr('disabled','disabled');
+                  $('#patient_mailing_province').attr('disabled','disabled');
+                  $('#patient_mailing_country').attr('disabled','disabled');
+                  $('#patient_mailing_postal_code').attr('disabled','disabled');
+                  $('#patient_mailing_long').attr('disabled','disabled');
+                  $('#patient_mailing_lat').attr('disabled','disabled');
 
                 }
               }
@@ -1006,7 +1076,7 @@ class HomeForm {
             console.log(data);
           }
         })
-        .fail(function () {
+        .fail(function() {
           console.log(data);
           $('#patient_mailing_street_number').val('');
           $('#patient_mailing_street_name').val('');
@@ -1031,7 +1101,7 @@ class HomeForm {
           $('#patient_mailing_address_data').val(' ');
 
         })
-        .always(function () {
+        .always(function() {
 
         });
 
@@ -1041,33 +1111,34 @@ class HomeForm {
       checkAutoSuggest_Address();
     }
 
-    let handleResults_address = function (evt) {
+    let handleResults_address = function(evt){
       //console.log('Result', evt)
       //$('.typeahead__button--clear').remove();
       $('#patient_mailing_address').val('');
       $('#patient_mailing_address_data').val('');
 
-      if (evt.length == 0) {
-        $('#cotui-patient_mailing_address').attr('errortext', 'no results found');
-      } else {
-        $('#cotui-patient_mailing_address').attr('errortext', '');
+      if(evt.length==0){
+        $('#cotui-patient_mailing_address').attr('errortext','no results found');
+      } else{
+        $('#cotui-patient_mailing_address').attr('errortext','');
       }
 
     }
 
-    let handleSubmit_address = function (evt) {
+    let handleSubmit_address = function(evt){
       //console.log('Submit', evt)
     }
 
-    let handleInput_address = function (evt) {
+    let handleInput_address = function(evt){
       console.log('Input', evt)
-      if (document.getElementById('cotui-autosuggest_address').value == "") {
+      if(document.getElementById('cotui-autosuggest_address').value==""){
         $('#patient_mailing_address').val('');
         $('#patient_mailing_address_data').val('');
-        $('#cotui-patient_mailing_address').attr('errortext', 'no results found');
+        $('#cotui-patient_mailing_address').attr('errortext','no results found');
       }
       checkAutoSuggest_Address();
     }
+
 
 
     let autoSuggest_address = document.getElementById('cotui-autosuggest_address');
@@ -1076,10 +1147,16 @@ class HomeForm {
     autoSuggest_address.submit = handleSubmit_address;
     autoSuggest_address.oninput = handleInput_address;
 
-    autoSuggest_address.onclear = function (term) {
-      $('#cotui-autosuggest_address').attr('errortext', '');
+    autoSuggest_address.onclear = function(term){
+      $('#cotui-autosuggest_address').attr('errortext','');
       $('#cotui-autosuggest_address').val('');
     };
+
+
+
+
+
+
 
 
     // // auto suggest backwatervalve contractor
@@ -1141,23 +1218,25 @@ class HomeForm {
 
     let optionalDIV = '<span class="optional">(optional)</span>';
 
+    //$('#nofixedaddress_option_0').prop('selected',true);
+    $('#nofixedaddress_option_0').click();
+
     // $('#cotui-autosuggest_backwatervalve_subcontractorbusinessnumber label.typeahead__label').html('Sub Contractor Business Licence Number:'+optionalDIV);
 
   }
-
-  setModel(model) {
+  setModel(model){
     this.model = model;
     this.cotForm.setModel(model);
   }
 
-  summaryHTML() {
+  summaryHTML(){
     let html = `
       <i class="fas fa-spinner fa-spin"></i> Loading
     `;
     return html;
   }
 
-  uploadInfoText() {
+  uploadInfoText(){
     let html = `
       <p>The following attachments should comply with the following:</p>
       <ul>
@@ -1177,7 +1256,7 @@ class HomeForm {
     return html;
   }
 
-  progressHTML() {
+  progressHTML(){
     let html = `
 
       <div class="progress" style="height: 20px;">
@@ -1188,7 +1267,7 @@ class HomeForm {
     return html;
   }
 
-  wizardHTML() {
+  wizardHTML(){
     let html = `
 
       <div class="steps">
@@ -1219,8 +1298,8 @@ class HomeForm {
     return html;
   }
 
-  formDefinition() {
-    let formId = formHtmlId + '_form';
+  formDefinition(){
+    let formId = formHtmlId+'_form';
     //const maxNumberOfComments = 4;
 
     let formDef = {
@@ -1229,14 +1308,14 @@ class HomeForm {
       rootPath: '/*@echo SRC_PATH*//', //optional, only required for forms using validationtype=Phone fields
       success: (event) => {
 
-        if (cannotSubmit) {
+        if(cannotSubmit){
           return false;
         }
 
-        if (currentStep <= 3) {
+        if(currentStep<=3){
           return false;
         }
-        if ($(formHtmlIdHashform).data('formValidation').$invalidFields.length > 0) {
+        if($(formHtmlIdHashform).data('formValidation').$invalidFields.length>0){
           return false;
         }
 
@@ -1338,6 +1417,21 @@ class HomeForm {
         // valuesToSubmit.property_last_name = $('#property_last_name').val();
 
 
+        valuesToSubmit.patient_mailing_street_number = $('#patient_mailing_street_number').val();
+        valuesToSubmit.patient_mailing_street_name = $('#patient_mailing_street_name').val();
+        valuesToSubmit.patient_mailing_suite_number = $('#patient_mailing_suite_number').val();
+        valuesToSubmit.patient_mailing_city = $('#patient_mailing_city').val();
+        valuesToSubmit.patient_mailing_province = $('#patient_mailing_province').val();
+        valuesToSubmit.patient_mailing_country = $('#patient_mailing_country').val();
+        valuesToSubmit.patient_mailing_postal_code = $('#patient_mailing_postal_code').val();
+        valuesToSubmit.patient_mailing_long = $('#patient_mailing_long').val();
+        valuesToSubmit.patient_mailing_lat = $('#patient_mailing_lat').val();
+
+
+
+        valuesToSubmit.accessToken = accessToken;
+
+
         let stringifySubmission = JSON.stringify(valuesToSubmit);
         // stringifySubmission.captcha = 'test';
 
@@ -1350,7 +1444,7 @@ class HomeForm {
         //return false;
 
 
-        let successHTML = function (referenceID, id, uploadedFiles) {
+        let successHTML = function(referenceID,id,uploadedFiles){
 
           //console.log(uploadedFiles);
 
@@ -1399,6 +1493,7 @@ class HomeForm {
           // }
 
 
+
           return `
           <div id="submitBox" class="panel cot-form confirmationBOX panel-default">
               <div class="panel-heading">
@@ -1413,19 +1508,19 @@ class HomeForm {
                           </p>
                       </div>
               </div>
-                ${uploadedFiles.length > 0 ? `
+                ${uploadedFiles.length>0?`
                   <table class="table">
                     <caption>Submitted files</caption>
                     <thead>
                       <tr><th>File Name</th><th>Status</th></tr>
                     </thead>
                     <tbody>
-                      ${uploadedFiles.map(file => {
-            return `<tr><td>${file.name}</td><td>${file.status === 'success' ? 'Uploaded Successfuly' : 'Upload Error'}</td></tr>`
+                      ${uploadedFiles.map(file=>{
+            return `<tr><td>${file.name}</td><td>${file.status==='success'?'Uploaded Successfuly':'Upload Error'}</td></tr>`
           }).join('')}
                     </tbody>
                   </table>
-                  ` : ''
+                  `:''
           }
             </div>
           </div>
@@ -1433,8 +1528,7 @@ class HomeForm {
           <button id="submitAnother" class="btn btn-default btn-lg btn-submit" type="button">
             Submit Another Request
           </button>
-        `
-        };
+        `};
 
         let submitNoticeData = `
           <div id="submitNoticeData" tabindex="-1">
@@ -1446,20 +1540,19 @@ class HomeForm {
           </div>
         `;
 
-        $(document).on('click', '#submitAnother', function (e) {
+        $(document).on('click','#submitAnother',function(e){
           location.reload();
           return false;
         });
 
-        var app = this
-
-        function submitForm(bin) {
+        var app=this
+        function submitForm(bin){
 
           $('#submitNoticeData').remove();
 
           let that = app;
-          grecaptcha.ready(function () {
-            grecaptcha.execute('/*@echo RECAPTCHA_SITEKEY*/').then(function (token) {
+          grecaptcha.ready(function() {
+            grecaptcha.execute('/*@echo RECAPTCHA_SITEKEY*/').then(function(token) {
               //var uploadedFiles = dz_uploader.files;
               // stringifySubmission.supportingDocuments = bin
 
@@ -1468,7 +1561,7 @@ class HomeForm {
 
               $.ajax({
                 method: "POST",
-                type: "POST",
+                type:"POST",
                 contentType: "application/json",
                 dataType: "json",
                 cache: false,
@@ -1479,7 +1572,7 @@ class HomeForm {
                   // "cot_recaptcha_config":"/*@echo COT_RECAPTCHA_CONFIG_TOKEN*/"
                   //"Origin": "www.toronto.ca",
                   "Content-Type": "application/json",
-                  "g-recaptcha-response": token,
+                  "g-recaptcha-response":token,
                 },
                 data: stringifySubmission,
                 success: (submitResponseData) => {
@@ -1489,14 +1582,14 @@ class HomeForm {
                   var successID = res.id;
                   var referenceID = res.referenceID
 
-                  var $html = successHTML(referenceID, successID, uploadedFiles)
+                  var $html = successHTML(referenceID, successID, uploadedFiles )
 
                   $('.progress').remove();
                   $('.steps').remove();
                   $('#submitNoticeData').remove();
                   hideLoading();
 
-                  $('#covid19_container').html($html);
+                  $('#covid19_container').html( $html );
 
                   // $('#covid19_container [data-download]').click(evt=>{
                   //   // $('.js-downloadFinalPdf').attr('disabled', 'true');
@@ -1595,6 +1688,8 @@ class HomeForm {
                   //           })
 
 
+
+
                   //         } else {
                   //           document.getElementById('loading-download').remove();
                   //           $(evt.target).attr('data-downloading','false');
@@ -1628,27 +1723,27 @@ class HomeForm {
                   // $('.submitBox').removeAttr('disabled');
 
                   //if(err.response.statusCode=='409'){
-                  if (err.code == '409') {
-                    if (window.submitRetries < 10) {
+                  if(err.code=='409'){
+                    if(window.submitRetries<10){
                       // resubmit since claim number already exists
                       //$('#submitForm').removeAttr('disabled');
                       //$('#submitForm').removeClass('disabled');
                       $('.submitBox').click();
                       window.submitRetries++;
                       dataFirstBeingSent = true;
-                    } else {
+                    } else{
                       //$('#submitForm').removeAttr('disabled');
                       //$('#submitForm').removeClass('disabled');
                       $('#covid19_container').before(submitNoticeData);
-                      window.scrollTo(0, 0);
+                      window.scrollTo(0,0);
                       $("#submitNoticeData").focus();
                       dataFirstBeingSent = true;
                     }
-                  } else {
+                  } else{
                     //$('#submitForm').removeAttr('disabled');
                     //$('#submitForm').removeClass('disabled');
                     $('#covid19_container').before(submitNoticeData);
-                    window.scrollTo(0, 0);
+                    window.scrollTo(0,0);
                     $("#submitNoticeData").focus();
                     dataFirstBeingSent = true;
                   }
@@ -1664,27 +1759,27 @@ class HomeForm {
                   $('#submitNoticeData').remove();
 
                   // if(err.response.statusCode=='409'){
-                  if (err.code == '409') {
-                    if (window.submitRetries < 10) {
+                  if(err.code=='409'){
+                    if(window.submitRetries<10){
                       // resubmit since claim number already exists
                       $('.submitBox').removeAttr('disabled');
                       $('.submitBox').removeClass('disabled');
                       $('.submitBox').click();
                       window.submitRetries++;
                       dataFirstBeingSent = true;
-                    } else {
+                    } else{
                       $('.submitBox').removeAttr('disabled');
                       $('.submitBox').removeClass('disabled');
                       $('#covid19_container').before(submitNoticeData);
-                      window.scrollTo(0, 0);
+                      window.scrollTo(0,0);
                       $("#submitNoticeData").focus();
                       dataFirstBeingSent = true;
                     }
-                  } else {
+                  } else{
                     $('.submitBox').removeAttr('disabled');
                     $('.submitBox').removeClass('disabled');
                     $('#covid19_container').before(submitNoticeData);
-                    window.scrollTo(0, 0);
+                    window.scrollTo(0,0);
                     $("#submitNoticeData").focus();
                     dataFirstBeingSent = true;
                   }
@@ -1700,6 +1795,13 @@ class HomeForm {
           })
 
         }
+
+
+
+
+
+
+
 
 
         /*
@@ -1718,6 +1820,13 @@ class HomeForm {
                }
 
         */
+
+
+
+
+
+
+
 
 
         //  if(dz_uploader.files.length > 0){
@@ -1748,6 +1857,10 @@ class HomeForm {
         // dz_uploader.processQueue();
 
 
+
+
+
+
         // if($('#supportingDocuments').get(0)){
         //   $('#supportingDocuments').get(0).cotDropzone.uploadAndCallback(
         //     function() {
@@ -1759,6 +1872,10 @@ class HomeForm {
         //  } else {
         submitForm();
         //  }
+
+
+
+
 
 
       },
@@ -1795,6 +1912,7 @@ class HomeForm {
         //               </small>
 
 
+
         //             `,
         //             className: "col-xs-12",
         //           },
@@ -1803,6 +1921,7 @@ class HomeForm {
         //       }
         //   ],
         // },
+
 
 
         {
@@ -1827,12 +1946,12 @@ class HomeForm {
                     callback: {
                       message: "Not a valid ontario health card number",
                       callback: (value, validator, $field) => {
-                        if (validateHC(value.replace(/ /gi, ''))) {
+                        if(validateHC(value.replace(/ /gi,''))){
                           return fixEX(value)
-                        } else {
-                          if (value == '') {
+                        } else{
+                          if(value==''){
                             return fixEX(value);
-                          } else {
+                          } else{
                             return false;
                           }
                         }
@@ -2012,10 +2131,144 @@ class HomeForm {
                 },
 
 
+
+
+                {
+                  id: "nofixedaddress_option",
+                  type: "radio",
+                  title: "Address Options:",
+                  className: "col-xs-12 col-sm-12",
+                  bindTo: "nofixedaddress_option",
+                  orientation: "horizontal",
+                  required: true,
+                  infohelp: null,
+                  prehelptext: 'If the patient has a fixed address in Toronto please select "Live in Toronto". Otherwise select "Don\'t have a fixed address or live outside of toronto", from the following options.',
+                  placeholder: null,
+                  choices: [
+                    {
+                      value: "no",
+                      text: "Live in Toronto"
+                    },
+                    {
+                      value: "Yes",
+                      text: "Don't have a fixed address or live outside of Toronto"
+                    },
+                  ],
+                  validators: {
+                    callback: {
+                      message: charactersNotAllowed,
+                      callback: (value, validator, $field) => {
+                        //console.log(value);
+
+                        $('#nofixedaddress_option_textElement').addClass('hidden');
+
+                        //if(value=='Yes'){
+                        if($('#nofixedaddress_option_1').prop('checked')){
+
+                          $('#nofixedaddress_option_textElement').removeClass('hidden');
+
+                          $('#patient_mailing_street_number').val('');
+                          $('#patient_mailing_street_name').val('');
+                          $('#patient_mailing_suite_number').val('');
+                          $('#patient_mailing_city').val('');
+                          $('#patient_mailing_province').val('Ontario');
+                          $('#patient_mailing_country').val('Canada');
+                          $('#patient_mailing_postal_code').val('');
+                          $('#patient_mailing_long').val('');
+                          $('#patient_mailing_lat').val('');
+
+                          $('#patient_mailing_street_number').removeAttr('disabled');
+                          $('#patient_mailing_street_name').removeAttr('disabled');
+                          // $('#patient_mailing_suite_number').removeAttr('disabled');
+                          $('#patient_mailing_city').removeAttr('disabled');
+                          $('#patient_mailing_province').removeAttr('disabled');
+                          $('#patient_mailing_country').removeAttr('disabled');
+                          $('#patient_mailing_postal_code').removeAttr('disabled');
+                          $('#patient_mailing_long').removeAttr('disabled');
+                          $('#patient_mailing_lat').removeAttr('disabled');
+
+                          $('#patient_mailing_address_data').val(' ');
+                          $('#cotui-autosuggest_address').val(' ');
+                          $('#cotui-autosuggest_address .typeahead__input').val(' ');
+
+                          $('#cotui-autosuggest_address ').addClass('hidden');
+
+                          $('.addressBox').addClass('hidden');
+
+                          // let notEmpty = {
+                          //   notEmpty: {
+                          //     message: 'Phone number is required and cannot be empty',
+                          //     priority: 1
+                          //   }
+                          // }
+                          // formID.enableFieldValidators('patient_phone_number',true,required);
+                          $(formHtmlIdHashform).data('formValidation').updateStatus('patient_phone_number', 'VALID');
+                          $(formHtmlIdHashform).data('formValidation').enableFieldValidators('patient_phone_number', false, 'notEmpty');
+                          $('.patientPhoneFX .control-label .optional').removeClass('hidden');
+
+                        } else{
+                          $('#nofixedaddress_option_textElement').addClass('hidden');
+
+                          // $('#patient_mailing_street_number').val('');
+                          // $('#patient_mailing_street_name').val('');
+                          // $('#patient_mailing_suite_number').val('');
+                          // $('#patient_mailing_city').val('');
+                          // $('#patient_mailing_province').val('Ontario');
+                          // $('#patient_mailing_country').val('Canada');
+                          // $('#patient_mailing_postal_code').val('');
+                          // $('#patient_mailing_long').val('');
+                          // $('#patient_mailing_lat').val('');
+
+                          $('#patient_mailing_street_number').attr('disabled','disabled');
+                          $('#patient_mailing_street_name').attr('disabled','disabled');
+                          // $('#patient_mailing_suite_number').attr('disabled','disabled');
+                          $('#patient_mailing_city').attr('disabled','disabled');
+                          $('#patient_mailing_province').attr('disabled','disabled');
+                          $('#patient_mailing_country').attr('disabled','disabled');
+                          $('#patient_mailing_postal_code').attr('disabled','disabled');
+                          $('#patient_mailing_long').attr('disabled','disabled');
+                          $('#patient_mailing_lat').attr('disabled','disabled');
+
+                          // $('#patient_mailing_address_data').val('');
+                          // $('#cotui-autosuggest_address').val('');
+                          // $('#cotui-autosuggest_address .typeahead__input').val('');
+
+                          $('#cotui-autosuggest_address ').removeClass('hidden');
+                          $('.addressBox').removeClass('hidden');
+
+                          // let notEmpty = {
+                          //   notEmpty: {
+                          //     message: 'Phone number is required and cannot be empty',
+                          //     priority: 1
+                          //   }
+                          // }
+                          //formID.enableFieldValidators('patient_phone_number',false,notEmpty);
+                          let phoneRequired = {
+                            excluded: false,
+                            message: 'Phone number is required and cannot be left blank.',
+                            validators: { notEmpty: { message: 'Phone number is required and cannot be left blank.' } }
+                          };
+                          $(formHtmlIdHashform).data('formValidation').addField('patient_phone_number', phoneRequired);
+                          $(formHtmlIdHashform).data('formValidation').updateStatus('patient_phone_number', 'NOT_VALIDATED');
+                          $(formHtmlIdHashform).data('formValidation').enableFieldValidators('patient_phone_number', true, 'notEmpty');
+                          $('.patientPhoneFX .control-label .optional').addClass('hidden');
+
+                        }
+
+                        return true;
+
+                      }
+                    }
+                  }
+                },
+
+
+
+
                 {
                   id: "addressAutosuggest",
                   type: "html",
-                  className: "col-xs-12 col-sm-9",
+                  className: "col-xs-12 col-sm-12",
                   html: `
                         <cotui-autosuggest
                           label="Mailing Address:"
@@ -2053,119 +2306,7 @@ class HomeForm {
                 },
 
 
-                {
-                  id: "nofixedaddress_option",
-                  type: "radio",
-                  title: "No Fixed Address:",
-                  className: "col-xs-12 col-sm-3",
-                  bindTo: "nofixedaddress_option",
-                  orientation: "horizontal",
-                  required: false,
-                  infohelp: null,
-                  posthelptext: null,
-                  placeholder: null,
-                  choices: [
-                    {
-                      value: "Yes",
-                      text: "Yes"
-                    },
-                    {
-                      value: "No",
-                      text: "No"
-                    },
-                  ],
-                  validators: {
-                    callback: {
-                      message: charactersNotAllowed,
-                      callback: (value, validator, $field) => {
-                        //console.log(value);
 
-                        $('#nofixedaddress_option_textElement').addClass('hidden');
-
-                        if (value == 'Yes') {
-                          $('#nofixedaddress_option_textElement').removeClass('hidden');
-
-                          $('#patient_mailing_street_number').val('');
-                          $('#patient_mailing_street_name').val('');
-                          $('#patient_mailing_suite_number').val('');
-                          $('#patient_mailing_city').val('');
-                          $('#patient_mailing_province').val('Ontario');
-                          $('#patient_mailing_country').val('Canada');
-                          $('#patient_mailing_postal_code').val('');
-                          $('#patient_mailing_long').val('');
-                          $('#patient_mailing_lat').val('');
-
-                          $('#patient_mailing_street_number').removeAttr('disabled');
-                          $('#patient_mailing_street_name').removeAttr('disabled');
-                          // $('#patient_mailing_suite_number').removeAttr('disabled');
-                          $('#patient_mailing_city').removeAttr('disabled');
-                          $('#patient_mailing_province').removeAttr('disabled');
-                          $('#patient_mailing_country').removeAttr('disabled');
-                          $('#patient_mailing_postal_code').removeAttr('disabled');
-                          $('#patient_mailing_long').removeAttr('disabled');
-                          $('#patient_mailing_lat').removeAttr('disabled');
-
-                          $('#patient_mailing_address_data').val(' ');
-                          $('#cotui-autosuggest_address').val(' ');
-                          $('#cotui-autosuggest_address .typeahead__input').val(' ');
-
-                          $('#cotui-autosuggest_address ').addClass('disabled');
-                          $('.addressBox').addClass('hidden');
-
-                          // let notEmpty = {
-                          //   notEmpty: {
-                          //     message: 'Phone number is required and cannot be empty',
-                          //     priority: 1
-                          //   }
-                          // }
-                          // formID.enableFieldValidators('patient_phone_number',true,notEmpty);
-
-                        } else {
-                          $('#nofixedaddress_option_textElement').addClass('hidden');
-
-                          $('#patient_mailing_street_number').val('');
-                          $('#patient_mailing_street_name').val('');
-                          $('#patient_mailing_suite_number').val('');
-                          $('#patient_mailing_city').val('');
-                          $('#patient_mailing_province').val('Ontario');
-                          $('#patient_mailing_country').val('Canada');
-                          $('#patient_mailing_postal_code').val('');
-                          $('#patient_mailing_long').val('');
-                          $('#patient_mailing_lat').val('');
-
-                          $('#patient_mailing_street_number').attr('disabled', 'disabled');
-                          $('#patient_mailing_street_name').attr('disabled', 'disabled');
-                          // $('#patient_mailing_suite_number').attr('disabled','disabled');
-                          $('#patient_mailing_city').attr('disabled', 'disabled');
-                          $('#patient_mailing_province').attr('disabled', 'disabled');
-                          $('#patient_mailing_country').attr('disabled', 'disabled');
-                          $('#patient_mailing_postal_code').attr('disabled', 'disabled');
-                          $('#patient_mailing_long').attr('disabled', 'disabled');
-                          $('#patient_mailing_lat').attr('disabled', 'disabled');
-
-                          $('#patient_mailing_address_data').val('');
-                          $('#cotui-autosuggest_address').val('');
-                          $('#cotui-autosuggest_address .typeahead__input').val('');
-
-                          $('#cotui-autosuggest_address ').removeClass('disabled');
-                          $('.addressBox').removeClass('hidden');
-
-                          // let notEmpty = {
-                          //   notEmpty: {
-                          //     message: 'Phone number is required and cannot be empty',
-                          //     priority: 1
-                          //   }
-                          // }
-                          // formID.enableFieldValidators('patient_phone_number',false,notEmpty);
-
-                        }
-
-                        return true;
-
-                      }
-                    }
-                  }
-                },
 
 
                 {
@@ -2177,8 +2318,8 @@ class HomeForm {
                   required: false,
                   disabled: false,
                   infohelp: null,
-                  posthelptext: null,
-                  placeholder: null,
+                  prehelptext: "#123, Street Name, Province/State, Postal/Zip Code, Country",
+                  placeholder: "",
                   validators: {
                     callback: {
                       message: charactersNotAllowed,
@@ -2188,6 +2329,14 @@ class HomeForm {
                     }
                   }
                 },
+
+
+
+
+
+
+
+
 
 
                 {
@@ -2362,7 +2511,7 @@ class HomeForm {
                   id: "patient_phone_number",
                   type: "phone",
                   title: "Phone Number:",
-                  className: "col-xs-12 col-sm-6",
+                  className: "col-xs-12 col-sm-6 patientPhoneFX",
                   bindTo: "patient_phone_number",
                   required: false,
                   infohelp: null,
@@ -2372,10 +2521,15 @@ class HomeForm {
                     callback: {
                       message: phoneFormatText,
                       callback: (value, validator, $field) => {
-                        if (phoneFormat.test(value)) {
+                        if(phoneFormat.test(value)){
                           return fixEX(value);
-                        } else {
-                          return false;
+                        } else{
+                          if(value==''){
+                            return true;
+                          } else{
+                            return false;
+                          }
+
                         }
                       }
                     }
@@ -2402,6 +2556,7 @@ class HomeForm {
                     }
                   }
                 },
+
 
 
               ]
@@ -2491,18 +2646,24 @@ class HomeForm {
                         $('#cpso_numberElement').addClass('hidden');
                         $('#reporting_source_otherElement').addClass('hidden');
 
-                        if (value == 'Physician Office') {
+                        if($('#reporting_source').val()=='Physician Office'){
+                          $('#cpso_numberElement').val('');
                           $('#cpso_numberElement').removeClass('hidden');
-                        } else {
+                        } else{
                           $('#cpso_numberElement').addClass('hidden');
-                          $('#cpso_number').val('');
+                          $('#cpso_number').val('-');
                         }
 
-                        if (value == 'Other') {
-                          $('#reporting_source_otherElement').removeClass('hidden');
-                        } else {
-                          $('#reporting_source_otherElement').addClass('hidden');
+                        if($('#reporting_source').val()=='Other'){
                           $('#reporting_source_other').val('');
+                          $('#reporting_source_otherElement').removeClass('hidden');
+                          // $(formHtmlIdHashform).data('formValidation').updateStatus('reporting_source_other', 'INVALID');
+                          // $(formHtmlIdHashform).data('formValidation').enableFieldValidators('reporting_source_other', true, 'notEmpty');
+                        } else{
+                          $('#reporting_source_otherElement').addClass('hidden');
+                          $('#reporting_source_other').val('-');
+                          // $(formHtmlIdHashform).data('formValidation').updateStatus('reporting_source_other', 'VALID');
+                          // $(formHtmlIdHashform).data('formValidation').enableFieldValidators('reporting_source_other', false, 'notEmpty');
                         }
 
                         return true;
@@ -2518,7 +2679,7 @@ class HomeForm {
                   title: "Other Reporting Source:",
                   className: "col-xs-6 col-sm-6 hidden",
                   bindTo: "reporting_source_other",
-                  required: true,
+                  required: false,
                   infohelp: null,
                   posthelptext: null,
                   placeholder: null,
@@ -2553,16 +2714,16 @@ class HomeForm {
                       callback: (value, validator, $field) => {
                         // check if number only
                         let digitOnly = /(\d)$/gi;
-                        if (digitOnly.test(value)) {
-                          if (value == '') {
+                        if(digitOnly.test(value)){
+                          if(value==''){
                             return true;
-                          } else {
+                          } else{
                             return fixEX(value)
                           }
-                        } else {
-                          if (value == '') {
+                        } else{
+                          if(value==''){
                             return fixEX(value)
-                          } else {
+                          } else{
                             return false;
                           }
                         }
@@ -2570,6 +2731,7 @@ class HomeForm {
                     }
                   }
                 },
+
 
 
                 {
@@ -2666,11 +2828,11 @@ class HomeForm {
                       callback: (value, validator, $field) => {
                         $('#reporting_organization_otherElement').addClass('hidden');
                         $('#reporting_organization_other').val('');
-                        if (value == 'Other') {
+                        if(value=='Other'){
                           $('#reporting_organization_otherElement').removeClass('hidden');
-                        } else {
+                        } else{
                           $('#reporting_organization_otherElement').addClass('hidden');
-                          $('#reporting_organization_other').val('');
+                          $('#reporting_organization_other').val('-');
                         }
                         return true;
                       }
@@ -2735,9 +2897,9 @@ class HomeForm {
                     callback: {
                       message: phoneFormatText,
                       callback: (value, validator, $field) => {
-                        if (phoneFormat.test(value)) {
+                        if(phoneFormat.test(value)){
                           return fixEX(value);
-                        } else {
+                        } else{
                           return false;
                         }
                       }
@@ -2761,22 +2923,23 @@ class HomeForm {
                   },
                   validators: {
                     callback: {
-                      message: phoneExFormatText + ' and up to 6 digits',
+                      message: phoneExFormatText+' and up to 6 digits',
                       callback: (value, validator, $field) => {
-                        if (phoneExFormat.test(value)) {
-                          if (phoneExFormat.length > 6) {
+                        //if(phoneExFormat.test(value)){
+                        if(phoneExFormat.test($('#reporting_phone_number_extension').val())){
+                          if(phoneExFormat.length>6){
                             return false;
-                          } else {
-                            if (value == '') {
+                          } else{
+                            if(value==''){
                               return true;
-                            } else {
+                            } else{
                               return fixEX(value)
                             }
                           }
-                        } else {
-                          if (value == '') {
+                        } else{
+                          if(value==''){
                             return fixEX(value)
-                          } else {
+                          } else{
                             return false;
                           }
                         }
@@ -2784,6 +2947,7 @@ class HomeForm {
                     }
                   }
                 },
+
 
 
               ]
@@ -2856,24 +3020,24 @@ class HomeForm {
                         $('#patient_symptoms_otherElement').addClass('hidden');
                         $('#patient_symptoms_other').val('');
 
-                        if ($('#patient_symptoms_0').prop('checked') ||
+                        if($('#patient_symptoms_0').prop('checked') ||
                           $('#patient_symptoms_1').prop('checked') ||
                           $('#patient_symptoms_2').prop('checked') ||
                           $('#patient_symptoms_3').prop('checked') ||
                           $('#patient_symptoms_4').prop('checked') ||
                           $('#patient_symptoms_5').prop('checked') ||
                           $('#patient_symptoms_6').prop('checked')
-                        ) {
-                          if ($('#patient_symptoms_6').prop('checked')) {
+                        ){
+                          if($('#patient_symptoms_6').prop('checked')){
                             $('#patient_symptoms_otherElement').removeClass('hidden');
-                          } else {
+                          } else{
                             $('#patient_symptoms_otherElement').addClass('hidden');
                             $('#patient_symptoms_other').val('');
                           }
-                          $('#patient_onset_dateElement').removeClass('hidden');
-                        } else {
-                          $('#patient_onset_dateElement').addClass('hidden');
-                          $('#patient_onset_date').val('');
+                          //$('#patient_onset_dateElement').removeClass('hidden');
+                        } else{
+                          //$('#patient_onset_dateElement').addClass('hidden');
+                          //$('#patient_onset_date').val('');
                         }
 
 
@@ -2890,11 +3054,12 @@ class HomeForm {
                 },
 
 
+
                 {
                   id: "patient_onset_date",
                   type: "datetimepicker",
                   title: "Earliest Symptoms Onset Date:",
-                  className: "col-xs-12 col-sm-6 hidden",
+                  className: "col-xs-12 col-sm-6",
                   bindTo: "patient_onset_date",
                   maxlength: 10,
                   options: {
@@ -2925,6 +3090,8 @@ class HomeForm {
                 },
 
 
+
+
                 {
                   id: "patient_symptoms_other",
                   type: "textarea",
@@ -2944,6 +3111,10 @@ class HomeForm {
                     }
                   }
                 },
+
+
+
+
 
 
                 {
@@ -3016,25 +3187,28 @@ class HomeForm {
                         // }
 
 
-                        if ($('#patient_exposures_0').prop('checked')) {
-                          $('#patient_travel_affected_areaElement').removeClass('hidden');
-                        } else {
-                          $('#patient_travel_affected_areaElement').addClass('hidden');
+                        if($('#patient_exposures_0').prop('checked')){
                           $('#patient_travel_affected_area').val('');
+                          $('#patient_travel_affected_areaElement').removeClass('hidden');
+                        } else{
+                          $('#patient_travel_affected_areaElement').addClass('hidden');
+                          $('#patient_travel_affected_area').val('-');
                         }
 
-                        if ($('#patient_exposures_1').prop('checked')) {
-                          $('#patient_travel_otherElement').removeClass('hidden');
-                        } else {
-                          $('#patient_travel_otherElement').addClass('hidden');
+                        if($('#patient_exposures_1').prop('checked')){
                           $('#patient_travel_other').val('');
+                          $('#patient_travel_otherElement').removeClass('hidden');
+                        } else{
+                          $('#patient_travel_otherElement').addClass('hidden');
+                          $('#patient_travel_other').val('-');
                         }
 
-                        if ($('#patient_exposures_6').prop('checked')) {
-                          $('#patient_exposures_otherElement').removeClass('hidden');
-                        } else {
-                          $('#patient_exposures_otherElement').addClass('hidden');
+                        if($('#patient_exposures_6').prop('checked')){
                           $('#patient_exposures_other').val('');
+                          $('#patient_exposures_otherElement').removeClass('hidden');
+                        } else{
+                          $('#patient_exposures_otherElement').addClass('hidden');
+                          $('#patient_exposures_other').val('-');
                         }
 
                         return true;
@@ -3117,6 +3291,8 @@ class HomeForm {
                 // },
 
 
+
+
                 {
                   id: "patient_travel_other",
                   type: "textarea",
@@ -3138,6 +3314,7 @@ class HomeForm {
                 },
 
 
+
                 {
                   id: "patient_exposures_other",
                   type: "textarea",
@@ -3157,6 +3334,10 @@ class HomeForm {
                     }
                   }
                 },
+
+
+
+
 
 
                 {
@@ -3224,6 +3405,8 @@ class HomeForm {
                 // },
 
 
+
+
                 {
                   id: "patient_specimen_collection_date",
                   type: "datetimepicker",
@@ -3257,6 +3440,9 @@ class HomeForm {
                   //   // }
                   // }
                 },
+
+
+
 
 
                 {
@@ -3339,11 +3525,11 @@ class HomeForm {
                         $('#patient_lab_results_otherElement').addClass('hidden');
                         $('#patient_lab_results_other').val('');
 
-                        if ($('#patient_lab_results_6').prop('checked')) {
+                        if($('#patient_lab_results_6').prop('checked')){
                           $('#patient_lab_results_otherElement').removeClass('hidden');
-                        } else {
+                        } else{
                           $('#patient_lab_results_otherElement').addClass('hidden');
-                          $('#patient_lab_results_other').val('');
+                          $('#patient_lab_results_other').val('-');
                         }
 
                         return true;
@@ -3353,11 +3539,13 @@ class HomeForm {
                 },
 
 
+
+
                 {
                   id: "patient_lab_results_other",
                   type: "textarea",
                   title: "Other Patient Health Status",
-                  className: "col-xs-12 col-sm-6 hidden",
+                  className: "col-xs-12 col-sm-12 hidden",
                   bindTo: "patient_lab_results_other",
                   required: true,
                   orientation: 'horizontal',
@@ -3373,6 +3561,8 @@ class HomeForm {
                     }
                   }
                 },
+
+
 
 
                 {
@@ -3394,6 +3584,11 @@ class HomeForm {
                     }
                   }
                 },
+
+
+
+
+
 
 
               ]
@@ -3524,7 +3719,7 @@ class HomeForm {
                                   }
                                 }
                               }
-                          },
+                          },accessToken
 
 
                           {

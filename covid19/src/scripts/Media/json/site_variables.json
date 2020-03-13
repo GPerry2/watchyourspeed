@@ -1,30 +1,55 @@
 {
   "field_choices": {
-    "case_status": [{
-      "value": "New",
-      "text": "New"
-    }, {
-      "value": "Actioned",
-      "text": "Actioned"
-    }, {
-      "value": "Closed",
-      "text": "Closed"
-    }],
+    "case_referred_to": [
+      {
+        "value": "",
+        "text": "Select..."
+      },
+      {
+        "value": "OCL",
+        "text": "OCL"
+      },
+      {
+        "value": "PHU",
+        "text": "PHU"
+      },
+      {
+        "value": "PHO",
+        "text": "PHO"
+      }
+    ],
+    "case_status": [
+      {
+        "value": "New",
+        "text": "New"
+      },
+      {
+        "value": "Actioned",
+        "text": "Actioned"
+      },
+      {
+        "value": "Closed",
+        "text": "Closed"
+      }
+    ],
     "case_classification": [
       {
         "value": "",
         "text": "Select..."
       },
       {
-      "value": "PUI",
-      "text": "PUI"
-    }, {
-      "value": "DNM",
-      "text": "DNM"
-    }, {
-      "value": "Became a Case",
-      "text": "Became a Case"
-    }],
+        "value": "PUI",
+        "text": "PUI"
+      },
+      {
+        "value": "DNM",
+        "text": "DNM"
+      },
+      {
+        "value": "Became a Case",
+        "text": "Became a Case"
+      }
+    ],
     "covid19_detected": [
       {
         "value": "",
@@ -37,10 +62,12 @@
       {
         "value": "COVID-19 Detected",
         "text": "COVID-19 Detected"
-      }, {
+      },
+      {
         "value": "COVID-19 Not Detected",
         "text": "COVID-19 Not Detected"
-      }],
+      }
+    ],
     "gender": [
       {
         "value": "Male",
@@ -64,67 +91,186 @@
       }
     ],
     "reporting_source": [
-      {"text":"Select…",  "value":""},
       {
-      "value": "Hospital physician / Infection Prevention and Control",
-      "text": "Hospital physician / Infection Prevention and Control"
-    }, {
-      "value": "Assessment Centre",
-      "text": "Assessment Centre"
-    }, {
-      "value": "TPH Hot Line",
-      "text": "TPH Hot Line"
-    }, {
-      "value": "TPH CDLU",
-      "text": "TPH CDLU"
-    }, {
-      "value": "Other",
-      "text": "Other"
-    }],
+        "text": "Select…",
+        "value": ""
+      },
+      {
+        "value": "Hospital physician / Infection Prevention and Control",
+        "text": "Hospital physician / Infection Prevention and Control"
+      },
+      {
+        "value": "Assessment Centre",
+        "text": "Assessment Centre"
+      },
+      {
+        "value": "TPH Hot Line",
+        "text": "TPH Hot Line"
+      },
+      {
+        "value": "TPH CDLU",
+        "text": "TPH CDLU"
+      },
+      {
+        "value": "Other",
+        "text": "Other"
+      }
+    ],
     "reporting_organization": [
-      {"text":"Select…",  "value":""},
-      {"text":"Hospital for Sick Children",  "value":"Hospital for Sick Children"},
-      {"text":"Humber River Hospital",  "value":"Humber River Hospital"},
-      {"text":"Michael Garron Hospital",  "value":"Michael Garron Hospital"},
-      {"text":"Mount Sinai Hospital",  "value":"Mount Sinai Hospital"},
-      {"text":"North York General Hospital",  "value":"North York General Hospital"},
-      {"text":"Scarborough Health Network-Birchmount Hospital",  "value":"Scarborough Health Network-Birchmount Hospital"},
-      {"text":"Scarborough Health Network-Centenary Hospital",  "value":"Scarborough Health Network-Centenary Hospital"},
-      {"text":"Scarborough Health Network-General Hospital",  "value":"Scarborough Health Network-General Hospital"},
-      {"text":"St. Joseph’s Health Centre",  "value":"St. Joseph’s Health Centre"},
-      {"text":"St. Michael’s Hospital",  "value":"St. Michael’s Hospital"},
-      {"text":"Sunnybrook Health Sciences Centre",  "value":"Sunnybrook Health Sciences Centre"},
-      {"text":"Trillium Health Partners",  "value":"Trillium Health Partners"},
-      {"text":"UHN-Princess Margaret Hospital",  "value":"UHN-Princess Margaret Hospital"},
-      {"text":"UHN-Toronto Western Hospital",  "value":"UHN-Toronto Western Hospital"},
-      {"text":"UHN-Toronto General Hospital",  "value":"UHN-Toronto General Hospital"},
-      {"text":"William Osler Health System",  "value":"William Osler Health System"},
-      {"text":"Toronto Public Health",  "value":"Toronto Public Health"},
-      {"text":"Other",  "value":"Other"},
-      {"text":"please specify",  "value":"please specify"}
+      {
+        "text": "Select…",
+        "value": ""
+      },
+      {
+        "text": "Hospital for Sick Children",
+        "value": "Hospital for Sick Children"
+      },
+      {
+        "text": "Humber River Hospital",
+        "value": "Humber River Hospital"
+      },
+      {
+        "text": "Michael Garron Hospital",
+        "value": "Michael Garron Hospital"
+      },
+      {
+        "text": "Mount Sinai Hospital",
+        "value": "Mount Sinai Hospital"
+      },
+      {
+        "text": "North York General Hospital",
+        "value": "North York General Hospital"
+      },
+      {
+        "text": "Scarborough Health Network-Birchmount Hospital",
+        "value": "Scarborough Health Network-Birchmount Hospital"
+      },
+      {
+        "text": "Scarborough Health Network-Centenary Hospital",
+        "value": "Scarborough Health Network-Centenary Hospital"
+      },
+      {
+        "text": "Scarborough Health Network-General Hospital",
+        "value": "Scarborough Health Network-General Hospital"
+      },
+      {
+        "text": "St. Joseph’s Health Centre",
+        "value": "St. Joseph’s Health Centre"
+      },
+      {
+        "text": "St. Michael’s Hospital",
+        "value": "St. Michael’s Hospital"
+      },
+      {
+        "text": "Sunnybrook Health Sciences Centre",
+        "value": "Sunnybrook Health Sciences Centre"
+      },
+      {
+        "text": "Trillium Health Partners",
+        "value": "Trillium Health Partners"
+      },
+      {
+        "text": "UHN-Princess Margaret Hospital",
+        "value": "UHN-Princess Margaret Hospital"
+      },
+      {
+        "text": "UHN-Toronto Western Hospital",
+        "value": "UHN-Toronto Western Hospital"
+      },
+      {
+        "text": "UHN-Toronto General Hospital",
+        "value": "UHN-Toronto General Hospital"
+      },
+      {
+        "text": "William Osler Health System",
+        "value": "William Osler Health System"
+      },
+      {
+        "text": "Toronto Public Health",
+        "value": "Toronto Public Health"
+      },
+      {
+        "text": "Other",
+        "value": "Other"
+      },
+      {
+        "text": "please specify",
+        "value": "please specify"
+      }
     ],
     "patient_symptons": [
-      {"text":"Fever",  "value":"Fever"},
-      {"text":"Difficulty Breathing/SOB",  "value":"Difficulty Breathing/SOB"},
-      {"text":"Cough",  "value":"Cough"},
-      {"text":"Fatigue",  "value":"Fatigue"},
-      {"text":"Other",  "value":"Other"},
-      {"text":"please specify",  "value":"please specify"}
+      {
+        "text": "Fever",
+        "value": "Fever"
+      },
+      {
+        "text": "Difficulty Breathing/SOB",
+        "value": "Difficulty Breathing/SOB"
+      },
+      {
+        "text": "Cough",
+        "value": "Cough"
+      },
+      {
+        "text": "Fatigue",
+        "value": "Fatigue"
+      },
+      {
+        "text": "Other",
+        "value": "Other"
+      },
+      {
+        "text": "please specify",
+        "value": "please specify"
+      }
     ],
-    "patient_exposures":[
-      {"text":"Travel to an affected area",  "value":"Travel to an affected area"},
-      {"text":"Travel to another country",  "value":"Travel to another country"},
-      {"text":"please specify",  "value":"please specify"},
-      {"text":"Was on a cruise ship",  "value":"Was on a cruise ship"},
-      {"text":"Have close contact with a confirmed or probable case of COVID-19",  "value":"Have close contact with a confirmed or probable case of COVID-19"},
-      {"text":"Have close contact with a person with acute respiratory illness who has been to an affected area* within 14 days prior to their illness onset",  "value":"Have close contact with a person with acute respiratory illness who has been to an affected area* within 14 days prior to their illness onset"},
-      {"text":"Have laboratory exposure to biological material (e.g. primary clinical specimens",  "value":"Have laboratory exposure to biological material (e.g. primary clinical specimens"},
-      {"text":"virus culture isolates) known to contain COVID-19. Other",  "value":"virus culture isolates) known to contain COVID-19. Other"},
-      {"text":"please specify",  "value":"please specify"}
+    "patient_exposures": [
+      {
+        "text": "Travel to an affected area",
+        "value": "Travel to an affected area"
+      },
+      {
+        "text": "Travel to another country",
+        "value": "Travel to another country"
+      },
+      {
+        "text": "please specify",
+        "value": "please specify"
+      },
+      {
+        "text": "Was on a cruise ship",
+        "value": "Was on a cruise ship"
+      },
+      {
+        "text": "Have close contact with a confirmed or probable case of COVID-19",
+        "value": "Have close contact with a confirmed or probable case of COVID-19"
+      },
+      {
+        "text": "Have close contact with a person with acute respiratory illness who has been to an affected area* within 14 days prior to their illness onset",
+        "value": "Have close contact with a person with acute respiratory illness who has been to an affected area* within 14 days prior to their illness onset"
+      },
+      {
+        "text": "Have laboratory exposure to biological material (e.g. primary clinical specimens",
+        "value": "Have laboratory exposure to biological material (e.g. primary clinical specimens"
+      },
+      {
+        "text": "virus culture isolates) known to contain COVID-19. Other",
+        "value": "virus culture isolates) known to contain COVID-19. Other"
+      },
+      {
+        "text": "please specify",
+        "value": "please specify"
+      }
     ],
     "patient_specimens_collected": [
-      {"text":"Throat swab",  "value":"Throat swab"},
-      {"text":"Nasopharyngeal Swab",  "value":"Nasopharyngeal Swab"}
+      {
+        "text": "Throat swab",
+        "value": "Throat swab"
+      },
+      {
+        "text": "Nasopharyngeal Swab",
+        "value": "Nasopharyngeal Swab"
+      }
     ]
   }
 }
